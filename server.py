@@ -18,6 +18,7 @@ from urllib.parse import parse_qs, urlparse
 ROOT = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, ROOT)
 from lyceum import agent, evolve, insight, llm, mastery, strategies  # noqa: E402
+from lyceum import config as cfgmod  # noqa: E402
 from lyceum import memory as memmod  # noqa: E402
 from lyceum.streaming import sse  # noqa: E402
 from lyceum.db import DB  # noqa: E402
@@ -27,6 +28,7 @@ STATIC = os.path.join(ROOT, "static")
 UPLOADS = os.path.join(DATA, "uploads")
 os.makedirs(UPLOADS, exist_ok=True)
 db = DB(os.path.join(DATA, "lyceum.db"))
+cfgmod.apply(llm, DATA)  # 模型设置：环境变量 > DATA/config.json > 默认
 MAX_IMAGE = 6 * 1024 * 1024
 HEARTBEAT = float(os.environ.get("LYCEUM_HEARTBEAT", "15"))
 mimetypes.add_type("text/javascript", ".js")
@@ -46,11 +48,21 @@ def save_image(data_url):
     return "/uploads/" + name
 
 
+MIME = {".html": "text/html", ".js": "text/javascript", ".mjs": "text/javascript", ".css": "text/css",
+        ".json": "application/json", ".svg": "image/svg+xml", ".png": "image/png", ".jpg": "image/jpeg",
+        ".jpeg": "image/jpeg", ".webp": "image/webp", ".gif": "image/gif", ".ico": "image/x-icon",
+        ".woff2": "font/woff2", ".woff": "font/woff", ".ttf": "font/ttf", ".webm": "video/webm"}
+
+
+def _loopback(addr):
+    return addr in ("127.0.0.1", "::1", "localhost") or addr.startswith("127.") or addr == "::ffff:127.0.0.1"
+
+
 class H(BaseHTTPRequestHandler):
     server_version = "Lyceum/0.1"
 
     def log_message(self, fmt, *args):
-        if "/api/" in (args[0] if args else ""):
+        if "/api/" in (str(args[0]) if args else ""):
             sys.stderr.write("[%s] %s\n" % (time.strftime("%H:%M:%S"), fmt % args))
 
     # ---------- helpers
@@ -73,7 +85,9 @@ class H(BaseHTTPRequestHandler):
         if not os.path.isfile(path):
             self.send_error(404)
             return
-        ctype = mimetypes.guess_type(path)[0] or "application/octet-stream"
+        ext = os.path.splitext(path)[1].lower()
+        # Windows 的 mimetypes 读注册表，.js 可能被报成 text/plain，ES module 会拒绝执行：常用类型写死
+        ctype = MIME.get(ext) or mimetypes.guess_type(path)[0] or "application/octet-stream"
         with open(path, "rb") as f:
             data = f.read()
         self.send_response(200)
@@ -120,6 +134,8 @@ class H(BaseHTTPRequestHandler):
                 return self.send_json(memmod.list_all(db))
             if p == "/api/growth":
                 return self.send_json(evolve.overview(db))
+            if p == "/api/settings":
+                return self.send_json(cfgmod.public(DATA))
             if p == "/api/usage":
                 return self.send_json(llm.USAGE)
             if p.startswith("/uploads/"):
@@ -144,6 +160,8 @@ class H(BaseHTTPRequestHandler):
                     return self.send_json({"error": "年级不对"}, 400)
                 db.set_profile(g, (b.get("textbook") or "人教版")[:20], (b.get("nickname") or "")[:20])
                 return self.send_json({"profile": db.get_profile()})
+            if p == "/api/settings":
+                return self.save_settings(b)
             if p == "/api/chat":
                 return self.chat(b)
             if p == "/api/chat/stream":
@@ -199,6 +217,14 @@ class H(BaseHTTPRequestHandler):
             return self.send_json({"error": "出了点问题：" + str(e)[:200]}, 500)
 
     # ---------- handlers
+    def save_settings(self, b):
+        # key 只允许本机改：网页版若绑在 0.0.0.0，局域网里的其他设备不能读写它
+        if not _loopback(self.client_address[0]):
+            return self.send_json({"error": "只能在本机修改模型设置"}, 403)
+        cfgmod.save(DATA, {k: b.get(k) for k in cfgmod.FIELDS}, clear_key=bool(b.get("clear_key")))
+        cfgmod.apply(llm, DATA)
+        return self.send_json(cfgmod.public(DATA))
+
     def _chat_begin(self, b):
         profile = db.get_profile() or {"grade": 8, "textbook": "人教版"}
         text = (b.get("message") or "")[:4000]
@@ -463,11 +489,22 @@ class H(BaseHTTPRequestHandler):
                                "questions": [{"q": q["q"]} for q in qs]})
 
 
+def make_server(host="127.0.0.1", port=0):
+    """建服务但不启动；port=0 让系统挑一个空闲端口（桌面版用）。"""
+    srv = ThreadingHTTPServer((host, port), H)
+    srv.daemon_threads = True
+    return srv
+
+
+def mode_line():
+    return f"模型 {llm.MODEL} @ {llm.BASE_URL}" if llm.enabled() else "离线演示模式（未设置 API Key）"
+
+
 def main():
     host = os.environ.get("HOST", "127.0.0.1")
     port = int(os.environ.get("PORT", "8000"))
-    srv = ThreadingHTTPServer((host, port), H)
-    mode = f"模型 {llm.MODEL} @ {llm.BASE_URL}" if llm.enabled() else "离线演示模式（未设置 LYCEUM_API_KEY）"
+    srv = make_server(host, port)
+    mode = mode_line()
     print(f"Lyceum 学园 → http://{host}:{port}  ·  {mode}", flush=True)
     try:
         srv.serve_forever()

@@ -26,9 +26,59 @@ Windows PowerShell 用 `$env:LYCEUM_API_KEY="..."` 设环境变量。
 
 其他环境变量：`PORT`（默认 8000）、`HOST`（默认 127.0.0.1）、`LYCEUM_DATA`（数据目录，默认 `./data`）、`LYCEUM_TIMEOUT`（单次模型请求超时秒数，流式时是每次读上游的超时，默认 120）、`LYCEUM_MOCK_DELAY`（离线演示模式模拟流式时每块之间的延迟秒数，默认 0.04；截流式中间帧可调到 0.5）、`LYCEUM_HEARTBEAT`（流式心跳间隔秒数，默认 15）。
 
-测试（不调模型，只用标准库 unittest）：`python -m unittest discover -s tests`，共 142 个（原 96 个 + 新增 46 个）。原有：`test_policy.py` 完整解法策略、`test_hint_leak.py` 提示不漏关键中间结果、`test_mastery.py` 掌握度 / 证据折算 / 复习排程 / 数据库迁移 / 离线接口流程、`test_taxonomy.py` 知识点归一化 / 合并重放 / 迁移幂等 / 提示词里的规范表 / 今日复习口径、`test_strategies.py` 各科策略 / 学科路由 / 各科漏题规则正反例、`test_streaming.py` SSE 事件格式 / 半截 JSON 解 reply / 句子缓冲放行与 replace / 离线流式 / 断流与上游报错 / 心跳。新增：`test_mathcheck.py` 数学确定性校验（解析 / 恒等 / 方程的根）、批改与出题的「验证」、答疑里的「起草→验证→修正一次→改判」、心智推断与提示词注入；`test_memory.py` 隐私过滤、有界（条数 / 字数 / 压缩合并 / 淘汰）、出处与合并、派生画像、误区 3 次窗口、检索排序与字数预算、学生改删清空、v3→v4 迁移幂等；`test_evolve.py` 白名单与护栏、Thompson 选择可复现、奖励与反思、版本化与回滚、自动停用、教学经验门槛、候选规则影子模式与人工批准、可插拔反思器（假模型）、离线 HTTP 全流程。流式测试的上游是测试里本地起的假 OpenAI 兼容服务，新增测试用的是假 `llm.chat`，都不会访问任何真实模型。
+测试（不调模型，只用标准库 unittest）：`python -m unittest discover -s tests`，共 164 个（原 96 个 + 第二轮 46 个 + 桌面版 22 个）。原有：`test_policy.py` 完整解法策略、`test_hint_leak.py` 提示不漏关键中间结果、`test_mastery.py` 掌握度 / 证据折算 / 复习排程 / 数据库迁移 / 离线接口流程、`test_taxonomy.py` 知识点归一化 / 合并重放 / 迁移幂等 / 提示词里的规范表 / 今日复习口径、`test_strategies.py` 各科策略 / 学科路由 / 各科漏题规则正反例、`test_streaming.py` SSE 事件格式 / 半截 JSON 解 reply / 句子缓冲放行与 replace / 离线流式 / 断流与上游报错 / 心跳。新增：`test_mathcheck.py` 数学确定性校验（解析 / 恒等 / 方程的根）、批改与出题的「验证」、答疑里的「起草→验证→修正一次→改判」、心智推断与提示词注入；`test_memory.py` 隐私过滤、有界（条数 / 字数 / 压缩合并 / 淘汰）、出处与合并、派生画像、误区 3 次窗口、检索排序与字数预算、学生改删清空、v3→v4 迁移幂等；`test_evolve.py` 白名单与护栏、Thompson 选择可复现、奖励与反思、版本化与回滚、自动停用、教学经验门槛、候选规则影子模式与人工批准、可插拔反思器（假模型）、离线 HTTP 全流程。桌面版：`test_desktop.py` 模型设置读取优先级（环境变量 > config.json > 默认）、config.json 读写 / 留空保留 key / 清除 / 校验 / 坏文件 / 600 权限、数据目录选择（Windows / macOS / Linux / LYCEUM_DATA）、`/api/settings` 往返且不回显 key、.js 的 MIME、启动器自检（子进程）。流式测试的上游是测试里本地起的假 OpenAI 兼容服务，新增测试用的是假 `llm.chat`，都不会访问任何真实模型。
 
 原 96 个测试只改了一处断言：`test_taxonomy.py` 里 `PRAGMA user_version == 3` 改成 `>= 3`——本次迁移把库版本升到 4（只加表加列），原断言要表达的「规范化迁移已完成」不变。
+
+## 桌面版安装（Windows / macOS）
+
+不想装 Python 的话，直接用安装包：它把同一套服务和页面打进一个原生窗口里（Windows 用系统自带的 WebView2），双击就开，关窗口就退出。
+
+**下载**：<https://github.com/jiuyang5354/Lyceum-/releases/latest>
+
+| 系统 | 文件 | 说明 |
+|---|---|---|
+| Windows 10 / 11（64 位） | `Lyceum-Setup-<版本>.exe` | 安装向导是中文；默认装到当前用户，不需要管理员；自动建开始菜单和桌面快捷方式。 |
+| macOS 11+（Apple 芯片） | `Lyceum-<版本>-macOS-arm64.dmg` | 顺带构建，不保证每个版本都有。 |
+
+**第一次打开**
+
+- Windows：安装包没有代码签名，SmartScreen 会弹「Windows 已保护你的电脑」。点 **更多信息 → 仍要运行**。之后不会再问。
+- macOS：拖进「应用程序」后，第一次请 **右键 → 打开 → 打开**（未签名、未公证；直接双击会提示「无法验证开发者」）。
+- 窗口需要 Microsoft Edge WebView2 运行时。Windows 11 和更新过的 Windows 10 都自带；安装程序会检测，缺的话自动联网装（离线时给出微软下载页链接）。
+
+**设置模型 Key**
+
+第一次打开是离线演示模式（回复是固定文字，流程都能走）。点右上角的 **设置**，填：
+
+- API 地址（OpenAI 兼容的 Base URL，默认 `https://api.supergpt.dev/v1`）
+- API Key（输入框是密码框；保存后界面只显示开头和末尾四位）
+- 模型、识图模型（识图不填就和模型一样）
+
+保存后立刻生效，不用重启。设置存在本机数据目录的 `config.json`，不上传、不进仓库。读取顺序：环境变量 > `config.json` > 默认值；被环境变量设定的项在面板里是灰的。网页版（`python server.py`）同样有这个面板，配置存在 `LYCEUM_DATA`（默认 `./data`）下；改设置只接受本机（127.0.0.1）的请求。
+
+**数据放在哪**
+
+| 系统 | 位置 |
+|---|---|
+| Windows | `%APPDATA%\Lyceum`（一般是 `C:\Users\你的用户名\AppData\Roaming\Lyceum`） |
+| macOS | `~/Library/Application Support/Lyceum` |
+
+里面是 `lyceum.db`（错题本、学习记录、记忆）、`uploads/`（拍的题）、`config.json`（模型设置）和 `lyceum.log`。第一次启动自动建库。想换位置可以设环境变量 `LYCEUM_DATA`。
+
+**卸载**
+
+- Windows：开始菜单「Lyceum 学园 → 卸载 Lyceum 学园」，或「设置 → 应用 → 已安装的应用」。卸载最后会问要不要一起删除学习数据，默认保留（重新安装后接着用）。
+- macOS：把「应用程序」里的 Lyceum 拖进废纸篓；数据目录要手动删。
+
+**自己打包**：`.github/workflows/desktop.yml` 在推 `v*` 标签或手动触发时，用 GitHub Actions 在 windows-latest / macos-latest 上构建（PyInstaller onedir + Inno Setup），并把安装包挂到 Release。本地只做自检：
+
+```bash
+python desktop/launcher.py --headless-check   # 不开窗口：随机端口起服务，把首页引用的静态资源全部取一遍
+pip install -r desktop/requirements.txt && python desktop/launcher.py   # 开窗口（需要 pywebview）
+```
+
+**离线与字体的取舍**：three.js r170、KaTeX 0.16.11（MIT）和拉丁 / 希腊字母字体 Cormorant Garamond、GFS Didot、JetBrains Mono（OFL）都打包在 `static/vendor/`（协议见 `static/vendor/LICENSES.md`），不联网也完整。中文字体 Noto Serif SC / Noto Sans SC 一个字重就十几 MB，没打进安装包：联网时照旧从 Google Fonts 非阻塞加载，连不上（离线或访问不到 Google）就回退系统字体——Windows 上标题是宋体（SimSun）、正文是微软雅黑，macOS 是宋体-简 / 苹方，样子会比网页版朴素一些。
 
 ## 功能
 
@@ -315,7 +365,14 @@ static/js/stage.js     three.js 三渲二舞台（神庙、柱式、小雅、墨
 static/js/svg.js       柱头线稿、回纹、桂冠、贴纸、图标
 static/js/app.js       前端逻辑
 static/css/app.css     样式
-static/vendor/         three.js r170、KaTeX 0.16.11、本地字体（Cormorant / JetBrains Mono / GFS Didot）
+static/vendor/         three.js r170、KaTeX 0.16.11、本地字体（Cormorant / JetBrains Mono / GFS Didot）；协议见 LICENSES.md
+lyceum/config.py       模型设置（环境变量 > config.json > 默认）、数据目录选择、key 打码
+desktop/launcher.py    桌面版启动器（随机端口起服务 + pywebview 窗口；--headless-check 自检）
+desktop/lyceum.spec    PyInstaller（onedir）配置
+desktop/installer.iss  Inno Setup 安装脚本（中文界面、快捷方式、WebView2 检测、卸载时可选删数据）
+desktop/make_icon.py   用 Pillow 画小雅图标 → desktop/assets/（.png / .ico / .icns / .svg）
+.github/workflows/desktop.yml  测试 → Windows 安装包 / macOS dmg → 打标签时发 Release
+tests/test_desktop.py  设置优先级 / config.json / 数据目录 / /api/settings / 启动器自检
 tests/test_policy.py   「什么时候给完整解法」的策略测试
 tests/test_mastery.py  掌握度 / 排程 / 迁移 / 离线接口流程测试
 tests/test_taxonomy.py 知识点归一化 / 合并重放 / 迁移幂等 / 提示词规范表 / 今日复习口径
@@ -327,14 +384,15 @@ tests/test_evolve.py     护栏 / bandit / 反思 / 回滚 / 影子规则 / 离�
 screenshots/           无头浏览器截图
 ```
 
-中文字体走 Google Fonts（Noto Serif SC / Noto Sans SC），加载不到时退回系统的思源宋体 / 思源黑体 / 苹方 / 微软雅黑。
+中文字体走 Google Fonts（Noto Serif SC / Noto Sans SC），加载不到时退回系统的思源宋体 / 宋体-简 / 宋体（SimSun）/ 苹方 / 微软雅黑。
 
 ## API
 
-`GET/POST /api/profile` · `POST /api/chat {session_id?, message, image?(dataURL), action?: hint|stuck|full}`（返回带 `strategy`）· `POST /api/chat/stream`（同上，SSE，事件见上文）· `GET /api/sessions` · `GET /api/sessions/{id}` · `POST /api/practice {session_id, n}` · `POST /api/grade {practice_id, answers[]}` · `GET /api/mistakes?subject=` · `POST /api/mistakes/{id}/master|unmaster|delete|retry`（master =「我会了」，只记弱证据）· `GET /api/review/today`（今日到期的知识点和错题，带 `topics_due` / `mistakes_due`）· `GET /api/mastery?subject=`（掌握度列表 + 当前参数；每项带 `canon`、`aliases`、`review_today`、`mistakes_due`）· `GET /api/mastery/{id}/events`（单个知识点的事件历史）· `POST /api/review/skill/{id}`（给到期知识点出两道复习题）· `GET /api/stats` · `GET /api/usage`（本次进程的 token 用量）· `GET /api/memory`（全部记忆 + 上限 + 偏好）· `POST /api/memory/{id}/edit {text}` · `POST /api/memory/{id}/delete` · `POST /api/memory/clear` · `POST /api/memory/prefs {depth?, example?}` · `GET /api/growth`（策略版本、变体、经验、复盘、候选规则、护栏）· `POST /api/growth/rollback {version}` · `POST /api/growth/rules/{id}/approve|reject|shadow`（人工，前端不放按钮）
+`GET/POST /api/profile` · `POST /api/chat {session_id?, message, image?(dataURL), action?: hint|stuck|full}`（返回带 `strategy`）· `POST /api/chat/stream`（同上，SSE，事件见上文）· `GET /api/sessions` · `GET /api/sessions/{id}` · `POST /api/practice {session_id, n}` · `POST /api/grade {practice_id, answers[]}` · `GET /api/mistakes?subject=` · `POST /api/mistakes/{id}/master|unmaster|delete|retry`（master =「我会了」，只记弱证据）· `GET /api/review/today`（今日到期的知识点和错题，带 `topics_due` / `mistakes_due`）· `GET /api/mastery?subject=`（掌握度列表 + 当前参数；每项带 `canon`、`aliases`、`review_today`、`mistakes_due`）· `GET /api/mastery/{id}/events`（单个知识点的事件历史）· `POST /api/review/skill/{id}`（给到期知识点出两道复习题）· `GET /api/stats` · `GET /api/settings`（模型设置，不含完整 key）· `POST /api/settings {base_url?, api_key?, model?, vision_model?, clear_key?}`（只接受本机请求；key 留空保持不变）· `GET /api/usage`（本次进程的 token 用量）· `GET /api/memory`（全部记忆 + 上限 + 偏好）· `POST /api/memory/{id}/edit {text}` · `POST /api/memory/{id}/delete` · `POST /api/memory/clear` · `POST /api/memory/prefs {depth?, example?}` · `GET /api/growth`（策略版本、变体、经验、复盘、候选规则、护栏）· `POST /api/growth/rollback {version}` · `POST /api/growth/rules/{id}/approve|reject|shadow`（人工，前端不放按钮）
 
 ## 已知限制
 
+- 桌面版没有代码签名（Windows SmartScreen / macOS Gatekeeper 都会拦一次），也没有自动更新：新版本要重新下载安装包覆盖安装（数据保留）。macOS 只构建 Apple 芯片版本。同时打开两个窗口会起两个服务、共用一个数据库，没做单实例锁。
 - 原型只有一个本地学生档案，没有账号、家长端、多设备同步。
 - 模型输出靠提示词 + JSON 约束；「不给答案」有服务端闸门：数学、物理、化学、英语有确定性漏题检测（规则见上文），语文与文科只靠提示词。规则是形态匹配，有漏网：英语只认完整句子，不认单独一个词的正确形式（如只说出 went）；英译中的整句中文译文认不出来；物理只认「= / 是 / 为」后面紧跟的数值 + 单位，换个说法（「大小是五牛」）认不出；化学方程式含离子电荷（`Fe^{3+}`）时原子计数可能不准。误伤方面，英语里和题目高度重合的「错误示范句」也会被当成漏题触发一次重写。
 - 学科路由的关键词表是手写的，跨科题（如物理里大量计算）可能先按关键词路由到别的科；模型返回学科后，本轮漏题规则与会话记录都以模型为准，但本轮提示词已经按路由出的学科写好，要到下一轮才换成正确的策略。

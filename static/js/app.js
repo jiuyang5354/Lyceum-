@@ -202,6 +202,51 @@ function paintProfile() {
   setOrder(order);
 }
 
+/* ---------------- 模型设置（key 只存本机；界面不回显完整 key） ---------------- */
+const SET_ENV = { base_url: 'LYCEUM_BASE_URL', api_key: 'LYCEUM_API_KEY', model: 'LYCEUM_MODEL', vision_model: 'LYCEUM_VISION_MODEL' };
+function paintMode(s) {
+  state.llm = s.mode === 'model'; state.model = s.model;
+  $('#modelTag').textContent = state.llm ? `模型 ${s.model}` : '离线演示模式';
+  $('#setDot').classList.toggle('on', state.llm);
+  $('#setBtn').title = state.llm ? `已接入模型 ${s.model}` : '离线演示模式 · 点这里填 API Key';
+}
+async function openSettings() {
+  const m = $('#setModal'), f = $('#setForm');
+  let s;
+  try { s = await api('/api/settings'); } catch (e) { return toast(e.message); }
+  const fill = (s) => {
+    $('#setMode').innerHTML = s.mode === 'model' ? `现在：已接入模型 <b>${esc(s.model)}</b>` : '现在：<b>离线演示模式</b>，回复是固定的演示文字。';
+    for (const k of Object.keys(SET_ENV)) {
+      const inp = f.elements[k], lock = $('.lock', inp.parentElement), locked = s.locked.includes(k);
+      inp.value = k === 'api_key' ? '' : (k === 'base_url' && s.source.base_url === 'default' ? '' : (k === 'model' && s.source.model === 'default' ? '' : s[k] || ''));
+      inp.disabled = locked;
+      lock.textContent = locked ? `由环境变量 ${SET_ENV[k]} 设置，这里改不了` : '';
+    }
+    f.elements.api_key.placeholder = s.key_set ? `已保存 ${s.key_hint} · 留空保持不变` : 'sk-…';
+    $('#setClear').hidden = !(s.key_set && s.source.api_key === 'file');
+  };
+  fill(s);
+  m.classList.remove('hidden');
+  handles($('#setOk'));
+  const close = () => { m.classList.add('hidden'); f.elements.api_key.value = ''; removeEventListener('keydown', onKey); };
+  const onKey = (e) => { if (e.key === 'Escape') close(); };
+  addEventListener('keydown', onKey);
+  $('#setCancel').onclick = close;
+  m.onclick = (e) => { if (e.target === m) close(); };
+  const save = async (body) => {
+    try { const r = await api('/api/settings', body); paintMode(r); fill(r); return r; } catch (e) { toast(e.message); }
+  };
+  $('#setClear').onclick = async () => { if (await save({ clear_key: true })) toast('已清除保存的 Key'); };
+  f.onsubmit = async (e) => {
+    e.preventDefault();
+    const body = {};
+    for (const k of Object.keys(SET_ENV)) { const inp = f.elements[k]; if (!inp.disabled) body[k] = inp.value.trim(); }
+    const r = await save(body);
+    if (r) { close(); toast(r.mode === 'model' ? `已保存 · 用模型 ${r.model}` : '已保存 · 离线演示模式'); }
+  };
+  setTimeout(() => (s.key_set ? f.elements.model : f.elements.api_key).focus(), 30);
+}
+
 /* ---------------- 答疑 ---------------- */
 function aiMsgHTML(m, i) {
   const meta = m.meta || {};
@@ -787,9 +832,11 @@ async function boot() {
   initHome(); initStudy(); initFocusRing();
   $$('.tabs button').forEach((b) => b.onclick = () => { location.hash = '#/' + b.dataset.tab; });
   $('#gradePill').onclick = () => openOnboarding(true);
+  $('#setBtn').onclick = openSettings;
+  $('#modelTag').onclick = openSettings; $('#modelTag').style.cursor = 'pointer';
   try {
     const p = await api('/api/profile'); state.profile = p.profile; state.llm = p.llm; state.model = p.model;
-    $('#modelTag').textContent = p.llm ? `模型 ${p.model}` : '离线演示模式';
+    paintMode({ mode: p.llm ? 'model' : 'offline', model: p.model });
   } catch (e) { toast('连不上本地服务'); }
   addEventListener('hashchange', route);
   await route();
