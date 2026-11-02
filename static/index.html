@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lyceum 学园 · 小雅陪你想明白</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500&family=Noto+Serif+SC:wght@500;600&display=swap" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="/vendor/fonts/fonts.css">
+<link rel="stylesheet" href="/vendor/katex/katex.min.css">
+<link rel="stylesheet" href="/css/app.css">
+<script type="importmap">{ "imports": { "three": "/vendor/three.module.min.js" } }</script>
+</head>
+<body>
+<header class="nav">
+  <a class="brand" href="#/" aria-label="Lyceum 学园 首页"><span id="brandMark" style="padding:0;border:0"></span><b>Lyceum</b><span>学园</span></a>
+  <nav class="nav-links">
+    <a href="#/" data-r="home">首页</a>
+    <a href="#/study" data-r="study">答疑</a>
+    <a href="#/notebook" data-r="notebook">错题本</a>
+    <a href="#/record" data-r="record">学习记录</a>
+  </nav>
+  <div class="nav-right">
+    <button class="grade-pill" id="gradePill" title="修改年级和教材"><span id="pillIcon"></span><span id="pillText">选择年级</span></button>
+  </div>
+</header>
+<!-- 页面切换：额枋三道线（与导航下沿的双线重合）从左描到右 -->
+<svg class="arch-wipe" id="archWipe" aria-hidden="true"><path pathLength="1"/><path class="f" pathLength="1"/><path pathLength="1"/></svg>
+
+<main>
+<!-- ============ 首页 ============ -->
+<section id="v-home" class="view">
+  <div class="hero" id="hero">
+    <div class="hero-sticky">
+      <div id="stageHome"></div>
+      <div class="owl-sel" id="owlSel"><i></i><i></i><i></i><i></i><span class="tag">小雅.owl — 点一下</span><span class="dim" id="owlDim"></span></div>
+      <div id="stickers"></div>
+
+      <div class="hero-copy" id="heroCopy">
+        <div class="eyebrow"><span class="gk">Λύκειον</span><span class="dash"></span><span class="mono">全科 · 小学到高三</span></div>
+        <h1>不替你写答案，<br>陪你<em>想明白</em>。</h1>
+        <p class="lead">小雅是住在神庙台阶上的一只猫头鹰。<br>你问，它先反问、再提示，<br>一步一步陪你走到答案。</p>
+        <div class="hero-actions">
+          <a class="sel solid" href="#/study"><span class="br">[→]</span>开始提问</a>
+          <button class="link" id="howBtn">看看怎么学 ↓</button>
+        </div>
+      </div>
+
+      <div class="story-step" data-step="1">
+        <span class="num">α΄</span>
+        <h2>先弄清楚，<br>你在问什么。</h2>
+        <p>小雅先判断这是哪一科、哪个知识点，再请你说说已知和要求。题目拍照也行。</p>
+        <div class="sample"><span class="lbl">小雅 · 澄清</span>题目里给了哪两个条件？你觉得要求的是什么？</div>
+      </div>
+      <div class="story-step" data-step="2">
+        <span class="num">β΄</span>
+        <h2>一次只给一步，<br>路你自己走。</h2>
+        <p>提示分三层：方向、方法、只差最后一步。连着卡住三次，或者你主动要，才给完整解法。</p>
+        <div class="sample"><span class="lbl">小雅 · 提示 2 / 3</span>试试把 $x^2-5x+6$ 拆成两个括号相乘，哪两个数乘积是 6、和是 −5？</div>
+      </div>
+      <div class="story-step" data-step="3">
+        <span class="num">γ΄</span>
+        <h2>举一反三，<br>错的记下来。</h2>
+        <p>讲完一题，小雅出两三道变式题并批改；做错的自动进错题本，按学科和知识点排好。</p>
+        <div class="sample"><span class="lbl">变式 · Β΄</span>解方程 $x^2+x-6=0$ ——这次换你先来。</div>
+      </div>
+      <div class="progress-rail" id="rail"><i class="on"></i><i></i><i></i><i></i></div>
+
+      <div class="orders" id="orders"></div>
+      <div class="order-note" id="orderNote"></div>
+    </div>
+  </div>
+
+  <div class="meander" data-meander></div>
+  <section class="section">
+    <div class="section-head">
+      <div><span class="mono">Μαθήματα · 九门课</span><h2>一座神庙，<br>每一科都有自己的柱子。</h2></div>
+      <p>小雅按你的年级和教材版本来讲：小学讲得慢、多举生活里的例子；初中把道理讲透；高中讲通法和易错点。</p>
+    </div>
+    <div class="subjects" id="subjects"></div>
+  </section>
+
+  <section class="section" style="padding-top:20px">
+    <div class="section-head">
+      <div><span class="mono">Νόμοι · 小雅的规矩</span><h2>有些事，<br>小雅不会替你做。</h2></div>
+      <p>它是陪你学的伙伴，不是答案机。家长可以放心：只聊学习，内容适合未成年人。</p>
+    </div>
+    <div class="rules">
+      <div class="rule-item"><span class="rn">Α΄</span><h3>不直接给答案</h3><p>先反问、再提示。你自己走到答案那一刻，才算真的会了。</p><div class="ex">“直接告诉我答案” → “我们先看第一步，好吗？”</div></div>
+      <div class="rule-item"><span class="rn">Β΄</span><h3>作文不代写</h3><p>帮你找素材、搭提纲，点评你写的句子，最多示范改一两句。</p><div class="ex">“帮我写一篇《我的妈妈》” → “说一件妈妈让你印象最深的小事？”</div></div>
+      <div class="rule-item"><span class="rn">Γ΄</span><h3>只聊学习</h3><p>聊到游戏、八卦，小雅会友好地把话题拉回来；遇到危险的事，会请你马上告诉大人。</p><div class="ex">“你玩原神吗？” → “不玩，不过提瓦特的地形倒能聊聊地理……”</div></div>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div id="ctaLaurel"></div>
+    <h2>今天，想弄明白哪一道题？</h2>
+    <a class="sel solid" href="#/study"><span class="br">[→]</span>去问小雅</a>
+  </section>
+  <div class="meander" data-meander></div>
+  <footer class="foot"><span>Lyceum 学园 · 原型</span><span class="latin" style="font-style:italic;font-size:17px">γνῶθι σεαυτόν — 认识你自己</span></footer>
+</section>
+
+<!-- ============ 答疑 ============ -->
+<section id="v-study" class="view hidden">
+  <div class="study">
+    <aside class="side">
+      <div class="side-top"><button class="sel sm" id="newChat"><span class="br">[+]</span>新的问题</button></div>
+      <h4 class="mono">最近的题</h4>
+      <div class="sess-list" id="sessList"></div>
+    </aside>
+    <div class="chat" id="chat">
+      <div class="strat-bar hidden" id="stratBar" aria-live="polite"></div>
+      <div class="chat-scroll" id="chatScroll"><div class="chat-inner" id="chatInner"></div></div>
+      <div class="composer" id="composer">
+        <div class="composer-inner">
+          <div class="attach hidden" id="attach"><img id="attachImg" alt="待上传的题目图片"><button class="icon-btn" id="attachX" title="移除图片"></button><span class="mono">图片已附上</span></div>
+          <div class="compose-box">
+            <textarea id="input" rows="1" placeholder="把题目打出来，或者拍照上传……"></textarea>
+            <label class="icon-btn" title="上传题目图片" id="imgBtn"><input type="file" accept="image/*" id="file" hidden></label>
+            <button class="sel solid" id="send"><span class="br">[→]</span>发送</button>
+          </div>
+          <div class="compose-hint"><span>Enter 发送 · Shift+Enter 换行 · 可以把图片拖进来</span><span id="modelTag"></span></div>
+        </div>
+      </div>
+    </div>
+    <aside class="inspector">
+      <div class="owl-frame"><div id="stageOwl"></div><span class="cap mono">小雅.owl<span class="mood" id="owlMood">等待</span></span><div class="say" id="owlSay" aria-live="polite">我在。今天想弄明白什么？</div></div>
+      <div class="panel entab" id="probPanel">
+        <h4 class="mono">当前这道题</h4>
+        <div class="kv" id="probChips"></div>
+        <div class="prob md empty-p" id="probText">还没有题目。发一道题过来吧。</div>
+      </div>
+      <div class="panel entab">
+        <h4 class="mono">提示进度</h4>
+        <div class="steps" id="steps"></div>
+        <div class="steps-l" style="margin-top:12px"><span id="stuckTxt">卡住 0 / 3</span><span id="solvedTxt"></span></div>
+      </div>
+      <div class="panel">
+        <div class="stack">
+          <button class="ghost" data-act="hint">再给一点提示</button>
+          <button class="ghost" data-act="stuck">我卡住了</button>
+          <button class="ghost" data-act="full">看完整解法</button>
+          <button class="sel sm" id="practiceBtn"><span class="br">[*]</span>出几道变式题</button>
+        </div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- ============ 错题本 / 学习记录 ============ -->
+<section id="v-notebook" class="view hidden">
+  <div class="book">
+    <div class="book-head">
+      <div><span class="mono">Σημειώσεις · 记下来的，才是自己的</span><h1 id="bookTitle">错题本</h1><p id="bookSub">做错的变式题、看了完整解法才弄懂的题，都在这里。按学科和知识点排好，隔几天再练一次。</p></div>
+      <div class="nums" id="bookNums"></div>
+    </div>
+    <div class="tabs"><button data-tab="notebook" class="on">错题本</button><button data-tab="record">学习记录</button><button data-tab="memory">小雅记得的事</button><button data-tab="growth">小雅的成长</button></div>
+    <div id="bookBody"></div>
+  </div>
+</section>
+</main>
+
+<div class="modal hidden" id="onb">
+  <div class="onb">
+    <span class="mono">Καλώς ήρθες · 欢迎来到学园</span>
+    <h2>先认识一下：你在读几年级？</h2>
+    <p>小雅会按你的年级和教材来讲。之后随时可以在右上角改。</p>
+    <div class="bands" id="bands"></div>
+    <div class="onb-foot">
+      <div class="tb" id="tbs"><span class="mono" style="margin-right:6px">教材版本</span></div>
+      <button class="sel solid" id="onbOk" disabled><span class="br">[→]</span>就这样，开始</button>
+    </div>
+  </div>
+</div>
+
+<script src="/vendor/katex/katex.min.js"></script>
+<script src="/vendor/katex/auto-render.min.js"></script>
+<script type="module" src="/js/app.js"></script>
+</body>
+</html>
