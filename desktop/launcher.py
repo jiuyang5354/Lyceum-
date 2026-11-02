@@ -176,6 +176,46 @@ def headless_check(verbose=True):
     return ok, report
 
 
+# ---------------- 冒烟：真开一次窗口（CI 用） ----------------
+def smoke_window(timeout=90):
+    """临时数据目录、离线模式，开一次真窗口，等页面跑起来（#modelTag 有字）就关。验证 pywebview / WebView2 能用。"""
+    import time
+    tmp = tempfile.mkdtemp(prefix="lyceum-smoke-")
+    os.environ["LYCEUM_DATA"] = tmp
+    for k in cfgmod.ENV.values():
+        os.environ.pop(k, None)
+    log = os.environ.get("LYCEUM_CHECK_LOG")
+    if sys.stdout is None or sys.stderr is None:
+        _redirect_std(os.path.dirname(log) if log else tmp, os.path.basename(log) if log else "lyceum.log")
+    threading.Thread(target=lambda: (time.sleep(timeout + 30), os._exit(3)), daemon=True).start()  # 看门狗
+    import webview
+    srv, url, server = start_server()
+    result = {}
+    win = webview.create_window(TITLE, url, width=1280, height=800, min_size=(1200, 760))
+
+    def probe():
+        try:
+            win.events.loaded.wait(timeout)
+            for _ in range(int(timeout * 2)):
+                tag = win.evaluate_js("(document.querySelector('#modelTag')||{}).textContent || ''")
+                if tag:
+                    result["modelTag"] = tag
+                    break
+                time.sleep(0.5)
+            result["title"] = win.evaluate_js("document.title")
+            result["three"] = win.evaluate_js("!!document.querySelector('canvas')")
+        except Exception as e:  # noqa: BLE001
+            result["error"] = repr(e)
+        finally:
+            win.destroy()
+
+    webview.start(probe, gui="edgechromium" if sys.platform.startswith("win") else None)
+    srv.shutdown()
+    ok = bool(result.get("modelTag"))
+    print("[smoke-window]", "OK" if ok else "失败", json.dumps(result, ensure_ascii=False), flush=True)
+    return 0 if ok else 1
+
+
 # ---------------- 开窗口 ----------------
 def run_window():
     data_dir = prepare_data_dir()
@@ -211,6 +251,7 @@ def main(argv=None):
     _utf8_console()
     ap = argparse.ArgumentParser(description=TITLE)
     ap.add_argument("--headless-check", action="store_true", help="不开窗口，验证服务和静态资源")
+    ap.add_argument("--smoke-window", action="store_true", help="开一次真窗口，页面跑起来就关（CI 冒烟）")
     ap.add_argument("--version", action="store_true")
     a = ap.parse_args(argv)
     if a.version:
@@ -219,6 +260,8 @@ def main(argv=None):
     if a.headless_check:
         ok, _ = headless_check()
         return 0 if ok else 1
+    if a.smoke_window:
+        return smoke_window()
     run_window()
     return 0
 

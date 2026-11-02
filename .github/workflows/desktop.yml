@@ -59,6 +59,15 @@ jobs:
           if (Test-Path $env:LYCEUM_CHECK_LOG) { Get-Content $env:LYCEUM_CHECK_LOG -Encoding utf8 | Select-Object -Last 40 }
           if ($p.ExitCode -ne 0) { throw "frozen headless-check exit $($p.ExitCode)" }
           "{0:N1} MB" -f ((Get-ChildItem dist\Lyceum -Recurse | Measure-Object Length -Sum).Sum / 1MB)
+      - name: 冒烟：真开一次窗口（WebView2）
+        continue-on-error: true
+        shell: pwsh
+        run: |
+          $env:LYCEUM_CHECK_LOG = "$env:RUNNER_TEMP\smoke.log"
+          $p = Start-Process -FilePath "dist\Lyceum\Lyceum.exe" -ArgumentList "--smoke-window" -PassThru
+          if (-not $p.WaitForExit(150000)) { $p.Kill(); Write-Warning "超时" }
+          if (Test-Path $env:LYCEUM_CHECK_LOG) { Get-Content $env:LYCEUM_CHECK_LOG -Encoding utf8 | Select-Object -Last 30 }
+          if ($p.ExitCode -ne 0) { throw "smoke-window exit $($p.ExitCode)" }
       - name: Inno Setup 6.5+ 与 WebView2 引导程序
         shell: pwsh
         run: |
@@ -85,6 +94,7 @@ jobs:
     needs: test
     runs-on: macos-latest
     continue-on-error: true   # 顺带构建，失败不阻塞 Windows 和 Release
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -113,16 +123,21 @@ jobs:
           name: Lyceum-macOS
           path: dist/*.dmg
           if-no-files-found: error
+      - name: 附到 Release（Windows 那边先建好 Release；mac 晚到也能补上）
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*.dmg
 
   release:
-    needs: [windows, macos]
-    if: always() && startsWith(github.ref, 'refs/tags/v') && needs.windows.result == 'success'
+    needs: [windows]
+    if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v4
         with:
+          name: Lyceum-Setup-windows
           path: artifacts
-          merge-multiple: true
       - run: ls -l artifacts
       - uses: softprops/action-gh-release@v2
         with:
@@ -132,7 +147,7 @@ jobs:
             ## Lyceum 学园 桌面版 ${{ github.ref_name }}
 
             - **Windows 10/11（64 位）**：下载 `Lyceum-Setup-*.exe` 双击安装。安装包没有代码签名，第一次运行 SmartScreen 会拦一下：点「更多信息」→「仍要运行」。
-            - **macOS**（如果有 `.dmg`）：未签名，拖进「应用程序」后第一次请右键 →「打开」。
+            - **macOS**（如果有 `.dmg`，构建完会自动补到这里）：未签名，拖进「应用程序」后第一次请右键 →「打开」。
             - 第一次打开是离线演示模式；右上角「设置」里填 API 地址 / Key / 模型即可接入真实模型。Key 只存在本机。
             - 数据位置：Windows `%APPDATA%\Lyceum`，macOS `~/Library/Application Support/Lyceum`。
 
