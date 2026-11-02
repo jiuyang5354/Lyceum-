@@ -197,7 +197,18 @@ def run_window():
             pass
 
 
+def _utf8_console():
+    """Windows 控制台默认 cp1252 / GBK，打印中文会抛 UnicodeEncodeError：统一改成 UTF-8（替换不可编码字符）。"""
+    for st in (sys.stdout, sys.stderr):
+        if st is not None and hasattr(st, "reconfigure"):
+            try:
+                st.reconfigure(encoding="utf-8", errors="replace")
+            except Exception:
+                pass
+
+
 def main(argv=None):
+    _utf8_console()
     ap = argparse.ArgumentParser(description=TITLE)
     ap.add_argument("--headless-check", action="store_true", help="不开窗口，验证服务和静态资源")
     ap.add_argument("--version", action="store_true")

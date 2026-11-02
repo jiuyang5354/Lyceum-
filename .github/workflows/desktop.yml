@@ -8,6 +8,9 @@ on:
 permissions:
   contents: write
 
+env:
+  PYTHONIOENCODING: utf-8
+
 concurrency:
   group: desktop-${{ github.ref }}
   cancel-in-progress: true
