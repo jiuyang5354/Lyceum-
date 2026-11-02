@@ -78,7 +78,7 @@ python desktop/launcher.py --headless-check   # 不开窗口：随机端口起�
 pip install -r desktop/requirements.txt && python desktop/launcher.py   # 开窗口（需要 pywebview）
 ```
 
-**离线与字体的取舍**：three.js r170、KaTeX 0.16.11（MIT）和拉丁 / 希腊字母字体 Cormorant Garamond、GFS Didot、JetBrains Mono（OFL）都打包在 `static/vendor/`（协议见 `static/vendor/LICENSES.md`），不联网也完整。中文字体 Noto Serif SC / Noto Sans SC 一个字重就十几 MB，没打进安装包：联网时照旧从 Google Fonts 非阻塞加载，连不上（离线或访问不到 Google）就回退系统字体——Windows 上标题是宋体（SimSun）、正文是微软雅黑，macOS 是宋体-简 / 苹方，样子会比网页版朴素一些。
+**离线与字体的取舍**：three.js r170、KaTeX 0.16.11（MIT）和拉丁 / 希腊字母字体 Cormorant Garamond、GFS Didot、JetBrains Mono（OFL）都打包在 `static/vendor/`（协议见 `static/vendor/LICENSES.md`），不联网也完整。中文标题用的衬线体 Noto Serif SC（思源宋体，OFL）从 0.1.1 起也打包了：只取页面用到的 500、600 两个字重，裁成常用字子集（《通用规范汉字表》一级 3500 ∪ GB2312 一级 3755 ∪ 界面与知识点表里出现的字，共 3884 个汉字，加中文标点、全角符号、ASCII），每个字重约 0.73 MB，断网或访问不到 Google 时标题仍是原设计的宋体效果；子集外的生僻字联网时由 Google Fonts 补、离线时退回系统宋体。正文无衬线体 Noto Sans SC 没打包（联网照旧从 Google Fonts 非阻塞加载），离线时回退微软雅黑 / 苹方，观感接近。子集用 `python tools/subset_cjk_font.py <NotoSerifSC[wght].ttf> --level1 <一级字表>` 重新生成。
 
 ## 功能
 
@@ -365,12 +365,13 @@ static/js/stage.js     three.js 三渲二舞台（神庙、柱式、小雅、墨
 static/js/svg.js       柱头线稿、回纹、桂冠、贴纸、图标
 static/js/app.js       前端逻辑
 static/css/app.css     样式
-static/vendor/         three.js r170、KaTeX 0.16.11、本地字体（Cormorant / JetBrains Mono / GFS Didot）；协议见 LICENSES.md
+static/vendor/         three.js r170、KaTeX 0.16.11、本地字体（Cormorant / JetBrains Mono / GFS Didot / Noto Serif SC 常用字子集）；协议见 LICENSES.md
 lyceum/config.py       模型设置（环境变量 > config.json > 默认）、数据目录选择、key 打码
 desktop/launcher.py    桌面版启动器（随机端口起服务 + pywebview 窗口；--headless-check 自检）
 desktop/lyceum.spec    PyInstaller（onedir）配置
 desktop/installer.iss  Inno Setup 安装脚本（中文界面、快捷方式、WebView2 检测、卸载时可选删数据）
 desktop/make_icon.py   用 Pillow 画小雅图标 → desktop/assets/（.png / .ico / .icns / .svg）
+tools/subset_cjk_font.py  把 Noto Serif SC 裁成常用字子集 woff2（fonttools）
 .github/workflows/desktop.yml  测试 → Windows 安装包 / macOS dmg → 打标签时发 Release
 tests/test_desktop.py  设置优先级 / config.json / 数据目录 / /api/settings / 启动器自检
 tests/test_policy.py   「什么时候给完整解法」的策略测试
@@ -384,7 +385,7 @@ tests/test_evolve.py     护栏 / bandit / 反思 / 回滚 / 影子规则 / 离�
 screenshots/           无头浏览器截图
 ```
 
-中文字体走 Google Fonts（Noto Serif SC / Noto Sans SC），加载不到时退回系统的思源宋体 / 宋体-简 / 宋体（SimSun）/ 苹方 / 微软雅黑。
+中文标题字体 Noto Serif SC 用本地常用字子集（static/vendor/fonts/noto-serif-sc.css，网页版和桌面版一样）；子集外的字和正文 Noto Sans SC 走 Google Fonts，加载不到时退回系统的思源宋体 / 宋体-简 / 宋体（SimSun）/ 苹方 / 微软雅黑。
 
 ## API
 

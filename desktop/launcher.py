@@ -149,7 +149,9 @@ def headless_check(verbose=True):
         bad_ext = [e for e in bad_ext if not re.search(r"threejs\.org|github\.com|mozilla\.org|khronos\.org", e)]
         if bad_ext:
             report["errors"].append("从网络加载的资源：" + ", ".join(bad_ext))
-        for need in ("/vendor/three.module.min.js", "/vendor/katex/katex.min.js", "/vendor/fonts/fonts.css", "/js/app.js", "/css/app.css"):
+        for need in ("/vendor/three.module.min.js", "/vendor/katex/katex.min.js", "/vendor/fonts/fonts.css",
+                     "/vendor/fonts/noto-serif-sc.css", "/vendor/fonts/NotoSerifSC-500-common.woff2",
+                     "/vendor/fonts/NotoSerifSC-600-common.woff2", "/js/app.js", "/css/app.css"):
             if need not in seen:
                 report["errors"].append(f"首页没有引用到 {need}")
         st, _, body = _get(url + "/api/profile")

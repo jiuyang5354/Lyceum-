@@ -1,11 +1,11 @@
 ﻿; Lyceum 学园 · Windows 安装包（Inno Setup 6.5+）
-; 先用 PyInstaller 生成 dist\Lyceum\，再：iscc /DMyAppVersion=0.1.0 desktop\installer.iss
+; 先用 PyInstaller 生成 dist\Lyceum\，再：iscc /DMyAppVersion=0.1.1 desktop\installer.iss
 ; 产物：dist\Lyceum-Setup-<version>.exe
 
 #define MyAppName "Lyceum 学园"
 #define MyAppExe "Lyceum.exe"
 #ifndef MyAppVersion
-  #define MyAppVersion "0.1.0"
+  #define MyAppVersion "0.1.1"
 #endif
 
 [Setup]
