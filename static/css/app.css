@@ -144,6 +144,9 @@ a { color: inherit; }
 .owl-sel .dim { position: absolute; left: 50%; bottom: -26px; transform: translateX(-50%); background: var(--blue); color: #fff; font-family: var(--mono); font-size: 11px; padding: 1px 6px; white-space: nowrap; }
 .sticker { position: absolute; z-index: 4; pointer-events: none; transform: translate(-50%, -50%) scale(0) rotate(var(--r)); animation: pop var(--dur-slow) var(--ease-out) forwards; filter: drop-shadow(0 0 0 transparent); }
 .sticker svg { display: block; }
+.sticker.preset { animation-name: pop-s; animation-fill-mode: both; }
+#stickers { transition: opacity var(--dur-base); }
+@keyframes pop-s { 0% { transform: translate(-50%, -50%) scale(0) rotate(var(--r)); } 60% { transform: translate(-50%, -50%) scale(calc(var(--s) * 1.12)) rotate(var(--r)); } 100% { transform: translate(-50%, -50%) scale(var(--s)) rotate(var(--r)); } }
 @keyframes pop { 60% { transform: translate(-50%, -50%) scale(1.12) rotate(var(--r)); } 100% { transform: translate(-50%, -50%) scale(1) rotate(var(--r)); } }
 
 /* ---------- 首页 · 下半部分 ---------- */

@@ -91,7 +91,7 @@ const STICK = [
   (c) => `<svg width="84" height="84" viewBox="0 0 84 84"><circle cx="42" cy="42" r="36" fill="#fff" stroke="#1b2142" stroke-width="1.5"/><circle cx="42" cy="42" r="30" fill="${c}" stroke="#1b2142" stroke-width="1.2"/><text x="42" y="53" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="30" fill="#fff">√x</text></svg>`,
 ];
 let si = 0;
-export function sticker() { const s = STICK[si % STICK.length]('#2951e6'); si++; return s; }
+export function sticker(k) { if (k != null) return STICK[k]('#2951e6'); const s = STICK[si % STICK.length]('#2951e6'); si++; return s; }
 
 /* ---------- 学科图标：古希腊线稿意象，统一 1.5px 墨线（不随尺寸缩放） ---------- */
 const I = (body) => `<svg viewBox="0 0 24 24" class="si" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g vector-effect="non-scaling-stroke">${body.replace(/<(path|circle|ellipse|rect|line|polyline)/g, '<$1 vector-effect="non-scaling-stroke"')}</g></svg>`;

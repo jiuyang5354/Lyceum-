@@ -119,6 +119,7 @@ function initHome() {
   tex($('#hero'));
   // 滚动：平涂 → 半调 → 铜版
   const steps = $$('.story-step'), rail = $$('#rail i');
+  let heroIdx = 0;
   const onScroll = () => {
     if (state.route !== 'home') return;
     const hero = $('#hero'); const total = hero.offsetHeight - (innerHeight - 68);
@@ -126,6 +127,7 @@ function initHome() {
     if (stage) stage.setScroll(p);
     const idx = p < 0.13 ? 0 : p < 0.42 ? 1 : p < 0.7 ? 2 : 3;
     $('#heroCopy').style.opacity = idx === 0 ? 1 : 0; $('#heroCopy').style.pointerEvents = idx === 0 ? 'auto' : 'none';
+    $('#stickers').style.opacity = idx === 0 ? 1 : 0; heroIdx = idx;
     $('#orders').style.opacity = idx === 0 ? 1 : 0; $('#orderNote').style.opacity = idx === 0 ? 1 : 0;
     steps.forEach((s, i) => s.classList.toggle('on', i + 1 === idx));
     rail.forEach((r, i) => r.classList.toggle('on', i === idx));
@@ -134,6 +136,13 @@ function initHome() {
   onScroll();
   // 贴纸 + 「选中对象」框
   const sticky = $('.hero-sticky');
+  // 首屏默认贴纸（星星、π、A+），首屏外淡出；点击空白处仍可再贴
+  [[2, 41, 24, -12, .78], [0, 72.5, 15, 6, .72], [1, 93, 80, -8, .74]].forEach(([k, x, y, r, sc], i) => {
+    const d = document.createElement('div'); d.className = 'sticker preset';
+    d.style.left = x + '%'; d.style.top = y + '%'; d.style.setProperty('--r', r + 'deg'); d.style.setProperty('--s', sc);
+    d.style.animationDelay = (600 + i * 120) + 'ms'; d.innerHTML = sticker(k);
+    $('#stickers').appendChild(d);
+  });
   sticky.addEventListener('click', (e) => {
     if (e.target.closest('a,button,.hero-copy,.story-step,.orders')) return;
     const r = sticky.getBoundingClientRect();
@@ -157,7 +166,7 @@ function initHome() {
     if (state.route === 'home' && stage) {
       const o = stage.owlRect();
       if (o) { sel.style.left = o.x + 'px'; sel.style.top = o.y + 'px'; sel.style.width = o.w + 'px'; sel.style.height = o.h + 'px'; $('#owlDim').textContent = `${Math.round(o.w)} × ${Math.round(o.h)}`; }
-      sel.classList.toggle('on', over || document.body.dataset.shot === 'sel');
+      sel.classList.toggle('on', over || heroIdx === 0 || document.body.dataset.shot === 'sel');
     }
     requestAnimationFrame(tick);
   };
