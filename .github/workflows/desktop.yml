@@ -4,6 +4,11 @@ on:
   push:
     tags: ["v*"]
   workflow_dispatch:
+    inputs:
+      tag:
+        description: "只补 macOS：填已有 Release 的标签（如 v0.1.1），构建该标签的 dmg 并附到它的 Release；留空＝完整构建"
+        required: false
+        default: ""
 
 permissions:
   contents: write
@@ -31,6 +36,7 @@ jobs:
 
   windows:
     needs: test
+    if: inputs.tag == ''
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
@@ -92,17 +98,23 @@ jobs:
 
   macos:
     needs: test
-    runs-on: macos-latest
+    # macos-latest（arm64）托管机排队拿不到 runner（"not acquired by Runner of type hosted"），改用 Intel 托管机；
+    # x86_64 的 .app 在 Apple 芯片上走 Rosetta 也能跑
+    runs-on: macos-15-intel
     continue-on-error: true   # 顺带构建，失败不阻塞 Windows 和 Release
     timeout-minutes: 45
+    env:
+      REL_TAG: ${{ inputs.tag || github.ref_name }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag || github.ref }}
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
       - name: 版本号
         run: |
-          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then V="${GITHUB_REF_NAME#v}"; else V=$(python -c "import lyceum; print(lyceum.__version__)"); fi
+          if [[ "$REL_TAG" == v* ]]; then V="${REL_TAG#v}"; else V=$(python -c "import lyceum; print(lyceum.__version__)"); fi
           echo "VERSION=$V" >> "$GITHUB_ENV"
       - name: 依赖
         run: |
@@ -124,9 +136,10 @@ jobs:
           path: dist/*.dmg
           if-no-files-found: error
       - name: 附到 Release（Windows 那边先建好 Release；mac 晚到也能补上）
-        if: startsWith(github.ref, 'refs/tags/v')
+        if: startsWith(github.ref, 'refs/tags/v') || inputs.tag != ''
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ env.REL_TAG }}
           files: dist/*.dmg
 
   release:
