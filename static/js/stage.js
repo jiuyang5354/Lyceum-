@@ -378,6 +378,9 @@ const CompositeShader = {
 };
 
 /* ---------------- 舞台 ---------------- */
+// owlRect 的 scratch：每帧分配 Box3 + 8 个 Vector3 太多，全部换成模块级复用对象
+const _owlBox = new THREE.Box3();
+const _owlPts = Array.from({ length: 8 }, () => new THREE.Vector3());
 export class Stage {
   constructor() {
     this.reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -609,13 +612,17 @@ export class Stage {
     this.scene.overrideMaterial = null; this.camera.layers.enable(1);
     r.setRenderTarget(null); r.setClearColor(0x000000, 0); r.clear(); r.render(this.postScene, this.postCam);
   }
-  // 猫头鹰在屏幕上的包围盒（给「选中对象」手柄用）
+  // 猫头鹰在屏幕上的包围盒（给「选中对象」手柄用；返回的 x/y/w/h 是只读快照，调用方不要持有引用改它）
   owlRect() {
     if (!this.ok || !this.w) return null;
-    const box = new THREE.Box3().setFromObject(this.owl.userData.body);
-    const pts = [];
-    for (const x of [box.min.x, box.max.x]) for (const y of [box.min.y, box.max.y]) for (const z of [box.min.z, box.max.z]) pts.push(new THREE.Vector3(x, y, z).project(this.camera));
-    const xs = pts.map(p => (p.x + 1) / 2 * this.w), ys = pts.map(p => (1 - p.y) / 2 * this.h);
-    return { x: Math.min(...xs), y: Math.min(...ys), w: Math.max(...xs) - Math.min(...xs), h: Math.max(...ys) - Math.min(...ys) };
+    const box = _owlBox.setFromObject(this.owl.userData.body);
+    let k = 0;
+    for (const x of [box.min.x, box.max.x]) for (const y of [box.min.y, box.max.y]) for (const z of [box.min.z, box.max.z]) _owlPts[k++].set(x, y, z).project(this.camera);
+    let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+    for (let i = 0; i < k; i++) {
+      const sx = (_owlPts[i].x + 1) / 2 * this.w, sy = (1 - _owlPts[i].y) / 2 * this.h;
+      if (sx < x0) x0 = sx; if (sy < y0) y0 = sy; if (sx > x1) x1 = sx; if (sy > y1) y1 = sy;
+    }
+    return { x: x0, y: y0, w: x1 - x0, h: y1 - y0 };
   }
 }

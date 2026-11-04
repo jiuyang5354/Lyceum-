@@ -23,6 +23,7 @@ const GLYPH = Object.fromEntries(SUBJ.map(([g, n]) => [n, g])); GLYPH['科学'] 
 
 const state = { profile: null, llm: false, model: '', session: null, msgs: [], image: null, busy: false, problemState: {}, route: 'home', tab: 'notebook', filter: '' };
 let stage = null;
+let navSeq = 0;   // 导航序号：流式轮次用它判断中途是否切走了会话视图
 
 /* ---------------- 事件总线 + 小雅情绪状态机（见 DESIGN.md「小雅的情绪」） ----------------
    答疑流程只发事件，不直接摆弄小雅；情绪机把事件翻译成 等待 / 倾听 / 思考 / 提示 / 鼓励 / 庆祝，
@@ -169,15 +170,23 @@ function initHome() {
     over = x > o.x - 30 && x < o.x + o.w + 30 && y > o.y - 30 && y < o.y + o.h + 30;
   });
   sticky.addEventListener('pointerleave', () => { over = false; });
-  const sel = $('#owlSel');
-  let lastY = -1;
+  const sel = $('#owlSel'), owlDim = $('#owlDim');
+  let lastY = -1, lastBox = '', lastOn = null;
   const tick = () => {
-    if (state.route === 'home' && scrollY !== lastY) { lastY = scrollY; onScroll(); }
-    if (state.route === 'home' && stage) {
+    if (state.route !== 'home') { requestAnimationFrame(tick); return; }
+    if (scrollY !== lastY) { lastY = scrollY; onScroll(); }
+    // 选中框只在首屏可见时才向 stage 要包围盒：滚出首屏后 stage 已停渲，这里也不再每帧算 Box3 + 写样式
+    const show = over || heroIdx === 0 || document.body.dataset.shot === 'sel';
+    if (show !== lastOn) { sel.classList.toggle('on', show); lastOn = show; }
+    if (stage && show) {
       const o = stage.owlRect();
-      if (o) { sel.style.left = o.x + 'px'; sel.style.top = o.y + 'px'; sel.style.width = o.w + 'px'; sel.style.height = o.h + 'px'; $('#owlDim').textContent = `${Math.round(o.w)} × ${Math.round(o.h)}`; }
-      sel.classList.toggle('on', over || heroIdx === 0 || document.body.dataset.shot === 'sel');
-    }
+      if (o) {
+        const key = `${o.x | 0},${o.y | 0},${o.w | 0},${o.h | 0}`;
+        if (key !== lastBox) { lastBox = key;
+          sel.style.left = o.x + 'px'; sel.style.top = o.y + 'px'; sel.style.width = o.w + 'px'; sel.style.height = o.h + 'px';
+          owlDim.textContent = `${Math.round(o.w)} × ${Math.round(o.h)}`; }
+      }
+    } else lastBox = '';
     requestAnimationFrame(tick);
   };
   tick();
@@ -229,18 +238,39 @@ function userMsgHTML(m) {
 function renderChat() {
   const box = $('#chatInner');
   if (!state.msgs.length) {
-    state.seen = 0;
+    state.seen = 0; state.rendered = 0; state.laurel = null;
     const ex = [['数学 · 初中', '解方程 x² − 5x + 6 = 0'], ['语文 · 古诗文', '“落霞与孤鹜齐飞，秋水共长天一色”好在哪里？'], ['物理 · 力学', '为什么人站在匀速上升的电梯里，感觉不到自己在动？'], ['语文 · 作文', '帮我写一篇《我的妈妈》，400 字']];
     box.innerHTML = `<div class="empty"><span class="mono">Ἐρώτημα · 提问</span><h2>今天想弄明白什么？</h2><p>打字、拍照都行。小雅不会直接给答案，但会一直陪你想到明白为止。</p>
       <div class="examples">${ex.map(([k, q]) => `<button class="ex-card"><span class="mono">${k}</span><span class="q">${esc(q)}</span></button>`).join('')}</div></div>`;
     $$('.ex-card', box).forEach((b) => b.onclick = () => { $('#input').value = $('.q', b).textContent; send(); });
-  } else {
+    paintInspector();
+    requestAnimationFrame(() => { const sc = $('#chatScroll'); sc.scrollTop = sc.scrollHeight; });
+    return;
+  }
+  // 增量优先：会话没换时（rendered < msgs.length）只把新消息 append 进去，
+  // 不再每轮全量 innerHTML 重建 + 对全部历史重跑 KaTeX
+  let els, newEls = null;
+  if (state.rendered == null || state.rendered === 0 || state.rendered >= state.msgs.length) {
+    $('#live')?.remove(); $('#thinking')?.remove();           // 全量重建顺带走掉流式/思考的临时气泡
     box.innerHTML = state.msgs.map((m, i) => m.role === 'user' ? userMsgHTML(m) : aiMsgHTML(m, i)).join('');
-    const els = $$(':scope > .msg', box);
+    state.rendered = state.msgs.length;
+    els = $$(':scope > .msg', box);
     els.forEach((el, i) => { if (i >= (state.seen ?? 0)) el.classList.add('enter'); });   // 只让新来的那条落下，历史不重播
     state.seen = state.msgs.length;
-    const L = state.laurel;
-    if (L && els[L.i]) {                                    // 解出：桂冠描线，只画一次
+    tex(box);
+  } else {
+    $('#live')?.remove(); $('#thinking')?.remove();           // 先清掉临时气泡，els 的序号才和 state.msgs 对齐
+    const start = state.rendered, tpl = document.createElement('template');
+    tpl.innerHTML = state.msgs.slice(start).map((m, i) => m.role === 'user' ? userMsgHTML(m) : aiMsgHTML(m, i)).join('');
+    newEls = [...tpl.content.children];
+    box.append(tpl.content);
+    state.rendered = state.msgs.length;
+    els = $$(':scope > .msg', box);
+    newEls.forEach((el) => el.classList.add('enter')); state.seen = state.msgs.length;
+    newEls.forEach(tex);
+  }
+  const L = state.laurel;
+  if (L && els[L.i]) {                                    // 解出：桂冠描线，只画一次
       const md0 = $('.md', els[L.i]);
       if (md0) {
         md0.insertAdjacentHTML('beforebegin', `<div class="laurel-draw${L.drawn ? '' : ' go'}" aria-label="自己做出来了">${laurel('currentColor')}<span class="lt">ΑΡΙΣΤΑ · 自己想出来的</span></div>`);
@@ -250,11 +280,9 @@ function renderChat() {
         L.drawn = true;
       }
     }
-    tex(box);
-    $$('[data-retry]', box).forEach((b) => b.onclick = retryLast);
-    const last = [...$$('.msg.ai', box)].pop();
-    if (last && !state.busy) addMsgActions(last);
-  }
+  $$('[data-retry]', box).forEach((b) => b.onclick = retryLast);
+  const last = [...$$(':scope > .msg.ai', box)].pop();
+  if (last && !state.busy) addMsgActions(last);
   paintInspector();
   requestAnimationFrame(() => { const sc = $('#chatScroll'); sc.scrollTop = sc.scrollHeight; });
 }
@@ -303,7 +331,7 @@ async function loadSessions() {
   } catch (e) { /* ignore */ }
 }
 async function openSession(id) {
-  const fresh = () => { state.laurel = null; state.hintShown = undefined; state.stuckShown = undefined; state.animHint = false; };
+  const fresh = () => { state.laurel = null; state.hintShown = undefined; state.stuckShown = undefined; state.animHint = false; state.rendered = null; };
   if (!id) { state.session = null; state.msgs = []; state.problemState = {}; fresh(); renderChat(); loadSessions(); return; }
   if (state.session?.id === +id && state.msgs.length) { renderChat(); return; }
   try {
@@ -392,17 +420,20 @@ function retryLast() {
 async function chatTurn(body) {
   state.busy = true; $('#send').disabled = true;
   const shown = body.message || { hint: '再给一点提示', stuck: '我卡住了', full: '看完整解法' }[body.action] || '';
-  const prevSession = state.session; const prevPS = state.problemState;
+  const prevSession = state.session; const prevPS = state.problemState; const seq0 = navSeq;
   state.msgs.push({ role: 'user', content: shown, image: body.image });
   renderChat();
   $('#chatInner').insertAdjacentHTML('beforeend', `<div class="msg ai enter" id="thinking"><div class="av">${owlMark()}</div><div class="thinking"><span class="cols"><i></i><i></i><i></i></span>小雅在想……</div></div>`);
   $('#chatScroll').scrollTop = 1e9;
   emit('ask:send', { image: !!body.image }); owlSay(body.image ? '我看看这张图……' : '嗯，我在听。');
-  let r = null;
+  let r = null; let ownedSid = prevSession ? prevSession.id : null;   // 这轮属于哪个会话；新对话等 meta 事件来定
   const finish = (res) => { r = res; };
   try {
     try {
       await streamChat(body, (ev, d) => {
+        if (ev === 'done') { finish(d); return; }   // done 先收下再判 stale：保证 r 总能拿到
+        if (ownedSid == null && ev === 'meta' && d.session_id != null) ownedSid = d.session_id;
+        if (navSeq !== seq0) return;   // 流式中途切了会话：这轮剩下的事件不再碰当前视图
         if (ev === 'meta') {
           if (!state.session || state.session.id !== d.session_id) state.session = { id: d.session_id };
           if (d.image) state.msgs[state.msgs.length - 1].image = d.image;
@@ -414,12 +445,16 @@ async function chatTurn(body) {
           if (!$('#live .rewrite-note')) $('#live .who').insertAdjacentHTML('afterend', '<div class="rewrite-note">刚才那句说得太直接了，小雅收回来，换成一个问题给你。</div>');
         }
         else if (ev === 'replace') { openLive(); live.raw = d.text; live.committed = null; $('#live').classList.add('replaced'); $('#liveTxt').textContent = '正在写'; schedulePaint(); emit('ask:stream'); }
-        else if (ev === 'done') finish(d);
         else if (ev === 'error') throw new StreamFail('server', d.error || '出错了');
       });
     } catch (e) {
       if (e.kind !== 'unsupported') throw e;
       r = await api('/api/chat', body);          // 浏览器不支持流式：退回非流式接口
+    }
+    if (navSeq !== seq0) {   // 流式中途切了会话：回复已写进它自己会话的库，不写进当前视图
+      state.lastFail = null;
+      if (state.session && r && state.session.id === r.session_id) await openSession(String(state.session.id));   // 切走又切回同一个：以服务端为准重取
+      return;
     }
     const last = state.msgs[state.msgs.length - 1]; if (r.image) last.image = r.image;
     if (!state.session || state.session.id !== r.session_id) state.session = { id: r.session_id };
@@ -439,6 +474,7 @@ async function chatTurn(body) {
     else { emit('ask:settle'); owlSay(m.stage === 'redirect' ? '我们还是聊回学习吧～' : '你先说说看。'); }
   } catch (e) {
     // 出错 / 超时 / 断流：服务端什么都没写库，这里撤回半截回复，给重试按钮
+    if (navSeq !== seq0) { state.lastFail = null; return; }   // 中途切了会话：这轮的报错不写进当前视图
     if (!prevSession) state.session = null;
     state.problemState = prevPS;
     state.lastFail = { body };
@@ -492,7 +528,7 @@ async function practice(fromMistake, fromSkill) {
 }
 function autosize() { const t = $('#input'); t.style.height = 'auto'; t.style.height = Math.min(180, t.scrollHeight) + 'px'; }
 function clearImage() { state.image = null; $('#attach').classList.add('hidden'); $('#file').value = ''; }
-function setImageFile(f) {
+function setImageFileOld(f) {   // 兜底：没有 createImageBitmap 的浏览器走原同步路径
   if (!f || !f.type.startsWith('image/')) return;
   const img = new Image(); const url = URL.createObjectURL(f);
   img.onload = () => { // 压缩到 1600px 以内，省流量
@@ -503,6 +539,29 @@ function setImageFile(f) {
   };
   img.src = url;
 }
+function setImageFile(f) {
+  if (!f || !f.type.startsWith('image/')) return;
+  // 异步管线：createImageBitmap 直接按目标尺寸解码（EXIF 方向由 from-image 摆正），toBlob 异步编码——大图不再冻结主线程
+  const probe = new Image(); const url = URL.createObjectURL(f);
+  probe.onload = () => {
+    URL.revokeObjectURL(url);
+    const k = Math.min(1, 1600 / Math.max(probe.naturalWidth, probe.naturalHeight));
+    const w = Math.max(1, Math.round(probe.naturalWidth * k)), h = Math.max(1, Math.round(probe.naturalHeight * k));
+    createImageBitmap(f, { imageOrientation: 'from-image', resizeWidth: w, resizeHeight: h, resizeQuality: 'high' }).then((bmp) => {
+      const c = document.createElement('canvas'); c.width = w; c.height = h;
+      c.getContext('2d').drawImage(bmp, 0, 0); bmp.close();
+      c.toBlob((b) => {
+        if (!b) return setImageFileOld(f);
+        const rd = new FileReader();
+        rd.onload = () => { state.image = rd.result; $('#attachImg').src = rd.result; $('#attach').classList.remove('hidden'); };
+        rd.readAsDataURL(b);
+      }, 'image/jpeg', 0.88);
+    }, () => setImageFileOld(f));
+  };
+  probe.onerror = () => { URL.revokeObjectURL(url); setImageFileOld(f); };
+  probe.src = url;
+}
+
 function initStudy() {
   $('#imgBtn').insertAdjacentHTML('afterbegin', icons.image);
   $('#steps').innerHTML = ['方向', '方法', '最后一步'].map((t, i) => `<div class="step">${columnGlyph()}<span><b>${GK[i]}΄</b>${t}</span></div>`).join(''); $('#attachX').innerHTML = icons.close;
@@ -768,6 +827,7 @@ function initFocusRing() {
 }
 
 async function route() {
+  navSeq++;   // 任何导航都会使进行中的流式轮次「失主」
   const h = location.hash.replace(/^#\/?/, '');
   const [r, id] = h.split('/');
   const BOOK = ['notebook', 'record', 'memory', 'growth'];
