@@ -9,11 +9,18 @@ import os
 import sys
 import tempfile
 
-FIELDS = ("base_url", "api_key", "model", "vision_model")
+FIELDS = ("base_url", "api_key", "model", "vision_model", "preset", "route_mode", "fast_model", "strong_model", "fallbacks")
 ENV = {"base_url": "LYCEUM_BASE_URL", "api_key": "LYCEUM_API_KEY",
-       "model": "LYCEUM_MODEL", "vision_model": "LYCEUM_VISION_MODEL"}
-DEFAULTS = {"base_url": "https://api.supergpt.dev/v1", "api_key": "", "model": "gpt-6.1-sol", "vision_model": ""}
-LIMITS = {"base_url": 300, "api_key": 400, "model": 120, "vision_model": 120}
+       "model": "LYCEUM_MODEL", "vision_model": "LYCEUM_VISION_MODEL", "preset": "LYCEUM_PRESET",
+       "route_mode": "LYCEUM_ROUTE", "fast_model": "LYCEUM_FAST_MODEL", "strong_model": "LYCEUM_STRONG_MODEL",
+       "fallbacks": "LYCEUM_FALLBACK_MODELS"}
+DEFAULTS = {"base_url": "https://api.supergpt.dev/v1", "api_key": "", "model": "gpt-6.1-sol", "vision_model": "",
+            "preset": "custom", "route_mode": "fixed", "fast_model": "", "strong_model": "", "fallbacks": ""}
+LIMITS = {"base_url": 300, "api_key": 400, "model": 120, "vision_model": 120, "preset": 20, "route_mode": 8,
+          "fast_model": 120, "strong_model": 120, "fallbacks": 400}
+# 界面偏好（不受环境变量控制）：语言、主题、首页 3D、纸纹、减弱动效、字号
+UI_DEFAULTS = {"lang": "zh", "theme": "light", "three_d": True, "grain": True, "reduce_motion": False, "font": "normal"}
+UI_CHOICES = {"lang": ("zh", "en"), "theme": ("light", "dark", "system"), "font": ("normal", "large")}
 FILENAME = "config.json"
 APP = "Lyceum"
 
@@ -43,15 +50,18 @@ def path(data_dir):
     return os.path.join(data_dir, FILENAME)
 
 
-def load_file(data_dir):
-    """读 config.json；没有或坏了都当空配置。只留认识的字段。"""
+def load_raw(data_dir):
     try:
         with open(path(data_dir), encoding="utf-8") as f:
             raw = json.load(f)
     except (OSError, ValueError):
         return {}
-    if not isinstance(raw, dict):
-        return {}
+    return raw if isinstance(raw, dict) else {}
+
+
+def load_file(data_dir):
+    """读 config.json；没有或坏了都当空配置。只留认识的字段。"""
+    raw = load_raw(data_dir)
     return {k: str(raw[k]).strip() for k in FIELDS if isinstance(raw.get(k), str) and raw[k].strip()}
 
 
@@ -69,6 +79,7 @@ def effective(data_dir, env=None):
         else:
             vals[k], src[k] = DEFAULTS[k], "default"
     vals["base_url"] = vals["base_url"].rstrip("/")
+    vals["_vision_explicit"] = vals["vision_model"]
     if not vals["vision_model"]:
         vals["vision_model"] = vals["model"]
     return vals, src
@@ -97,14 +108,48 @@ def validate(updates):
             raise ValueError(f"{k} 里不能有换行")
         if k == "base_url" and v and not v.startswith(("http://", "https://")):
             raise ValueError("API 地址要以 http:// 或 https:// 开头")
+        if k == "route_mode" and v and v not in ("auto", "fixed"):
+            raise ValueError("选模型方式只能是 auto 或 fixed")
+        if k == "preset" and v:
+            from .models import PRESET_IDS
+            if v not in PRESET_IDS:
+                raise ValueError("没有这个服务商预设")
         out[k] = v
     return out
 
 
-def save(data_dir, updates, clear_key=False):
+def clean_ui(ui):
+    out = {}
+    for k, v in (ui or {}).items():
+        if k not in UI_DEFAULTS:
+            continue
+        if isinstance(UI_DEFAULTS[k], bool):
+            out[k] = bool(v)
+        elif isinstance(v, str) and v in UI_CHOICES.get(k, ()):
+            out[k] = v
+    return out
+
+
+def ui_prefs(data_dir):
+    return dict(UI_DEFAULTS, **clean_ui(load_raw(data_dir).get("ui")))
+
+
+def detected(data_dir, base_url=None):
+    """上次「自动识别模型」的结果；base_url 给了就只认同一个地址测出来的。"""
+    d = load_raw(data_dir).get("detected") or {}
+    if not isinstance(d, dict) or not isinstance(d.get("models"), list):
+        return []
+    if base_url is not None and (d.get("base_url") or "").rstrip("/") != base_url.rstrip("/"):
+        return []
+    return [m for m in d["models"] if isinstance(m, str)][:500]
+
+
+def save(data_dir, updates, clear_key=False, ui=None, detected_models=None, detected_base=None):
     """合并写入 config.json。updates 里没给（或 None）的字段保持原样；给了空字符串表示清掉这一项。
-    api_key 留空不会清掉已保存的 key，要清必须 clear_key=True。写文件用临时文件替换，权限 600。"""
+    api_key 留空不会清掉已保存的 key，要清必须 clear_key=True。写文件用临时文件替换，权限 600。
+    ui：界面偏好（合并）；detected_models：自动识别出的模型列表（连同测出它的地址）。"""
     upd = validate(updates)
+    raw = load_raw(data_dir)
     cur = load_file(data_dir)
     for k, v in upd.items():
         if k == "api_key" and not v:
@@ -115,11 +160,21 @@ def save(data_dir, updates, clear_key=False):
             cur.pop(k, None)
     if clear_key:
         cur.pop("api_key", None)
+    extra = {k: v for k, v in raw.items() if k in ("ui", "detected")}
+    if ui is not None:
+        extra["ui"] = dict(clean_ui(raw.get("ui")), **clean_ui(ui))
+    if detected_models is not None:
+        extra["detected"] = {"base_url": (detected_base or "").rstrip("/"), "models": [str(m) for m in detected_models][:500]}
+    write_json(data_dir, dict(cur, **extra))
+    return cur
+
+
+def write_json(data_dir, obj):
     os.makedirs(data_dir, exist_ok=True)
     fd, tmp = tempfile.mkstemp(prefix=".config-", dir=data_dir)
     try:
         with os.fdopen(fd, "w", encoding="utf-8") as f:
-            json.dump(cur, f, ensure_ascii=False, indent=2)
+            json.dump(obj, f, ensure_ascii=False, indent=2)
         try:
             os.chmod(tmp, 0o600)
         except OSError:
@@ -131,7 +186,6 @@ def save(data_dir, updates, clear_key=False):
         except OSError:
             pass
         raise
-    return cur
 
 
 def public(data_dir, env=None):
@@ -144,7 +198,19 @@ def public(data_dir, env=None):
         "source": src, "locked": [k for k in FIELDS if src[k] == "env"],
         "mode": "model" if vals["api_key"] else "offline",
         "defaults": {k: DEFAULTS[k] for k in ("base_url", "model")},
+        "preset": vals["preset"], "route_mode": vals["route_mode"],
+        "fast_model": vals["fast_model"], "strong_model": vals["strong_model"], "fallbacks": vals["fallbacks"],
+        "detected": detected(data_dir, vals["base_url"]), "ui": ui_prefs(data_dir),
     }
+
+
+def route_cfg(vals, data_dir):
+    """llm 自动选模型用的配置（给 models.pick_model）。vision_model 只认用户明确填过的。"""
+    from .models import split_list
+    raw_vis = vals.get("_vision_explicit", "")
+    return {"model": vals["model"], "vision_model": raw_vis, "route_mode": vals["route_mode"],
+            "roles": {"vision": raw_vis, "strong": vals["strong_model"], "fast": vals["fast_model"]},
+            "fallbacks": split_list(vals["fallbacks"]), "detected": detected(data_dir, vals["base_url"])}
 
 
 def apply(llm_mod, data_dir, env=None):
@@ -154,4 +220,6 @@ def apply(llm_mod, data_dir, env=None):
     llm_mod.API_KEY = vals["api_key"]
     llm_mod.MODEL = vals["model"]
     llm_mod.VISION_MODEL = vals["vision_model"]
+    llm_mod.ROUTE = route_cfg(vals, data_dir)
+    llm_mod.USAGE_FILE = os.path.join(data_dir, "usage.json")
     return vals

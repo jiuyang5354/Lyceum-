@@ -24,6 +24,7 @@ ROOT = getattr(sys, "_MEIPASS", None) if FROZEN else os.path.dirname(os.path.dir
 sys.path.insert(0, ROOT)
 
 from lyceum import config as cfgmod  # noqa: E402
+from lyceum import winchrome  # noqa: E402
 
 TITLE = "Lyceum 学园"
 from lyceum import __version__ as VERSION  # noqa: E402
@@ -149,7 +150,7 @@ def headless_check(verbose=True):
         bad_ext = [e for e in bad_ext if not re.search(r"threejs\.org|github\.com|mozilla\.org|khronos\.org", e)]
         if bad_ext:
             report["errors"].append("从网络加载的资源：" + ", ".join(bad_ext))
-        for need in ("/vendor/three.module.min.js", "/vendor/katex/katex.min.js", "/vendor/fonts/fonts.css",
+        for need in ("/js/settings.js", "/js/i18n.js", "/js/titlebar.js", "/css/settings.css", "/vendor/three.module.min.js", "/vendor/katex/katex.min.js", "/vendor/fonts/fonts.css",
                      "/vendor/fonts/noto-serif-sc.css", "/vendor/fonts/NotoSerifSC-500-common.woff2",
                      "/vendor/fonts/NotoSerifSC-600-common.woff2", "/js/app.js", "/css/app.css"):
             if need not in seen:
@@ -160,8 +161,11 @@ def headless_check(verbose=True):
             report["errors"].append("自检应处于离线演示模式")
         st, _, body = _get(url + "/api/settings")
         s = json.loads(body)
-        if s.get("mode") != "offline" or "api_key" in s:
+        if s.get("mode") != "offline" or "api_key" in s or not s.get("presets") or "ui" not in s:
             report["errors"].append("/api/settings 返回不对")
+        st, ct, body = _get(url + "/api/backup")
+        if "zip" not in ct or not body.startswith(b"PK"):
+            report["errors"].append("/api/backup 导出不对")
         if not os.path.isfile(os.path.join(tmp, "lyceum.db")):
             report["errors"].append("没有自动建库")
     finally:
@@ -193,7 +197,11 @@ def smoke_window(timeout=90):
     import webview
     srv, url, server = start_server()
     result = {}
-    win = webview.create_window(TITLE, url, width=1280, height=800, min_size=(1200, 760))
+    custom = winchrome.use_custom_frame()
+    api = winchrome.WinChrome(TITLE)
+    win = webview.create_window(TITLE, winchrome.frame_url(url, custom), width=1280, height=800, min_size=(1200, 760),
+                                frameless=custom, easy_drag=False, js_api=api)
+    api.bind(win)
 
     def probe():
         try:
@@ -206,6 +214,11 @@ def smoke_window(timeout=90):
                 time.sleep(0.5)
             result["title"] = win.evaluate_js("document.title")
             result["three"] = win.evaluate_js("!!document.querySelector('canvas')")
+            result["frameless"] = custom
+            if custom:  # 无边框：自绘标题栏要显示出来，js_api 要能调到窗口控制
+                result["titlebar"] = win.evaluate_js("!!document.querySelector('.titlebar') && "
+                                                     "getComputedStyle(document.querySelector('.titlebar')).display !== 'none'")
+                result["js_api"] = win.evaluate_js("!!(window.pywebview && window.pywebview.api && window.pywebview.api.is_max)")
         except Exception as e:  # noqa: BLE001
             result["error"] = repr(e)
         finally:
@@ -213,7 +226,7 @@ def smoke_window(timeout=90):
 
     webview.start(probe, gui="edgechromium" if sys.platform.startswith("win") else None)
     srv.shutdown()
-    ok = bool(result.get("modelTag"))
+    ok = bool(result.get("modelTag")) and (not result.get("frameless") or bool(result.get("titlebar")))
     print("[smoke-window]", "OK" if ok else "失败", json.dumps(result, ensure_ascii=False), flush=True)
     return 0 if ok else 1
 
@@ -224,10 +237,18 @@ def run_window():
     _redirect_std(data_dir)
     import webview  # pywebview
 
+    try:
+        webview.settings["ALLOW_DOWNLOADS"] = True  # 设置 · 导出备份
+    except Exception:
+        pass
     srv, url, server = start_server()
     print(f"{TITLE} {VERSION} → {url} · 数据 {data_dir} · {server.mode_line()}", flush=True)
-    webview.create_window(TITLE, url, width=1440, height=900, min_size=(1200, 760), resizable=True,
-                          background_color="#F5F3EE", text_select=True)
+    custom = winchrome.use_custom_frame()  # Windows：无边框 + 页面自绘标题栏；LYCEUM_FRAME=native 退回系统标题栏
+    api = winchrome.WinChrome(TITLE)
+    win = webview.create_window(TITLE, winchrome.frame_url(url, custom), width=1440, height=900, min_size=(1200, 760),
+                                resizable=True, background_color="#F5F3EE", text_select=True,
+                                frameless=custom, easy_drag=False, js_api=api)
+    api.bind(win)
     gui = "edgechromium" if sys.platform.startswith("win") else None
     try:
         webview.start(gui=gui, debug=False)

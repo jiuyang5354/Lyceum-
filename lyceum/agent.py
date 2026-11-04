@@ -8,6 +8,7 @@ from . import insight
 from . import leak as leakmod
 from . import llm
 from . import mathcheck
+from . import models
 from . import memory as memmod
 from . import strategies
 from . import taxonomy
@@ -127,7 +128,8 @@ def _prepare(profile, session, text, image_data_url, action, extras=None):
         content = [{"type": "text", "text": user_text},
                    {"type": "image_url", "image_url": {"url": image_data_url}}]
     return {"st": st, "text": text, "allow_full": allow_full, "rule_stuck": rule_stuck, "band": b, "route": route,
-            "content": content, "vision": bool(image_data_url), "extras": extras or {}}
+            "content": content, "vision": bool(image_data_url), "extras": extras or {},
+            "task": models.route_task(bool(image_data_url), action, text, allow_full)}
 
 
 def _messages(ctx, profile, history):
@@ -154,7 +156,7 @@ def _rewrite(ctx, msgs, out, leak, profile):
     st, text = ctx["st"], ctx["text"]
     fix = {"role": "system", "content": f"你上一版回复直接写出了关键结果「{leak}」，违反了「提示不得直接给出关键中间结果 / 答案」。"
            "请按同样的 JSON 格式重写 reply：只说该做什么、怎么想，用一个小问题让学生自己写出这一步，不要出现这个结果，也不要给最终答案。"}
-    out2 = normalize(llm.chat(msgs + [{"role": "assistant", "content": out["reply"]}, fix], vision=ctx["vision"]))
+    out2 = normalize(llm.chat(msgs + [{"role": "assistant", "content": out["reply"]}, fix], vision=ctx["vision"], task=ctx["task"]))
     if not out2.get("subject"):
         out2["subject"] = out.get("subject")
     if leak_of(ctx, out2):
@@ -172,7 +174,7 @@ def respond(profile, session, history, text, image_data_url=None, action=None, e
     if not llm.enabled():
         return _attach(ctx, mock_reply(ctx["st"], ctx["text"], ctx["allow_full"], ctx["rule_stuck"], ctx), ctx["st"]), ctx["st"]
     msgs = _messages(ctx, profile, history)
-    out = normalize(llm.chat(msgs, vision=ctx["vision"]))
+    out = normalize(llm.chat(msgs, vision=ctx["vision"], task=ctx["task"]))
     canon_topic(out, profile)
     # ---- 服务端闸门：提示里不许直接摆出关键中间结果（第 3 层或允许完整解法时放开）
     if not ctx["allow_full"]:
@@ -226,7 +228,7 @@ def respond_stream(profile, session, history, text, image_data_url=None, action=
         meta["reply"] = t
         return leak_of(ctx, meta)
 
-    for chunk in llm.chat_stream(msgs, vision=ctx["vision"]):
+    for chunk in llm.chat_stream(msgs, vision=ctx["vision"], task=ctx["task"]):
         new = ext.feed(chunk)
         if not new:
             continue
@@ -381,7 +383,7 @@ def _verify_fix(ctx, msgs, out, verdict, profile):
                "请据此按同样的 JSON 格式重写，student_correct 填 %s；答错时不要给出正确结果，引导他自己找错。" %
                ("正确" if verdict else "不正确", "true" if verdict else "false")}
         try:
-            out2 = normalize(llm.chat(msgs + [{"role": "assistant", "content": out["reply"]}, fix], vision=ctx["vision"]))
+            out2 = normalize(llm.chat(msgs + [{"role": "assistant", "content": out["reply"]}, fix], vision=ctx["vision"], task=ctx["task"]))
             out2["subject"] = out2.get("subject") or out.get("subject")
             canon_topic(out2, profile)
             if out2.get("student_correct") is verdict and not leak_of(ctx, out2):
@@ -435,7 +437,7 @@ def make_variants(profile, st, n=3):
 学科：{st.get('subject')}；知识点：{st.get('topic')}
 请出 {n} 道「变式题」：考同一个知识点和方法，但换数字、换情境或换问法，难度从和原题相当到稍难一点。每道题必须有唯一、明确、简短的标准答案（数字、表达式、词语或一句话），便于批改；不要出需要画图或长篇论述的题。公式用 LaTeX（$...$）。
 只输出 JSON：{{"questions": [{{"q": "题干", "answer": "标准答案", "explain": "两三句话的解析"}}]}}"""
-    out = llm.chat([{"role": "user", "content": prompt}], temperature=0.7)
+    out = llm.chat([{"role": "user", "content": prompt}], temperature=0.7, task="strong")
     qs = [q for q in (out.get("questions") or []) if isinstance(q, dict) and q.get("q")]
     # 验证：标准答案代回题干方程，不成立的题丢掉（起草 → 验证 → 过滤）
     qs = [q for q in qs if mathcheck.check_roots(q["q"], str(q.get("answer", ""))) is not False]
@@ -460,7 +462,7 @@ def grade_answers(profile, st, questions, answers):
     prompt = f"""你在批改{GRADES.get(int(profile.get('grade') or 8))}学生的练习。判断每道题学生答案是否正确：数值相等、等价表达式、同义表述都算对；空白或只写过程没写结果算错。反馈要具体、简短（一两句），错了指出错在哪，用 LaTeX 写公式。
 {items}
 只输出 JSON：{{"results": [{{"correct": true/false, "feedback": "..."}}]}}，顺序与题目一致。"""
-    out = llm.chat([{"role": "user", "content": prompt}], temperature=0.1)
+    out = llm.chat([{"role": "user", "content": prompt}], temperature=0.1, task="strong")
     res = out.get("results") or []
     fixed = []
     for i in range(len(questions)):

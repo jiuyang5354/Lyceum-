@@ -1,8 +1,10 @@
 import { capital, orderOfGrade, meanderURL, laurel, owlMark, icons, sticker, subjectIcon, columnGlyph, templeFront, owlOnColumn, pedimentURL, laurelMini, capitalPulse, art } from './svg.js';
+import { initSettings, openSettings, paintMode, applyUi } from './settings.js';
+import { initTitlebar } from './titlebar.js';
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
-const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches || document.documentElement.dataset.motion === 'reduce';
 const GRADES = ['一年级', '二年级', '三年级', '四年级', '五年级', '六年级', '初一', '初二', '初三', '高一', '高二', '高三'];
 const TEXTBOOKS = ['人教版', '北师大版', '苏教版', '沪教版', '部编版', '外研版'];
 const ORDERS = {
@@ -96,6 +98,7 @@ function tex(el) {
 async function ensureStage() {
   if (stage !== null) return stage;
   stage = false;
+  if (document.documentElement.dataset.three === 'off') return stage;  // 设置 · 外观：关掉首页 3D
   try { const { Stage } = await import('./stage.js'); const s = new Stage(); if (s.ok) stage = s; } catch (e) { console.warn('3D 不可用', e); }
   return stage;
 }
@@ -202,51 +205,6 @@ function paintProfile() {
   setOrder(order);
 }
 
-/* ---------------- 模型设置（key 只存本机；界面不回显完整 key） ---------------- */
-const SET_ENV = { base_url: 'LYCEUM_BASE_URL', api_key: 'LYCEUM_API_KEY', model: 'LYCEUM_MODEL', vision_model: 'LYCEUM_VISION_MODEL' };
-function paintMode(s) {
-  state.llm = s.mode === 'model'; state.model = s.model;
-  $('#modelTag').textContent = state.llm ? `模型 ${s.model}` : '离线演示模式';
-  $('#setDot').classList.toggle('on', state.llm);
-  $('#setBtn').title = state.llm ? `已接入模型 ${s.model}` : '离线演示模式 · 点这里填 API Key';
-}
-async function openSettings() {
-  const m = $('#setModal'), f = $('#setForm');
-  let s;
-  try { s = await api('/api/settings'); } catch (e) { return toast(e.message); }
-  const fill = (s) => {
-    $('#setMode').innerHTML = s.mode === 'model' ? `现在：已接入模型 <b>${esc(s.model)}</b>` : '现在：<b>离线演示模式</b>，回复是固定的演示文字。';
-    for (const k of Object.keys(SET_ENV)) {
-      const inp = f.elements[k], lock = $('.lock', inp.parentElement), locked = s.locked.includes(k);
-      inp.value = k === 'api_key' ? '' : (k === 'base_url' && s.source.base_url === 'default' ? '' : (k === 'model' && s.source.model === 'default' ? '' : s[k] || ''));
-      inp.disabled = locked;
-      lock.textContent = locked ? `由环境变量 ${SET_ENV[k]} 设置，这里改不了` : '';
-    }
-    f.elements.api_key.placeholder = s.key_set ? `已保存 ${s.key_hint} · 留空保持不变` : 'sk-…';
-    $('#setClear').hidden = !(s.key_set && s.source.api_key === 'file');
-  };
-  fill(s);
-  m.classList.remove('hidden');
-  handles($('#setOk'));
-  const close = () => { m.classList.add('hidden'); f.elements.api_key.value = ''; removeEventListener('keydown', onKey); };
-  const onKey = (e) => { if (e.key === 'Escape') close(); };
-  addEventListener('keydown', onKey);
-  $('#setCancel').onclick = close;
-  m.onclick = (e) => { if (e.target === m) close(); };
-  const save = async (body) => {
-    try { const r = await api('/api/settings', body); paintMode(r); fill(r); return r; } catch (e) { toast(e.message); }
-  };
-  $('#setClear').onclick = async () => { if (await save({ clear_key: true })) toast('已清除保存的 Key'); };
-  f.onsubmit = async (e) => {
-    e.preventDefault();
-    const body = {};
-    for (const k of Object.keys(SET_ENV)) { const inp = f.elements[k]; if (!inp.disabled) body[k] = inp.value.trim(); }
-    const r = await save(body);
-    if (r) { close(); toast(r.mode === 'model' ? `已保存 · 用模型 ${r.model}` : '已保存 · 离线演示模式'); }
-  };
-  setTimeout(() => (s.key_set ? f.elements.model : f.elements.api_key).focus(), 30);
-}
-
 /* ---------------- 答疑 ---------------- */
 function aiMsgHTML(m, i) {
   const meta = m.meta || {};
@@ -256,7 +214,7 @@ function aiMsgHTML(m, i) {
   const stg = { clarify: '澄清题意', hint: meta.hint_level ? `提示 ${meta.hint_level} / 3` : '引导', check: '检查答案', solved: '做对了', full: '完整解法', redirect: '回到学习' }[meta.stage];
   if (stg) chips.push(`<span class="chip ${meta.stage === 'solved' ? 'ok' : meta.stage === 'full' ? 'solid' : 'blue'}">${meta.stage === 'solved' ? laurelMini() : ''}${stg}</span>`);
   if (meta.error) return `<div class="msg ai" data-i="${i}"><div class="av">${owlMark()}</div><div><div class="who"><b>小雅</b></div><div class="err-line">${art('broken')}<span class="em">${esc(m.content)}<small>这一轮没有记进记录，题目还在，可以放心重试。</small></span>${meta.retry ? '<button class="ghost" data-retry="1">[↻] 重试</button>' : ''}</div></div></div>`;
-  return `<div class="msg ai" data-i="${i}"><div class="av">${owlMark()}</div><div><div class="who"><b>小雅</b>${chips.join('')}</div><div class="md">${md(m.content)}</div><div class="extra"></div></div></div>`;
+  return `<div class="msg ai" data-i="${i}"><div class="av">${owlMark()}</div><div><div class="who"><b>小雅</b>${chips.join('')}</div><div class="md">${md(m.content)}</div>${meta.model ? `<small class="mdl" title="这条回复用的模型">${esc(meta.model)}</small>` : ''}<div class="extra"></div></div></div>`;
 }
 function userMsgHTML(m) {
   return `<div class="msg user"><div class="bubble">${m.image ? `<img src="${esc(m.image)}" alt="题目图片">` : ''}${esc(m.content)}</div></div>`;
@@ -832,11 +790,14 @@ async function boot() {
   initHome(); initStudy(); initFocusRing();
   $$('.tabs button').forEach((b) => b.onclick = () => { location.hash = '#/' + b.dataset.tab; });
   $('#gradePill').onclick = () => openOnboarding(true);
-  $('#setBtn').onclick = openSettings;
-  $('#modelTag').onclick = openSettings; $('#modelTag').style.cursor = 'pointer';
+  initTitlebar();
+  initSettings({ api, toast, esc, handles, state, openOnboarding });
+  $('#setBtn').onclick = () => openSettings();
+  $('#modelTag').onclick = () => openSettings('model'); $('#modelTag').style.cursor = 'pointer';
   try {
     const p = await api('/api/profile'); state.profile = p.profile; state.llm = p.llm; state.model = p.model;
     paintMode({ mode: p.llm ? 'model' : 'offline', model: p.model });
+    api('/api/settings').then((st) => { applyUi(st.ui); paintMode(st); }).catch(() => {});
   } catch (e) { toast('连不上本地服务'); }
   addEventListener('hashchange', route);
   await route();

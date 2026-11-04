@@ -1,6 +1,7 @@
 /* Lyceum 学园 —— 希腊建筑的线 + 三渲二的平涂 + 设计工具的「选中对象」 */
 :root {
   --paper: #f5f3ee;
+  --paper-hi: #f9f7f2;
   --paper-2: #edebe4;
   --card: #fbfaf7;
   --ink: #1b2142;
@@ -43,7 +44,7 @@
 * { box-sizing: border-box; }
 html, body { margin: 0; background-color: var(--paper); color: var(--ink); }
 /* 纸纹：程序生成的纤维噪点 + 稀疏印刷颗粒，约 2% 浓度；只在页面底上，三维物体本身仍是平涂 */
-html { background-color: #f9f7f2; background-image: var(--grain); background-size: 280px 280px; } /* 底色略提亮，叠上颗粒后平均仍是纸白 #f5f3ee */
+html { background-color: var(--paper-hi); background-image: var(--grain); background-size: 280px 280px; } /* 底色略提亮，叠上颗粒后平均仍是纸白 #f5f3ee */
 body { background: transparent; }
 body { font-family: var(--sans); font-size: 17px; line-height: 1.75; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
 button, input, textarea, select { font: inherit; color: inherit; }
@@ -56,10 +57,10 @@ a { color: inherit; }
 .latin { font-family: var(--latin); }
 
 /* ---------- 导航 ---------- */
-.nav { position: sticky; top: 0; z-index: 30; height: var(--nav); display: flex; align-items: center; gap: 40px; padding: 0 clamp(20px, 4vw, 56px); background: #f9f7f2 var(--grain); background-size: 280px; border-bottom: 1px solid var(--line); }
+.nav { position: sticky; top: 0; z-index: 30; height: var(--nav); display: flex; align-items: center; gap: 40px; padding: 0 clamp(20px, 4vw, 56px); background: var(--paper-hi) var(--grain); background-size: 280px; border-bottom: 1px solid var(--line); }
 /* 导航下沿：额枋式的双细线 */
 /* 两条线之间的 3px 缝也要铺上导航底色，否则页面滚动时下面的内容（如二级 tab 的蓝色下划线）会从缝里露出来 */
-.nav::after { content: ""; position: absolute; left: 0; right: 0; bottom: -5px; height: 3px; background: #f9f7f2 var(--grain); background-size: 280px; border-bottom: 1px solid var(--line); box-sizing: content-box; pointer-events: none; }
+.nav::after { content: ""; position: absolute; left: 0; right: 0; bottom: -5px; height: 3px; background: var(--paper-hi) var(--grain); background-size: 280px; border-bottom: 1px solid var(--line); box-sizing: content-box; pointer-events: none; }
 .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
 .brand svg { width: 30px; height: 30px; }
 .brand b { font-family: var(--latin); font-weight: 500; font-size: 26px; letter-spacing: .01em; }
@@ -360,7 +361,7 @@ a { color: inherit; }
 .week i span { position: absolute; bottom: -22px; left: 0; right: 0; text-align: center; font-style: normal; font-size: 12px; color: var(--muted); }
 
 /* ---------- 入门：选年级 ---------- */
-.modal { position: fixed; inset: 0; z-index: 60; background: #f9f7f2 var(--grain); background-size: 280px; display: grid; place-items: center; padding: 24px; overflow: auto; }
+.modal { position: fixed; inset: 0; z-index: 60; background: var(--paper-hi) var(--grain); background-size: 280px; display: grid; place-items: center; padding: 24px; overflow: auto; }
 .onb { width: min(1040px, 100%); }
 .onb h2 { font-family: var(--serif); font-weight: 500; font-size: clamp(36px, 3.6vw, 54px); margin: 14px 0 8px; line-height: 1.2; }
 .onb > p { color: var(--ink-2); margin: 0 0 36px; }

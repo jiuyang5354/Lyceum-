@@ -26,7 +26,7 @@ Windows PowerShell 用 `$env:LYCEUM_API_KEY="..."` 设环境变量。
 
 其他环境变量：`PORT`（默认 8000）、`HOST`（默认 127.0.0.1）、`LYCEUM_DATA`（数据目录，默认 `./data`）、`LYCEUM_TIMEOUT`（单次模型请求超时秒数，流式时是每次读上游的超时，默认 120）、`LYCEUM_MOCK_DELAY`（离线演示模式模拟流式时每块之间的延迟秒数，默认 0.04；截流式中间帧可调到 0.5）、`LYCEUM_HEARTBEAT`（流式心跳间隔秒数，默认 15）。
 
-测试（不调模型，只用标准库 unittest）：`python -m unittest discover -s tests`，共 164 个（原 96 个 + 第二轮 46 个 + 桌面版 22 个）。原有：`test_policy.py` 完整解法策略、`test_hint_leak.py` 提示不漏关键中间结果、`test_mastery.py` 掌握度 / 证据折算 / 复习排程 / 数据库迁移 / 离线接口流程、`test_taxonomy.py` 知识点归一化 / 合并重放 / 迁移幂等 / 提示词里的规范表 / 今日复习口径、`test_strategies.py` 各科策略 / 学科路由 / 各科漏题规则正反例、`test_streaming.py` SSE 事件格式 / 半截 JSON 解 reply / 句子缓冲放行与 replace / 离线流式 / 断流与上游报错 / 心跳。新增：`test_mathcheck.py` 数学确定性校验（解析 / 恒等 / 方程的根）、批改与出题的「验证」、答疑里的「起草→验证→修正一次→改判」、心智推断与提示词注入；`test_memory.py` 隐私过滤、有界（条数 / 字数 / 压缩合并 / 淘汰）、出处与合并、派生画像、误区 3 次窗口、检索排序与字数预算、学生改删清空、v3→v4 迁移幂等；`test_evolve.py` 白名单与护栏、Thompson 选择可复现、奖励与反思、版本化与回滚、自动停用、教学经验门槛、候选规则影子模式与人工批准、可插拔反思器（假模型）、离线 HTTP 全流程。桌面版：`test_desktop.py` 模型设置读取优先级（环境变量 > config.json > 默认）、config.json 读写 / 留空保留 key / 清除 / 校验 / 坏文件 / 600 权限、数据目录选择（Windows / macOS / Linux / LYCEUM_DATA）、`/api/settings` 往返且不回显 key、.js 的 MIME、启动器自检（子进程）。流式测试的上游是测试里本地起的假 OpenAI 兼容服务，新增测试用的是假 `llm.chat`，都不会访问任何真实模型。
+测试（不调模型，只用标准库 unittest）：`python -m unittest discover -s tests`，共 196 个（原 96 个 + 第二轮 46 个 + 桌面版 22 个 + 0.2 设置 32 个）。原有：`test_policy.py` 完整解法策略、`test_hint_leak.py` 提示不漏关键中间结果、`test_mastery.py` 掌握度 / 证据折算 / 复习排程 / 数据库迁移 / 离线接口流程、`test_taxonomy.py` 知识点归一化 / 合并重放 / 迁移幂等 / 提示词里的规范表 / 今日复习口径、`test_strategies.py` 各科策略 / 学科路由 / 各科漏题规则正反例、`test_streaming.py` SSE 事件格式 / 半截 JSON 解 reply / 句子缓冲放行与 replace / 离线流式 / 断流与上游报错 / 心跳。新增：`test_mathcheck.py` 数学确定性校验（解析 / 恒等 / 方程的根）、批改与出题的「验证」、答疑里的「起草→验证→修正一次→改判」、心智推断与提示词注入；`test_memory.py` 隐私过滤、有界（条数 / 字数 / 压缩合并 / 淘汰）、出处与合并、派生画像、误区 3 次窗口、检索排序与字数预算、学生改删清空、v3→v4 迁移幂等；`test_evolve.py` 白名单与护栏、Thompson 选择可复现、奖励与反思、版本化与回滚、自动停用、教学经验门槛、候选规则影子模式与人工批准、可插拔反思器（假模型）、离线 HTTP 全流程。桌面版：`test_desktop.py` 模型设置读取优先级（环境变量 > config.json > 默认）、config.json 读写 / 留空保留 key / 清除 / 校验 / 坏文件 / 600 权限、数据目录选择（Windows / macOS / Linux / LYCEUM_DATA）、`/api/settings` 往返且不回显 key、.js 的 MIME、启动器自检（子进程）。流式测试的上游是测试里本地起的假 OpenAI 兼容服务，新增测试用的是假 `llm.chat`，都不会访问任何真实模型。0.2：`test_settings.py` 服务商预设、模型能力标签启发式、自动路由与固定模式、备用模型链、config 读写 / 掩码 / env 优先、备份导出导入 / 清空、检查更新（mock）、自动识别与测试连接（mock fetch）、无边框窗口缩放计算。
 
 原 96 个测试只改了一处断言：`test_taxonomy.py` 里 `PRAGMA user_version == 3` 改成 `>= 3`——本次迁移把库版本升到 4（只加表加列），原断言要表达的「规范化迁移已完成」不变。
 
@@ -106,6 +106,20 @@ pip install -r desktop/requirements.txt && python desktop/launcher.py   # 开窗
 | 公式 | KaTeX 渲染（`$...$` / `$$...$$`），公式后面紧跟的中文标点不会被挤到下一行。 |
 
 数据存在 `data/lyceum.db`（SQLite）和 `data/uploads/`（图片）。
+
+## 设置（0.2）
+
+右上角「设置」（或 Ctrl+,）是分栏页，所有偏好存数据目录的 config.json，环境变量仍然优先（被环境变量锁定的项会显示成虚线、不能改）：
+
+- **通用**：界面语言 中文 / English（只翻界面固定文案，小雅的回答语言不变）；快捷键：Ctrl+, 设置、Ctrl+N 新题、Ctrl+1–4 首页 / 答疑 / 错题本 / 学习记录、Ctrl+/ 聚焦输入框、Esc 关闭弹窗（macOS 用 ⌘）。
+- **外观**：主题 浅色 / 深色（墨蓝底 + 纸色字 + 钴蓝）/ 跟随系统；首页 3D 小雅开关；纸纹开关；减弱动效（覆盖系统的 reduced-motion）；字号 标准 / 大。
+- **模型**：服务商预设（OpenAI、DeepSeek、通义千问、智谱、Kimi、硅基流动、OpenRouter、Ollama 本地、自定义 OpenAI 兼容；只带 base URL 和默认模型）、接口地址、密钥（只显示末四位，留空不改，单独「清除密钥」）、主模型、**自动识别模型**（用表单里还没保存的地址 / 密钥请求 `/models`，列出对话模型并按名称打「识图 / 推理 / 快速」标签）、**测试连接**（只在点按钮时真发一次很短的请求）、备用模型（逗号分隔，主模型出错时依次换）。
+- **对话选模型**：自动 / 固定。自动时按这一轮的任务选：带图片 → 识图模型；批改、出变式题、完整解法、作文 → 推理模型；普通提示轮 → 快速模型；没有对应能力时退回主模型。三个角色可以手动指定，留空就从「自动识别」的结果里按标签挑。每条回复的 meta 记下实际用的模型，答疑区回复下方用小字显示。路由是 `lyceum/models.py` 里的纯函数（`route_task` / `pick_model` / `chain`）。环境变量：`LYCEUM_ROUTE=auto|fixed`、`LYCEUM_FAST_MODEL`、`LYCEUM_STRONG_MODEL`、`LYCEUM_FALLBACK_MODELS`、`LYCEUM_PRESET`。
+- **学习**：年级与教材、提示节奏（讲解深度）与例子类型。
+- **记忆**：跳到「小雅记得的事」「小雅的成长」。
+- **数据与关于**：数据目录、导出备份 zip（学习库 + 设置，默认不含密钥，可勾选；题图不进备份）、导入备份（覆盖学习记录，备份里没有密钥就保留现在的）、清空学习数据（两次确认，保留年级与教材）、版本号、检查更新（只查 GitHub Releases latest 并给下载链接，不自动安装）、用量统计（各模型调用次数与 token，本地 usage.json；接口没返回 usage 时按字数估计并标 *）。
+
+**Windows 无边框窗口**：桌面版默认无边框（pywebview `frameless=True, easy_drag=False`），页面自绘 34px 标题栏：左侧小雅 + 「Lyceum 学园」，中间拖动（双击最大化 / 还原，拖到屏幕顶边最大化），右侧最小化 / 最大化还原 / 关闭细线按钮；四边四角可拉伸，最大化时去掉缩放边；深色主题跟随。窗口控制走 js_api（`lyceum/winchrome.py`）。`LYCEUM_FRAME=native` 退回系统标题栏；浏览器打开的网页版不显示标题栏；macOS 保持原生。
 
 ## 掌握度与复习规则
 

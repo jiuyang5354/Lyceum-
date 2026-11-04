@@ -11,6 +11,14 @@
 <link rel="stylesheet" href="/vendor/fonts/noto-serif-sc.css">
 <link rel="stylesheet" href="/vendor/katex/katex.min.css">
 <link rel="stylesheet" href="/css/app.css">
+<link rel="stylesheet" href="/css/settings.css">
+<script>/* 界面偏好先从本机缓存套上，避免首屏闪一下浅色 */
+try { var u = JSON.parse(localStorage.getItem('lyceum.ui') || '{}'), h = document.documentElement;
+  h.dataset.theme = u.theme === 'dark' || (u.theme === 'system' && matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+  h.dataset.grain = u.grain === false ? 'off' : 'on'; h.dataset.motion = u.reduce_motion ? 'reduce' : 'auto';
+  h.dataset.font = u.font === 'large' ? 'large' : 'normal'; h.dataset.three = u.three_d === false ? 'off' : 'on';
+  if (/[?&]frame=custom/.test(location.search)) h.classList.add('framed');
+} catch (e) {}</script>
 <script type="importmap">{ "imports": { "three": "/vendor/three.module.min.js" } }</script>
 </head>
 <body>
@@ -177,27 +185,8 @@
   </div>
 </div>
 
-<div class="modal hidden" id="setModal" role="dialog" aria-modal="true" aria-labelledby="setTitle">
-  <form class="setp" id="setForm" autocomplete="off">
-    <span class="mono">Ρυθμίσεις · 设置</span>
-    <h2 id="setTitle">模型设置</h2>
-    <p class="set-mode" id="setMode"></p>
-    <label class="fld"><span class="k">API 地址 <small class="latin">Base URL</small></span>
-      <input name="base_url" type="url" spellcheck="false" placeholder="https://api.supergpt.dev/v1"><em class="lock"></em></label>
-    <label class="fld"><span class="k">API Key</span>
-      <input name="api_key" type="password" spellcheck="false" autocomplete="new-password" placeholder="sk-…"><em class="lock"></em></label>
-    <label class="fld"><span class="k">模型 <small class="latin">Model</small></span>
-      <input name="model" spellcheck="false" placeholder="gpt-6.1-sol"><em class="lock"></em></label>
-    <label class="fld"><span class="k">识图模型 <small class="latin">Vision · 可不填</small></span>
-      <input name="vision_model" spellcheck="false" placeholder="不填就和上面的模型一样"><em class="lock"></em></label>
-    <p class="set-note">只保存在这台电脑的数据目录（config.json），不会上传，也不进代码仓库。不填 Key 就是离线演示模式。</p>
-    <div class="set-foot">
-      <button type="button" class="link" id="setClear" hidden>清除已保存的 Key</button>
-      <span class="sp"></span>
-      <button type="button" class="ghost" id="setCancel">取消</button>
-      <button type="submit" class="sel solid" id="setOk"><span class="br">[✓]</span>保存</button>
-    </div>
-  </form>
+<div class="modal hidden" id="setModal" role="dialog" aria-modal="true" aria-label="设置">
+  <div class="setx" id="setx"></div>
 </div>
 
 <script src="/vendor/katex/katex.min.js"></script>

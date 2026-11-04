@@ -18,10 +18,13 @@ from urllib.parse import parse_qs, urlparse
 ROOT = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, ROOT)
 from lyceum import agent, evolve, insight, llm, mastery, strategies  # noqa: E402
+from lyceum import __version__ as VERSION  # noqa: E402
+from lyceum import backup as bakmod  # noqa: E402
 from lyceum import config as cfgmod  # noqa: E402
+from lyceum import models as modmod  # noqa: E402
 from lyceum import memory as memmod  # noqa: E402
 from lyceum.streaming import sse  # noqa: E402
-from lyceum.db import DB  # noqa: E402
+from lyceum.db import DB, _lock as DBLOCK  # noqa: E402
 
 DATA = os.environ.get("LYCEUM_DATA", os.path.join(ROOT, "data"))
 STATIC = os.path.join(ROOT, "static")
@@ -77,7 +80,8 @@ class H(BaseHTTPRequestHandler):
 
     def body(self):
         n = int(self.headers.get("Content-Length") or 0)
-        if n > MAX_IMAGE * 1.5:
+        limit = bakmod.MAX_BACKUP * 1.4 if urlparse(self.path).path == "/api/backup/import" else MAX_IMAGE * 1.5
+        if n > limit:
             raise ValueError("请求太大")
         return json.loads(self.rfile.read(n) or b"{}")
 
@@ -135,9 +139,24 @@ class H(BaseHTTPRequestHandler):
             if p == "/api/growth":
                 return self.send_json(evolve.overview(db))
             if p == "/api/settings":
-                return self.send_json(cfgmod.public(DATA))
+                return self.send_json(self.settings_payload())
             if p == "/api/usage":
-                return self.send_json(llm.USAGE)
+                return self.send_json(dict(llm.USAGE, totals=llm.usage_totals()))
+            if p == "/api/update":
+                return self.send_json(bakmod.check_update(VERSION))
+            if p == "/api/backup":
+                if not _loopback(self.client_address[0]):
+                    return self.send_json({"error": "只能在本机导出备份"}, 403)
+                qs = parse_qs(u.query)
+                with DBLOCK:
+                    data = bakmod.export_zip(db.conn, cfgmod.load_raw(DATA), VERSION, include_key=qs.get("key", ["0"])[0] == "1")
+                self.send_response(200)
+                self.send_header("Content-Type", "application/zip")
+                self.send_header("Content-Disposition", f'attachment; filename="lyceum-backup-{time.strftime("%Y%m%d-%H%M")}.zip"')
+                self.send_header("Content-Length", str(len(data)))
+                self.end_headers()
+                self.wfile.write(data)
+                return
             if p.startswith("/uploads/"):
                 return self.send_file(os.path.join(UPLOADS, os.path.basename(p)))
             if p in ("/", "/index.html"):
@@ -162,6 +181,10 @@ class H(BaseHTTPRequestHandler):
                 return self.send_json({"profile": db.get_profile()})
             if p == "/api/settings":
                 return self.save_settings(b)
+            if p in ("/api/settings/models", "/api/settings/test", "/api/backup/import", "/api/data/clear"):
+                if not _loopback(self.client_address[0]):
+                    return self.send_json({"error": "只能在本机操作"}, 403)
+                return self.settings_action(p, b)
             if p == "/api/chat":
                 return self.chat(b)
             if p == "/api/chat/stream":
@@ -221,9 +244,54 @@ class H(BaseHTTPRequestHandler):
         # key 只允许本机改：网页版若绑在 0.0.0.0，局域网里的其他设备不能读写它
         if not _loopback(self.client_address[0]):
             return self.send_json({"error": "只能在本机修改模型设置"}, 403)
-        cfgmod.save(DATA, {k: b.get(k) for k in cfgmod.FIELDS}, clear_key=bool(b.get("clear_key")))
+        cfgmod.save(DATA, {k: b.get(k) for k in cfgmod.FIELDS}, clear_key=bool(b.get("clear_key")),
+                    ui=b.get("ui") if isinstance(b.get("ui"), dict) else None)
         cfgmod.apply(llm, DATA)
-        return self.send_json(cfgmod.public(DATA))
+        return self.send_json(self.settings_payload())
+
+    def settings_payload(self):
+        pub = cfgmod.public(DATA)
+        pub.update(presets=modmod.PRESETS, detected_labeled=modmod.labeled(pub["detected"]), version=VERSION,
+                   data_dir=DATA, usage=llm.usage_totals(),
+                   route_preview={r: modmod.pick_model(r, dict(llm.ROUTE or {}, route_mode="auto" if pub["route_mode"] == "auto" else "fixed"))
+                                  for r in modmod.ROLES})
+        return pub
+
+    def _form_conn(self, b):
+        """自动识别 / 测试连接用表单里（可能还没保存）的地址和密钥；密钥留空就用已保存的。"""
+        vals, _ = cfgmod.effective(DATA)
+        base = (b.get("base_url") or "").strip() or vals["base_url"]
+        key = (b.get("api_key") or "").strip() or vals["api_key"]
+        return base, key, vals
+
+    def settings_action(self, p, b):
+        if p == "/api/settings/models":
+            base, key, _ = self._form_conn(b)
+            try:
+                found = modmod.probe(base, key)
+            except RuntimeError as e:
+                return self.send_json({"error": "识别失败：" + str(e)}, 502)
+            cfgmod.save(DATA, {}, detected_models=[m["id"] for m in found], detected_base=base)
+            cfgmod.apply(llm, DATA)
+            return self.send_json({"models": found, "base_url": base})
+        if p == "/api/settings/test":
+            base, key, vals = self._form_conn(b)
+            try:
+                return self.send_json(modmod.test(base, key, (b.get("model") or "").strip() or vals["model"]))
+            except RuntimeError as e:
+                return self.send_json({"ok": False, "error": str(e)}, 502)
+        if p == "/api/backup/import":
+            raw = base64.b64decode((b.get("zip") or "").split(",")[-1] or b"")
+            with DBLOCK:
+                res = bakmod.import_zip(db.conn, DATA, raw, cfgmod)
+            cfgmod.apply(llm, DATA)
+            return self.send_json(dict(res, ok=True))
+        if p == "/api/data/clear":
+            if b.get("confirm") != "CLEAR":
+                return self.send_json({"error": "需要二次确认"}, 400)
+            with DBLOCK:
+                cleared = bakmod.clear_learning(db.conn)
+            return self.send_json({"ok": True, "cleared": cleared})
 
     def _chat_begin(self, b):
         profile = db.get_profile() or {"grade": 8, "textbook": "人教版"}
@@ -239,6 +307,7 @@ class H(BaseHTTPRequestHandler):
         if new:
             sid = db.new_session(text[:30])
             s = db.get_session(sid)
+        llm.reset_last()
         shown = text or {"hint": "再给一点提示", "stuck": "我卡住了", "full": "看完整解法"}.get(action, "")
         c = {"profile": profile, "text": text, "image": image, "image_url": image_url, "action": action,
              "sid": sid, "s": s, "new": new, "shown": shown, "history": db.messages(sid), "t0": time.time()}
@@ -268,6 +337,8 @@ class H(BaseHTTPRequestHandler):
         meta = {k: out.get(k) for k in ("subject", "topic", "intent", "stage", "hint_level", "student_correct", "solved", "allow_full",
                                         "strategy", "stuck_type", "misconception", "thought", "verify_fixed")}
         meta["arms"] = (st.get("arms") or {})
+        if llm.enabled() and llm.last_model():
+            meta["model"] = llm.last_model()
         meta["memories_used"] = [m["id"] for m in (c.get("extras") or {}).get("memories") or []]
         if out.get("leak_fixed"):
             meta["leak_fixed"] = True
