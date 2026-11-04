@@ -109,15 +109,22 @@ function setOrder(order) {
   if (stage) stage.setOrder(order);
 }
 
+/* 线稿纹样跟主题：浅色墨蓝，深色纸色 */
+const inkCol = () => (document.documentElement.dataset.theme === 'dark' ? '#ece8de' : '#1b2142');
+
 /* ---------------- 首页 ---------------- */
 function initHome() {
-  $$('[data-meander]').forEach((m) => { m.classList.add('meander'); m.style.backgroundImage = meanderURL('#1b2142'); });
-  document.documentElement.style.setProperty('--pediment', pedimentURL('#1b2142'));
+  const paintInk = () => {
+    $$('[data-meander], .meander').forEach((m) => { m.classList.add('meander'); m.style.backgroundImage = meanderURL(inkCol()); });
+    document.documentElement.style.setProperty('--pediment', pedimentURL(inkCol()));
+  };
+  paintInk();
+  new MutationObserver(paintInk).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
   $('#orders').innerHTML = Object.entries(ORDERS).map(([k, o]) => `<button class="order" data-order="${k}">${capital(k)}<span><b>${o.band} · ${o.name}</b><small>${o.en} · ${o.range[0] <= 6 ? o.range[0] + '–' + o.range[1] + ' 年级' : GRADES[o.range[0] - 1] + '–' + GRADES[o.range[1] - 1]}</small></span></button>`).join('');
   $$('.order').forEach((b) => { handles(b); b.onclick = () => setOrder(b.dataset.order); });
   $('#subjects').innerHTML = SUBJ.map(([g, n, d]) => `<div class="subject-row" data-s="${n}"><span class="gl">${subjectIcon(n)}</span><span class="nm">${n}<small class="gk">${g}</small></span><span class="ds">${d}</span><span class="ar">[→] 问一道${n}题</span></div>`).join('');
   $$('.subject-row').forEach((r) => r.onclick = () => { location.hash = '#/study'; setTimeout(() => { $('#input').value = `我有一道${r.dataset.s}题：`; $('#input').focus(); }, 60); });
-  $('#ctaLaurel').innerHTML = templeFront('#1b2142');
+  $('#ctaLaurel').innerHTML = templeFront('currentColor');
   $('#howBtn').onclick = () => scrollTo({ top: innerHeight * 0.95, behavior: REDUCED ? 'auto' : 'smooth' });
   tex($('#hero'));
   // 滚动：平涂 → 半调 → 铜版
@@ -461,7 +468,7 @@ async function practice(fromMistake, fromSkill) {
       <div class="practice"><div class="practice-head"><b>换个样子，再来 ${r.questions.length} 道</b><span class="mono">${esc(r.subject || '')}</span></div><div class="meander"></div>
       ${r.questions.map((q, i) => `<div class="pq"><span class="n">${greek[i]}</span><div><div class="q md">${md(q.q)}</div><span class="inp"><input placeholder="写下你的答案" data-i="${i}"></span><div class="res hidden"></div></div></div>`).join('')}
       <div class="practice-foot"><span class="score"></span><button class="sel solid sm"><span class="br">[✓]</span>交给小雅批改</button></div></div></div>`;
-    box.appendChild(card); $('.meander', card).style.backgroundImage = meanderURL('#1b2142'); tex(card); handles($('.practice-foot .sel', card));
+    box.appendChild(card); $('.meander', card).style.backgroundImage = meanderURL(inkCol()); tex(card); handles($('.practice-foot .sel', card));
     $('#chatScroll').scrollTop = 1e9; owlSay('做完点「批改」。');
     $('.practice-foot .sel', card).onclick = async (ev) => {
       const btn = ev.currentTarget; btn.disabled = true; btn.lastChild.textContent = '批改中……'; emit('practice:start');

@@ -252,7 +252,7 @@ function buildOwl() {
   add(head, new THREE.ConeGeometry(0.1, 0.24, 20), M.beak, [0, 0.2, 0.66], null, [Math.PI / 2 + 0.5, 0, 0]);
   const laurel = new THREE.Group(); head.add(laurel);
   // 反向外壳描边（只进颜色层，不进法线层）：让腹部、脸盘、眼白、翅膀在身体上也有墨线
-  const hullMat = new THREE.MeshBasicMaterial({ color: '#1b2142', side: THREE.BackSide });
+  const hullMat = HULL;
   const T = 0.05;
   owl.traverse((m) => {
     if (!m.isMesh || !m.geometry.type.startsWith('Sphere') || m.material === M.pupil || m.scale.x < 0.1) return;
@@ -264,6 +264,16 @@ function buildOwl() {
   owl.userData = { body, head, eyes, wings, laurel };
   return owl;
 }
+
+const HULL = new THREE.MeshBasicMaterial({ color: '#1b2142', side: THREE.BackSide });
+
+/* 深色主题 = 月夜：石材压成墨蓝灰、墨线换成纸色、太阳盘变月亮；小雅保持钴蓝。 */
+const THEME = {
+  light: { stone: '#fbfaf6', stone2: '#efede7', door: '#c9d1ee', cream: '#f7f1e1', white: '#ffffff', bookB: '#f7f1e1', bookC: '#e9e4d6',
+    ink: '#1b2142', paper: '#f5f3ee', disc: '#dfe6fb', sky: '#b3c1f3', gnd: '#e2e5f3', amb: 2.05, sun: 1.8, shadow: '#3a4aa0', shadowA: 0.14 },
+  dark: { stone: '#4a5288', stone2: '#3d4579', door: '#262d5c', cream: '#cfc8b4', white: '#dcd8cd', bookB: '#cfc8b4', bookC: '#a9a392',
+    ink: '#ece8de', paper: '#161b36', disc: '#e9e4d2', sky: '#8796d8', gnd: '#2a3160', amb: 1.7, sun: 1.25, shadow: '#05081c', shadowA: 0.35 },
+};
 
 /* ---------------- 合成着色器：墨线 + 半调 + 铜版 ---------------- */
 const CompositeShader = {
@@ -385,9 +395,9 @@ export class Stage {
     this.camera = new THREE.PerspectiveCamera(28, 1, 1, 120);
     this.camera.layers.enable(1);
     // 光
-    const amb = new THREE.HemisphereLight('#b3c1f3', '#e2e5f3', 2.05);
+    const amb = this.amb = new THREE.HemisphereLight('#b3c1f3', '#e2e5f3', 2.05);
     this.scene.add(amb);
-    const sun = new THREE.DirectionalLight('#fffdf8', 1.8);
+    const sun = this.sun = new THREE.DirectionalLight('#fffdf8', 1.8);
     sun.position.set(-9, 14, 11);
     sun.castShadow = true;
     sun.shadow.mapSize.set(2048, 2048);
@@ -395,7 +405,7 @@ export class Stage {
     sun.shadow.bias = -0.0005; sun.shadow.normalBias = 0.06;
     this.scene.add(sun);
     // 地面（只接收阴影，不参与描边）
-    const ground = new THREE.Mesh(new THREE.PlaneGeometry(80, 80), new THREE.ShadowMaterial({ color: '#3a4aa0', opacity: 0.14 }));
+    const ground = this.ground = new THREE.Mesh(new THREE.PlaneGeometry(80, 80), new THREE.ShadowMaterial({ color: '#3a4aa0', opacity: 0.14 }));
     ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; ground.layers.set(1);
     this.scene.add(ground);
     // 远处的太阳盘
@@ -414,6 +424,9 @@ export class Stage {
     this.rtNormal.depthTexture = new THREE.DepthTexture(2, 2);
     this.normalMat = new THREE.MeshNormalMaterial();
     this.quad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), new THREE.ShaderMaterial(CompositeShader));
+    this.setTheme(document.documentElement.dataset.theme === 'dark', false);
+    new MutationObserver(() => this.setTheme(document.documentElement.dataset.theme === 'dark'))
+      .observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
     this.quad.frustumCulled = false;
     this.postScene = new THREE.Scene(); this.postScene.add(this.quad);
     this.postCam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
@@ -468,6 +481,21 @@ export class Stage {
     if (this.mode !== 'owl') this.target = w < 860 ? 'heroNarrow' : 'hero';
     this.w = w; this.h = h; this.kick();
   }
+  setTheme(dark, redraw = true) {
+    const t = THEME[dark ? 'dark' : 'light'];
+    for (const k of ['stone', 'stone2', 'door', 'cream', 'white', 'bookB', 'bookC']) M[k].color.set(t[k]);
+    HULL.color.set(t.ink);
+    this.amb.color.set(t.sky); this.amb.groundColor.set(t.gnd); this.amb.intensity = t.amb;
+    this.sun.intensity = t.sun;
+    this.ground.material.color.set(t.shadow); this.ground.material.opacity = t.shadowA;
+    this.disc.material.color.set(t.disc);
+    if (this.quad) {
+      const u = this.quad.material.uniforms;
+      u.uInk.value = hexV(t.ink); u.uPaper.value = hexV(t.paper);
+    }
+    if (redraw) this.kick();
+  }
+
   setOrder(order) {
     if (!this.ok || order === this.order) return;
     this.order = order;
