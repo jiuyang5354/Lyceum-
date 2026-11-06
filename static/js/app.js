@@ -1,6 +1,7 @@
 import { capital, orderOfGrade, meanderURL, laurel, owlMark, icons, sticker, subjectIcon, columnGlyph, templeFront, owlOnColumn, pedimentURL, laurelMini, capitalPulse, art } from './svg.js';
 import { initSettings, openSettings, paintMode, applyUi } from './settings.js';
 import { initTitlebar } from './titlebar.js';
+import { panelVisibility, studyCue, homeSummary } from './workspace.js';
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -23,6 +24,7 @@ const GLYPH = Object.fromEntries(SUBJ.map(([g, n]) => [n, g])); GLYPH['科学'] 
 
 const state = { profile: null, llm: false, model: '', session: null, msgs: [], image: null, busy: false, problemState: {}, route: 'home', tab: 'notebook', filter: '' };
 let stage = null;
+let studyPanels = null;
 let navSeq = 0;   // 导航序号：流式轮次用它判断中途是否切走了会话视图
 
 /* ---------------- 事件总线 + 小雅情绪状态机（见 DESIGN.md「小雅的情绪」） ----------------
@@ -139,6 +141,7 @@ function initHome() {
     const idx = p < 0.13 ? 0 : p < 0.42 ? 1 : p < 0.7 ? 2 : 3;
     $('#heroCopy').style.opacity = idx === 0 ? 1 : 0; $('#heroCopy').style.pointerEvents = idx === 0 ? 'auto' : 'none';
     $('#stickers').style.opacity = idx === 0 ? 1 : 0; heroIdx = idx;
+    $('#homeReturn').style.opacity = idx === 0 ? 1 : 0; $('#homeReturn').style.pointerEvents = idx === 0 ? 'auto' : 'none';
     $('#orders').style.opacity = idx === 0 ? 1 : 0; $('#orderNote').style.opacity = idx === 0 ? 1 : 0;
     steps.forEach((s, i) => s.classList.toggle('on', i + 1 === idx));
     rail.forEach((r, i) => r.classList.toggle('on', i === idx));
@@ -190,6 +193,21 @@ function initHome() {
     requestAnimationFrame(tick);
   };
   tick();
+}
+
+async function renderHomeReturn() {
+  const seq = navSeq;
+  const results = await Promise.allSettled([api('/api/sessions'), api('/api/review/today')]);
+  if (state.route !== 'home' || navSeq !== seq) return;
+  const sessions = results[0].status === 'fulfilled' ? results[0].value.sessions : [];
+  const review = results[1].status === 'fulfilled' ? results[1].value : null;
+  const summary = homeSummary(sessions, review), block = $('#homeReturn');
+  block.hidden = !summary.visible;
+  if (!summary.visible) { block.replaceChildren(); return; }
+  const last = summary.session;
+  block.innerHTML = `<div class="return-head"><span class="mono">学园 · 从上一次继续</span><span>不急，一步一步来</span></div><div class="return-links">
+    <a href="${last ? '#/study/' + last.id : '#/study'}"><b>${last ? '继续上次的题' : '问一道新题'} <span aria-hidden="true">↗</span></b><small>${esc(last?.title || '今天，想弄明白什么？')}</small></a>
+    <a href="#/notebook/today"><b>今日复习 <span aria-hidden="true">↗</span></b><small>${summary.due === null ? '查看复习安排' : summary.due ? summary.due + ' 个知识点等你回顾' : '今天没有到期复习'}</small></a></div>`;
 }
 
 /* ---------------- 年级选择 ---------------- */
@@ -307,6 +325,13 @@ function paintInspector() {
   paintStrategy();
   const ps = state.problemState || {};
   const prob = state.session?.problem;
+  const cue = studyCue(ps);
+  $('#nextStepTitle').textContent = cue.title;
+  $('#nextStepText').textContent = cue.text;
+  $('#studyTitle').textContent = ps.subject ? `${ps.subject} · ${ps.topic || '一起想明白'}` : '一道题，一步一步想';
+  $('#hintCount').textContent = `${Math.min(3, ps.hint_level || 0)} / 3`;
+  $('#studyShell').classList.toggle('is-solved', cue.action === 'practice');
+  $$('[data-act], #practiceBtn').forEach((b) => { b.disabled = state.busy || !state.session; });
   $('#probChips').innerHTML = ps.subject ? `<span class="chip">${sIco(ps.subject)}${esc(ps.subject)}</span>${ps.topic ? `<span class="chip">${esc(ps.topic)}</span>` : ''}` : '';
   const pt = $('#probText');
   pt.classList.toggle('empty-p', !prob); pt.innerHTML = prob ? md(prob) : '还没有题目。发一道题过来吧。'; tex(pt);
@@ -325,9 +350,10 @@ function owlSay(t) { const el = $('#owlSay'); if (el.textContent === t) return; 
 async function loadSessions() {
   try {
     const { sessions } = await api('/api/sessions');
+    $('#sessionCount').textContent = sessions.length || '';
     $('#sessList').innerHTML = sessions.length ? sessions.map((s) => `<button class="sess ${state.session?.id === s.id ? 'on' : ''}" data-id="${s.id}"><span class="t">${esc(s.title || '未命名')}</span><span class="m">${esc(s.subject || '—')}${s.topic ? ' · ' + esc(s.topic) : ''} · ${ago(s.updated)}</span></button>`).join('')
       : '<p style="padding:8px 12px;color:var(--muted);font-size:14px">还没有问过题。</p>';
-    $$('.sess').forEach((b) => b.onclick = () => { location.hash = '#/study/' + b.dataset.id; });
+    $$('.sess').forEach((b) => b.onclick = () => { studyPanels?.dismiss(); location.hash = '#/study/' + b.dataset.id; });
   } catch (e) { /* ignore */ }
 }
 async function openSession(id) {
@@ -562,16 +588,53 @@ function setImageFile(f) {
   probe.src = url;
 }
 
+function initWorkspacePanels() {
+  const media = matchMedia('(max-width: 1050px)');
+  let savedHistory = true;
+  try { savedHistory = JSON.parse(localStorage.getItem('lyceum.workspace') || '{}').history !== false; } catch (_) { /* private storage can be unavailable */ }
+  const ui = { narrow: media.matches, history: !media.matches && savedHistory, context: false, focus: false };
+  const shell = $('#studyShell'), sidebar = $('#sessionSidebar'), inspector = $('#studyContext');
+  const apply = () => {
+    const show = panelVisibility(ui);
+    sidebar.hidden = !show.history; inspector.hidden = !show.context;
+    shell.dataset.history = show.history ? 'open' : 'closed'; shell.dataset.focus = ui.focus ? 'on' : 'off';
+    $('#historyToggle').setAttribute('aria-expanded', String(show.history));
+    $('#historyToggle').title = show.history ? '收起最近的题' : '展开最近的题';
+    $('#contextToggle').setAttribute('aria-expanded', String(show.context));
+    $('#focusToggle').setAttribute('aria-pressed', String(ui.focus));
+    $('#focusToggle span').textContent = ui.focus ? '退出专注' : '专注';
+    $('#panelShade').hidden = !ui.narrow || (!show.history && !show.context);
+    if (!show.history && sidebar.contains(document.activeElement)) $('#historyToggle').focus();
+    if (!show.context && inspector.contains(document.activeElement)) (ui.narrow ? $('#contextToggle') : $('#focusToggle')).focus();
+  };
+  const dismiss = () => { if (ui.narrow) { ui.history = ui.context = false; apply(); } };
+  $('#historyToggle').onclick = () => {
+    const shown = panelVisibility(ui).history;
+    ui.focus = false; ui.history = !shown; ui.context = false;
+    if (!ui.narrow) { savedHistory = ui.history; try { localStorage.setItem('lyceum.workspace', JSON.stringify({ history: savedHistory })); } catch (_) {} }
+    apply();
+  };
+  $('#contextToggle').onclick = () => { const shown = panelVisibility(ui).context; ui.focus = false; ui.context = !shown; ui.history = false; apply(); };
+  $('#focusToggle').onclick = () => { ui.focus = !ui.focus; apply(); };
+  $('#contextClose').onclick = dismiss; $('#panelShade').onclick = dismiss;
+  media.addEventListener('change', () => { ui.narrow = media.matches; ui.history = !ui.narrow && savedHistory; ui.context = false; apply(); });
+  addEventListener('keydown', (e) => { if (e.key !== 'Escape' || state.route !== 'study') return; if (ui.focus) { ui.focus = false; apply(); } else dismiss(); });
+  apply();
+  return { dismiss };
+}
+
 function initStudy() {
+  studyPanels = initWorkspacePanels();
   $('#imgBtn').insertAdjacentHTML('afterbegin', icons.image);
   $('#steps').innerHTML = ['方向', '方法', '最后一步'].map((t, i) => `<div class="step">${columnGlyph()}<span><b>${GK[i]}΄</b>${t}</span></div>`).join(''); $('#attachX').innerHTML = icons.close;
   handles($('#send')); handles($('#newChat')); handles($('#practiceBtn'));
   $('#send').onclick = () => send();
   $('#input').addEventListener('keydown', (e) => { if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); send(); } });
   $('#input').addEventListener('input', () => { autosize(); emit('compose:typing'); });
+  $('#imgBtn').onclick = () => $('#file').click();
   $('#file').onchange = (e) => setImageFile(e.target.files[0]);
   $('#attachX').onclick = clearImage;
-  $('#newChat').onclick = () => { location.hash = '#/study'; };
+  $('#newChat').onclick = () => { studyPanels?.dismiss(); location.hash = '#/study'; };
   $$('[data-act]').forEach((b) => b.onclick = () => send(b.dataset.act));
   $('#practiceBtn').onclick = () => practice();
   const chat = $('#chat');
@@ -640,12 +703,24 @@ function masteryHead(sk, today) {
   if (!sk) return '';
   return `<div class="mastery ${sk.status}">${mbar(sk.p_l)}<div class="mrow"><span class="pct">${pct(sk.p_l)}<small>%</small></span><span class="st">${sk.status === 'mastered' ? laurelMini() : ''}${STATUS[sk.status]}</span></div><div class="mnext">${nextTxt(sk, today)}</div></div>`;
 }
+function reviewBrief(rev, today) {
+  const count = rev.topics_due;
+  const mistake = rev.mistakes?.find((x) => Number.isSafeInteger(x.id) && x.id > 0);
+  const skill = rev.skills?.find((x) => Number.isSafeInteger(x.id) && x.id > 0);
+  const start = count && (mistake || skill);
+  const action = start ? `<button class="sel solid sm" ${mistake ? 'data-retry' : 'data-rskill'}="${start.id}"><span class="br">[→]</span>从第一题开始</button>`
+    : `<a class="sel ${count ? 'solid ' : ''}sm" href="${count ? '#/notebook/today' : '#/study'}"><span class="br">[→]</span>${count ? '看今日复习' : '去问一道题'}</a>`;
+  return `<section class="review-brief" aria-label="今日学习安排"><div><span class="mono">温故 · 把学过的变成自己的</span>
+    <h2>${count ? `今天，回顾 ${count} 个知识点` : '今天没有到期复习'}</h2>
+    <p>${count ? '先自己想一遍，再展开答案核对。' + (rev.mistakes_due ? `其中有 ${rev.mistakes_due} 道错题到期。` : '用新的变式题，检查是不是真的会了。') : rev.next_date ? '下次复习在' + fmtDay(rev.next_date, today) + '，也可以从一道旧题开始。' : '问一道题，或完成一组变式练习，复习安排会从这里开始。'}</p></div>
+    ${action}</section>`;
+}
 function mistakeCard(m, today) {
   const due = m.next_review && m.next_review <= today;
   const sched = m.mastered ? '已出本' : (due ? '<b class="due">今天复习</b>' : '下次复习 ' + fmtDay(m.next_review, today));
   return `<div class="mcard stele${due ? ' is-due' : ''}" data-id="${m.id}"><div class="q md">${md(m.question)}</div>
-    <div class="row"><div><span>你的答案</span><div class="your">${esc(m.user_answer)}</div></div><div><span>参考答案</span><div>${esc(m.correct_answer || '见解析')}</div></div></div>
-    <details><summary>看解析</summary><div class="md" style="margin-top:8px;font-size:15.5px">${md(m.explain)}</div></details>
+    <div class="attempt-label">上一次，你这样回答</div><div class="your">${esc(m.user_answer || '当时没有作答')}</div>
+    <details><summary>想过以后，再看答案与解析</summary><div class="answer-detail"><p><span>参考答案</span>${esc(m.correct_answer || '见解析')}</p><div class="md">${md(m.explain)}</div></div></details>
     <div class="acts"><button class="sel sm" data-retry="${m.id}"><span class="br">[↻]</span>再练一次</button><button class="ghost" data-master="${m.id}" title="只算弱证据：到期再练一次答对才算数">${m.self_report ? '已自评会了' : '我会了'}</button>
       <span class="meta">${m.cause ? `错因 · ${esc(m.cause)}${m.misconception ? '（' + esc(m.misconception) + '）' : ''} · ` : ''}${sched} · ${m.source === '讲解' ? '看了完整解法' : '变式题做错'} · ${ago(m.created)}</span></div></div>`;
 }
@@ -674,15 +749,14 @@ async function renderBook() {
   if (tab === 'notebook') {
     const all = (await api('/api/mistakes')).mistakes;
     const subs = [...new Set(all.map((m) => m.subject))];
-    let h = `<div class="filters"><button data-f="__today" class="today-f ${state.filter === '__today' ? 'on' : ''}"><span class="gkf">Σ</span>今日复习 ${dueN} 个知识点</button><button data-f="" class="${!state.filter ? 'on' : ''}">全部 ${all.length}</button>${subs.map((s) => `<button data-f="${esc(s)}" class="${state.filter === s ? 'on' : ''}">${sIco(s)}${esc(s)} ${all.filter((m) => m.subject === s).length}</button>`).join('')}</div>`;
+    let h = reviewBrief(rev, today) + `<div class="filters"><button data-f="__today" class="today-f ${state.filter === '__today' ? 'on' : ''}"><span class="gkf">Σ</span>今日复习 ${dueN} 个知识点</button><button data-f="" class="${!state.filter ? 'on' : ''}">全部 ${all.length}</button>${subs.map((s) => `<button data-f="${esc(s)}" class="${state.filter === s ? 'on' : ''}">${sIco(s)}${esc(s)} ${all.filter((m) => m.subject === s).length}</button>`).join('')}</div>`;
     if (state.filter === '__today') {
       // 今日复习：按知识点分组，到期的错题 + 到期但没有到期错题的知识点
       const groups = {};
       rev.skills.forEach((k) => { (groups[skKey(k.subject, k.topic)] ||= { sk: k, ms: [] }); });
       rev.mistakes.forEach((m) => { const k = skKey(m.subject, m.topic); (groups[k] ||= { sk: skMap[k], ms: [] }).ms.push(m); });
       const d = new Date(today + 'T00:00:00');
-      h += `<div class="today-head"><div><span class="mono">Σήμερον · 今日复习</span><h3>${d.getMonth() + 1}月${d.getDate()}日 · 周${'日一二三四五六'[d.getDay()]}</h3></div>
-        <p>今天要复习 ${dueLine(rev)}。答错的明天再见；同一个知识点连续两次到期都答对、掌握度过 85%，才算真正掌握。</p></div>`;
+      h += `<p class="review-date mono">Σήμερον · ${d.getMonth() + 1}月${d.getDate()}日 · 周${'日一二三四五六'[d.getDay()]}</p>`;
       if (!Object.keys(groups).length) {
         h += `<div class="none">${art('sundial')}<h3>今天没有要复习的</h3><p>${rev.next_date ? '下一次复习：' + fmtDay(rev.next_date, today) : '做几道变式题，小雅会排好复习日期。'}</p></div>`;
       } else {
@@ -692,9 +766,6 @@ async function renderBook() {
       }
     } else {
       const mistakes = state.filter ? all.filter((m) => m.subject === state.filter) : all;
-      if (!state.filter && dueN) {
-        h += `<button class="today-strip" data-f="__today"><span class="gkf">Σήμερον</span><span class="t"><b>今日复习</b>${dueLine(rev)}</span><span class="ar">[→] 开始复习</span></button>`;
-      }
       if (!mistakes.length) {
         h += `<div class="none">${art('stele')}<h3>石碑上还没有刻字</h3><p>做完变式题，做错的会自动记到这里；隔几天再练一次，会了就出本。</p><a class="sel solid" href="#/study" style="margin-top:20px"><span class="br">[→]</span>去问一道题</a></div>`;
       } else {
@@ -713,12 +784,13 @@ async function renderBook() {
     const cnt = (st) => sks.filter((k) => k.status === st).length;
     const mastery = `<div class="mastery-sec"><div class="ms-head"><div><span class="mono">Ἐπιστήμη · 知识点掌握度</span><h3>会了多少，由规则说了算</h3></div>
       <div class="ms-sum"><span><b>${cnt('mastered')}</b>已掌握</span><span><b>${cnt('consolidating')}</b>待巩固</span><span><b>${cnt('learning')}</b>学习中</span><span class="blue"><b>${rev.topics_due}</b>今日复习（知识点）</span></div></div>
-      <p class="ms-rule">掌握度是 BKT 估计的「已经会了」的概率 P(L)。要 <b>P(L) ≥ 85%</b> 并且 <b>连续两次到期复习都答对</b> 才算掌握；复习间隔 1 → 2 → 4 → 7 → 15 → 30 天，答错回到 1 天。「我会了」只算弱证据。同一学科里说法不同的知识点按规范表合并成一个；「今日复习」按知识点计：自己到期的，加上有错题到期的。</p>
+      <details class="rules-disclosure"><summary>掌握度如何计算？查看规则与证据说明</summary><p class="ms-rule">掌握度是 BKT 估计的「已经会了」的概率 P(L)。要 <b>P(L) ≥ 85%</b> 并且 <b>连续两次到期复习都答对</b> 才算掌握；复习间隔 1 → 2 → 4 → 7 → 15 → 30 天，答错回到 1 天。「我会了」只算弱证据。同一学科里说法不同的知识点按规范表合并成一个；「今日复习」按知识点计：自己到期的，加上有错题到期的。</p></details>
       ${sks.length ? `<div class="mlist">${sks.map((k, i) => `<div class="mitem ${k.status}" data-sk="${k.id}"><button class="mline"><span class="n">${GKL[i] || i + 1}΄</span><span class="nm" title="${esc(skTitle(k))}">${sIco(k.subject)}<span>${esc(k.topic || '未分类')}<small>${esc(k.subject)}${k.canon === 0 ? ' · 未归类' : ''}</small></span></span>${mbar(k.p_l)}<span class="pct">${pct(k.p_l)}<small>%</small></span><span class="st">${k.status === 'mastered' ? laurelMini() : ''}${STATUS[k.status]}</span><span class="nx">${nextTxt(k, today)}</span><span class="ev">记录 ${k.n_obs}</span></button><div class="evs hidden"></div></div>`).join('')}</div>`
         : '<p style="color:var(--muted)">做完变式题、或在答疑里自己做对一道题，这里就会出现第一个知识点。</p>'}</div>`;
-    body.innerHTML = mastery + `<div class="rec-grid"><div><h4 class="mono" style="margin:0 0 6px">最近 7 天</h4><div class="week">${days.map((d) => `<i class="${activeSet.has(d.toDateString()) ? 'on' : ''}"><span>${'日一二三四五六'[d.getDay()]}</span></i>`).join('')}</div>
+    body.innerHTML = reviewBrief(rev, today) + mastery + `<div class="rec-grid"><div><h4 class="mono" style="margin:0 0 6px">最近 7 天</h4><div class="week">${days.map((d) => `<i class="${activeSet.has(d.toDateString()) ? 'on' : ''}"><span>${'日一二三四五六'[d.getDay()]}</span></i>`).join('')}</div>
       <h4 class="mono" style="margin:40px 0 6px">各科提问</h4><div class="bars">${stats.by_subject.length ? stats.by_subject.map((s) => `<div class="bar"><span class="nm">${sIco(s.subject)}${esc(s.subject)}</span><span class="tr"><i style="width:${(s.n / max * 100).toFixed(0)}%"></i></span><span class="v">${s.n}</span></div>`).join('') : '<p style="color:var(--muted)">还没有记录。</p>'}</div></div>
       <div><h4 class="mono" style="margin:0 0 6px">最近问过的题</h4><div class="recent">${sessions.map((s) => `<a class="r" href="#/study/${s.id}"><span class="t">${esc(s.title || '未命名')}</span><span class="m">${esc(s.subject || '')} · ${ago(s.updated)}</span></a>`).join('') || '<p style="color:var(--muted)">还没有。</p>'}</div></div></div>`;
+    bindBook(body);
     $$('.mitem .mline', body).forEach((b) => b.onclick = () => toggleEvents(b.parentElement, today));
     animateBook(['.mitem', '.bars .bar', '.recent .r', '.week i']);
   }
@@ -833,6 +905,7 @@ async function route() {
   const BOOK = ['notebook', 'record', 'memory', 'growth'];
   const name = r === 'study' ? 'study' : BOOK.includes(r) ? 'notebook' : 'home';
   if (BOOK.includes(r)) state.tab = r;
+  if (r === 'notebook' && id === 'today') state.filter = '__today';
   const changed = state.route !== name; state.route = name;
   if (name === 'notebook' && (changed || state.lastTab !== state.tab)) state.animBook = true;
   state.lastTab = state.tab;
@@ -846,9 +919,9 @@ async function route() {
     else if (name === 'study') stage.mount($('#stageOwl'), 'owl');
   }
   if (changed) scrollTo(0, 0);
-  if (name === 'study') { await openSession(id ? +id : null); }
+  if (name === 'study') { studyPanels?.dismiss(); await openSession(id ? +id : null); }
   if (name === 'notebook') renderBook().catch((e) => toast(e.message));
-  if (name === 'home') dispatchEvent(new Event('scroll'));
+  if (name === 'home') { dispatchEvent(new Event('scroll')); renderHomeReturn().catch(() => { $('#homeReturn').hidden = true; }); }
 }
 
 async function boot() {

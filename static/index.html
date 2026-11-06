@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="/vendor/katex/katex.min.css">
 <link rel="stylesheet" href="/css/app.css">
 <link rel="stylesheet" href="/css/settings.css">
+<link rel="stylesheet" href="/css/workspace.css">
 <script>/* 界面偏好先从本机缓存套上，避免首屏闪一下浅色 */
 try { var u = JSON.parse(localStorage.getItem('lyceum.ui') || '{}'), h = document.documentElement;
   h.dataset.theme = u.theme === 'dark' || (u.theme === 'system' && matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
@@ -43,6 +44,7 @@ try { var u = JSON.parse(localStorage.getItem('lyceum.ui') || '{}'), h = documen
 <section id="v-home" class="view">
   <div class="hero" id="hero">
     <div class="hero-sticky">
+      <section class="home-return" id="homeReturn" aria-label="继续学习" hidden></section>
       <div id="stageHome"></div>
       <div class="owl-sel" id="owlSel"><i></i><i></i><i></i><i></i><span class="tag">小雅.owl — 点一下</span><span class="dim" id="owlDim"></span></div>
       <div id="stickers"></div>
@@ -114,47 +116,57 @@ try { var u = JSON.parse(localStorage.getItem('lyceum.ui') || '{}'), h = documen
 
 <!-- ============ 答疑 ============ -->
 <section id="v-study" class="view hidden">
-  <div class="study">
-    <aside class="side">
-      <div class="side-top"><button class="sel sm" id="newChat"><span class="br">[+]</span>新的问题</button></div>
-      <h4 class="mono">最近的题</h4>
+  <div class="study" id="studyShell" data-history="open">
+    <aside class="side" id="sessionSidebar" aria-label="最近的题">
+      <div class="side-top"><span class="mono">你的学习书签</span><button class="sel sm" id="newChat"><span class="br">[+]</span>问一道新题</button></div>
+      <h4 class="mono">最近的题 <span id="sessionCount"></span></h4>
       <div class="sess-list" id="sessList"></div>
+      <a class="side-review" href="#/notebook/today"><span>温故，再知新</span><b>去今日复习 <span aria-hidden="true">↗</span></b></a>
     </aside>
     <div class="chat" id="chat">
+      <header class="study-toolbar">
+        <button class="quiet-btn" id="historyToggle" aria-controls="sessionSidebar" aria-expanded="true" title="收起最近的题"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="3" y="4" width="14" height="12" rx="1"/><path d="M8 4v12"/></svg><span>最近的题</span></button>
+        <span class="study-title" id="studyTitle">一道题，一步一步想</span>
+        <div class="study-tools"><button class="quiet-btn context-toggle" id="contextToggle" aria-controls="studyContext" aria-expanded="false">题目与提示</button><button class="quiet-btn" id="focusToggle" aria-pressed="false" title="收起两侧，专心思考"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7 3H3v4m10-4h4v4M3 13v4h4m10-4v4h-4"/></svg><span>专注</span></button></div>
+      </header>
       <div class="strat-bar hidden" id="stratBar" aria-live="polite"></div>
       <div class="chat-scroll" id="chatScroll"><div class="chat-inner" id="chatInner"></div></div>
       <div class="composer" id="composer">
         <div class="composer-inner">
-          <div class="attach hidden" id="attach"><img id="attachImg" alt="待上传的题目图片"><button class="icon-btn" id="attachX" title="移除图片"></button><span class="mono">图片已附上</span></div>
+          <div class="composer-label"><label for="input">写下题目，也写下你的想法</label><span>不必一次就答对</span></div>
+          <div class="attach hidden" id="attach"><img id="attachImg" alt="待上传的题目图片"><button class="icon-btn" id="attachX" title="移除图片" aria-label="移除图片"></button><span class="mono">图片已附上</span></div>
           <div class="compose-box">
-            <textarea id="input" rows="1" placeholder="把题目打出来，或者拍照上传……"></textarea>
-            <label class="icon-btn" title="上传题目图片" id="imgBtn"><input type="file" accept="image/*" id="file" hidden></label>
+            <textarea id="input" rows="1" placeholder="从你已经知道的那一步开始……"></textarea>
+            <button type="button" class="icon-btn" title="上传题目图片" aria-label="上传题目图片" id="imgBtn"></button><input type="file" accept="image/*" id="file" hidden>
             <button class="sel solid" id="send"><span class="br">[→]</span>发送</button>
           </div>
-          <div class="compose-hint"><span>Enter 发送 · Shift+Enter 换行 · 可以把图片拖进来</span><span id="modelTag"></span></div>
+          <div class="compose-hint"><span>Enter 发送 · Shift+Enter 换行 · 支持粘贴或拖入图片</span><span id="modelTag"></span></div>
         </div>
       </div>
     </div>
-    <aside class="inspector">
-      <div class="owl-frame"><div id="stageOwl"></div><span class="cap mono">小雅.owl<span class="mood" id="owlMood">等待</span></span><div class="say" id="owlSay" aria-live="polite">我在。今天想弄明白什么？</div></div>
-      <div class="panel entab" id="probPanel">
+    <button class="panel-shade" id="panelShade" aria-label="关闭侧栏" hidden></button>
+    <aside class="inspector" id="studyContext" aria-label="当前题目与学习引导">
+      <div class="context-heading"><span class="mono">这一页的思路</span><button class="quiet-btn context-close" id="contextClose" aria-label="关闭题目与提示">关闭 ×</button></div>
+      <div class="panel" id="probPanel">
         <h4 class="mono">当前这道题</h4>
         <div class="kv" id="probChips"></div>
         <div class="prob md empty-p" id="probText">还没有题目。发一道题过来吧。</div>
       </div>
-      <div class="panel entab">
-        <h4 class="mono">提示进度</h4>
+      <div class="panel progress-panel">
+        <div class="panel-label"><h4 class="mono">思考的阶梯</h4><span id="hintCount">0 / 3</span></div>
         <div class="steps" id="steps"></div>
-        <div class="steps-l" style="margin-top:12px"><span id="stuckTxt">卡住 0 / 3</span><span id="solvedTxt"></span></div>
+        <div class="steps-l"><span id="stuckTxt">卡住 0 / 3</span><span id="solvedTxt"></span></div>
       </div>
-      <div class="panel">
+      <div class="panel next-panel">
+        <span class="mono">接下来</span><h3 id="nextStepTitle">先把题目放在这里</h3><p id="nextStepText">打字或上传图片，再说说你卡在哪一步。</p>
         <div class="stack">
-          <button class="ghost" data-act="hint">再给一点提示</button>
-          <button class="ghost" data-act="stuck">我卡住了</button>
-          <button class="ghost" data-act="full">看完整解法</button>
-          <button class="sel sm" id="practiceBtn"><span class="br">[*]</span>出几道变式题</button>
+          <button class="sel solid sm" data-act="hint" disabled><span class="br">[→]</span>再给一点提示</button>
+          <button class="ghost" data-act="stuck" disabled>我卡住了，换个思路</button>
+          <button class="sel sm" id="practiceBtn" disabled><span class="br">[*]</span>出几道变式题</button>
+          <button class="answer-link" data-act="full" disabled>看完整解法 <span aria-hidden="true">↗</span></button>
         </div>
       </div>
+      <div class="owl-frame"><div id="stageOwl"></div><span class="cap mono">小雅.owl<span class="mood" id="owlMood">等待</span></span><div class="say" id="owlSay" aria-live="polite">我在。今天想弄明白什么？</div></div>
     </aside>
   </div>
 </section>
