@@ -74,9 +74,8 @@ class GradeTest(PatchLLM):
         self.assertTrue(r[0]["checked"] and r[1]["checked"])
         self.assertFalse(r[2]["checked"])
 
-    def test_model_overridden_by_check(self):
-        self.fake({"results": [{"correct": False, "feedback": "不对"}, {"correct": True, "feedback": "对"},
-                               {"correct": True, "feedback": "对"}]})
+    def test_local_checks_precede_model_for_unknown_items(self):
+        self.fake({"results": [{"correct": True, "feedback": "作者正确"}]})
         r = agent.grade_answers({"grade": 8}, {}, self.QS, ["x=3 或 x=4", "x=2", "李白"])
         self.assertEqual([x["correct"] for x in r], [True, False, True])
         self.assertIn("代回检验", r[0]["feedback"])

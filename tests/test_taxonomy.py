@@ -140,8 +140,12 @@ class PromptTest(unittest.TestCase):
         self.assertIn("规范知识点", p8)
         self.assertIn("初中各学科规范知识点", p8)
         self.assertIn("因式分解", p8)
+        # Known subject: only its table travels; unknown subject still gets all.
         for subj in NINE:
-            self.assertIn(f"- {subj}：", p8)
+            self.assertEqual(f"- {subj}：" in p8, subj == "数学")
+        unknown = agent.system_prompt({"grade": 8}, {}, False)
+        for subj in NINE:
+            self.assertIn(f"- {subj}：", unknown)
         self.assertNotIn("圆锥曲线", p8)   # 高中才有
         self.assertNotIn("一元二次方程·因式分解", p8)  # 旧示例已去掉
         block = p8.split("初中各学科规范知识点")[1]
@@ -213,10 +217,12 @@ class MergeTest(unittest.TestCase):
         d.conn.close()
 
     def tearDown(self):
+        if hasattr(self, "live_db"):
+            self.live_db.conn.close()
         shutil.rmtree(self.dir)
 
     def test_merge_replays_in_time_order(self):
-        d = DB(self.path)
+        d = self.live_db = DB(self.path)
         live = d.mastery_list()
         math = [k for k in live if k["subject"] == "数学"]
         self.assertEqual(sorted(k["topic"] for k in math), ["因式分解", "演示模式"])  # 三种说法 → 一个；空白差异的未归类也合并
@@ -241,7 +247,7 @@ class MergeTest(unittest.TestCase):
         self.assertGreater(abs(sum(olds[1:]) / 2 - tgt["p_l"]), 0.05)
 
     def test_old_rows_kept_and_mistakes_moved_and_log(self):
-        d = DB(self.path)
+        d = self.live_db = DB(self.path)
         tid = self.raw[("数学", "因式分解")]
         for t in ("一元二次方程·因式分解", "一元二次方程-因式分解法"):
             row = d.q("SELECT * FROM skills WHERE id=?", (self.raw[("数学", t)],), one=True)

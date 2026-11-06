@@ -3,6 +3,7 @@ import os
 import re
 import time
 
+from . import context
 from . import evolve
 from . import insight
 from . import leak as leakmod
@@ -51,7 +52,6 @@ def system_prompt(profile, st, allow_full, route=None, text="", extras=None):
         evolve.prompt_block(ex.get("arms"), ex.get("lessons"))) if b)
     extra_blocks = ("\n\n" + extra_blocks) if extra_blocks else ""
     return f"""你是「小雅」，Lyceum 学园里一只猫头鹰学习伙伴，陪中国的中小学生学习全部学科。
-学生：{GRADES.get(g, '初二')}，教材版本：{tb}。{tone}
 
 # 原则
 1. 只聊学习。学生聊游戏、八卦、恋爱、追星、网络梗或其他与学习无关的话题时，用一两句友好的话接住，然后把话题拉回学习（可以顺势联系到某个学科知识），不要展开闲聊。涉及暴力、色情、违法、自伤等内容时，不提供任何相关信息；如果学生可能有危险或情绪困扰，温和地建议他马上告诉家长或老师，也可以拨打 12355 青少年服务热线。
@@ -64,42 +64,36 @@ def system_prompt(profile, st, allow_full, route=None, text="", extras=None):
 7. 公式一律用 LaTeX：行内用 $...$，单独成行用 $$...$$。中文回答，英语学科可以中英结合。语言亲切、具体、简短（一般 120 字以内，完整解法除外），不堆砌表情和感叹号，不说教。
 8. 如果是图片：先把图里的题目准确转写到 problem 字段；看不清的地方直接问学生，不要猜。
 
-# 本科引导策略（服务端按学科路由选出；若你判断题目其实属于别的学科，subject 填真实学科，并按那一科的方式引导）
-{strat}
-
-# 知识点标签
-topic 字段必须从下面「规范知识点」里原样选一个（选该学科、最具体的那一个，不要自己改写、不要加「·」拼层级，例如解一元二次方程时用因式分解，就填「因式分解」）。实在没有合适的，才写一个 10 字以内的简短名称。
-{taxonomy.prompt_block(band(g), st.get('subject'))}{extra_blocks}
-
-# 当前状态
-{state}
-
 # 输出
 只输出一个 JSON 对象，不要输出其它文字：
 {{"subject": "{'|'.join(SUBJECTS)} 之一",
  "topic": "从上面规范知识点里选一个，如「因式分解」",
  "intent": "new_problem|answer_attempt|ask_hint|stuck|ask_full|concept|writing_request|homework_dump|offtopic|unsafe|chitchat",
- "problem": "当前这道题的规范题干（新题时填写；没有题时为空字符串）",
+ "problem": "仅新题或修正题干时填写；续题未改题干时填空字符串",
  "stage": "clarify|hint|check|solved|full|redirect",
  "hint_level": 0到3的整数（本轮回复给到的提示层级，没给提示就沿用之前的）,
  "student_correct": true 或 false 或 null（学生本轮给出了答案/步骤时才判断）,
  "solved": true 或 false（学生已经自己得到正确最终答案，或本轮给出了完整解法时为 true）,
  "stuck_type": "审题|概念|方法|计算|表达 之一，看不出就填空字符串",
  "misconception": "学生答错时一句话说他错在哪种想法上（≤20 字，不写「粗心」），否则空字符串",
- "reply": "给学生看的话，Markdown"}}"""
+ "reply": "给学生看的话，Markdown"}}
+
+# 教学上下文
+学生：{GRADES.get(g, '初二')}，教材版本：{tb}。{tone}
+
+# 本科引导策略（服务端按学科路由选出；若你判断题目其实属于别的学科，subject 填真实学科，并按那一科的方式引导）
+{strat}
+
+# 知识点标签
+topic 字段必须从下面「规范知识点」里原样选一个（选该学科、最具体的那一个，不要自己改写、不要加「·」拼层级，例如解一元二次方程时用因式分解，就填「因式分解」）。实在没有合适的，才写一个 10 字以内的简短名称。
+{taxonomy.prompt_block(band(g), route['subject'], focused=True)}{extra_blocks}
+
+# 当前状态
+{state}"""
 
 
 def history_messages(msgs, limit=14):
-    out = []
-    for m in msgs[-limit:]:
-        if m["role"] == "user":
-            text = m["content"] or ""
-            if m.get("image"):
-                text = (text + "\n[学生之前上传过一张题目图片，题干已转写在当前状态里]").strip()
-            out.append({"role": "user", "content": text})
-        else:
-            out.append({"role": "assistant", "content": m["content"]})
-    return out
+    return context.select_history(msgs, limit)[0]
 
 
 def _prepare(profile, session, text, image_data_url, action, extras=None):
@@ -133,9 +127,13 @@ def _prepare(profile, session, text, image_data_url, action, extras=None):
 
 
 def _messages(ctx, profile, history):
+    selected, stats = context.select_history(history)
+    ctx["context_usage"] = stats
     msgs = [{"role": "system", "content": system_prompt(profile, ctx["st"], ctx["allow_full"], ctx["route"], ctx["text"],
                                                         ctx.get("extras"))}]
-    msgs += history_messages(history)
+    if stats["history_omitted_messages"]:
+        msgs[0]["content"] += "\n# 历史范围\n" + context.OMITTED_NOTICE
+    msgs += selected
     msgs.append({"role": "user", "content": ctx["content"]})
     return msgs
 
@@ -154,13 +152,15 @@ def strategy_of(ctx, out=None):
 def _rewrite(ctx, msgs, out, leak, profile):
     """漏题：让模型按同样格式重写一次；还漏就换该科固定引导句。"""
     st, text = ctx["st"], ctx["text"]
+    ctx["repair_calls"] = ctx.get("repair_calls", 0) + 1
     fix = {"role": "system", "content": f"你上一版回复直接写出了关键结果「{leak}」，违反了「提示不得直接给出关键中间结果 / 答案」。"
            "请按同样的 JSON 格式重写 reply：只说该做什么、怎么想，用一个小问题让学生自己写出这一步，不要出现这个结果，也不要给最终答案。"}
-    out2 = normalize(llm.chat(msgs + [{"role": "assistant", "content": out["reply"]}, fix], vision=ctx["vision"], task=ctx["task"]))
+    out2 = normalize(llm.chat(context.repair_messages(msgs, out["reply"], fix), vision=ctx["vision"], task=ctx["task"]))
     if not out2.get("subject"):
         out2["subject"] = out.get("subject")
     if leak_of(ctx, out2):
         out2["reply"] = strategies.fallback(out2.get("subject") or st.get("subject") or ctx["route"]["subject"])
+        out2.update(stage="hint", solved=False, student_correct=None)
     out2["leak_fixed"] = True
     out2["leak"] = leak
     canon_topic(out2, profile)
@@ -205,8 +205,8 @@ def mock_chunks(text):
 def respond_stream(profile, session, history, text, image_data_url=None, action=None, emit=None, delay=None, extras=None):
     """流式版：通过 emit(event, data) 发 meta / delta / status / replace，返回 (reply_dict, new_state)。
     done / error 由调用方（server）发。漏题协调：
-      - 允许完整解法，或模型标了 stage=full/redirect：reply 逐块直接转发；
-      - 其余（第 1–2 层提示、检查答案、第 3 层）：进 SentenceGate，整句过 find_leak 才放行；
+      - 只有服务端允许完整解法时，reply 才逐块直接转发；模型 stage 不授予权限；
+      - 其余回复进 SentenceGate，整句过 find_leak 才放行；
         一旦命中就停止转发（继续把上游读完拿到完整 JSON），发 status=revising，重写 / 兜底后发 replace 整条替换。"""
     emit = emit or (lambda e, d: None)
     ctx = _prepare(profile, session, text, image_data_url, action, extras)
@@ -233,7 +233,7 @@ def respond_stream(profile, session, history, text, image_data_url=None, action=
         if not new:
             continue
         if gate is None:
-            gate = SentenceGate(check, direct=ctx["allow_full"] or ext.meta.get("stage") in ("full", "redirect"))
+            gate = SentenceGate(check, direct=ctx["allow_full"])
         piece = gate.feed(new)
         if piece:
             emit("delta", {"text": piece})
@@ -271,6 +271,8 @@ def respond_stream(profile, session, history, text, image_data_url=None, action=
 def _finish(ctx, out):
     st, text = ctx["st"], ctx["text"]
     rule_stuck, allow_full = ctx["rule_stuck"], ctx["allow_full"]
+    if not allow_full and out.get("stage") == "full":
+        out.update(stage="hint", solved=False)
     strategy = strategy_of(ctx, out)
     # ---- 更新状态
     intent = out["intent"]
@@ -303,6 +305,8 @@ def _finish(ctx, out):
 def _attach(ctx, out, st):
     """把服务端答前算好的推断与策略变体记到本轮结果 / 会话状态上（离线演示也走这里）。"""
     ex = ctx.get("extras") or {}
+    if ctx.get("context_usage"):
+        out["context_usage"] = dict(ctx["context_usage"])
     if ex.get("thought") is not None:
         out["thought"] = ex["thought"]
     if ex.get("arms"):
@@ -334,8 +338,15 @@ def find_leak(out, st, student_text):
 
 def leak_of(ctx, out):
     """核心漏题规则（leak.py，护栏）+ 人工批准过的额外规则（只会多拦）。"""
-    hit = find_leak(out, ctx["st"], ctx["text"])
-    if hit or out.get("stage") in ("full", "redirect"):
+    if ctx["allow_full"]:
+        return ""
+    # Stage is model content, not permission. Never let full/redirect skip policy.
+    checked = dict(out)
+    if checked.get("stage") in ("full", "redirect"):
+        checked["stage"] = "hint"
+        checked["student_correct"] = None
+    hit = find_leak(checked, ctx["st"], ctx["text"])
+    if hit:
         return hit
     rules = (ctx.get("extras") or {}).get("rules")
     if rules:
@@ -378,12 +389,13 @@ VERIFY_WRONG = "我把你的答案代回原方程检验了一下，两边不相�
 def _verify_fix(ctx, msgs, out, verdict, profile):
     """修正一次：把确定性结论告诉模型，让它按同样 JSON 重写；还不一致就直接改判并换固定句（有界：最多 1 次）。"""
     out = dict(out)
-    if llm.enabled():
+    if llm.enabled() and ctx.get("repair_calls", 0) < 1:
+        ctx["repair_calls"] = ctx.get("repair_calls", 0) + 1
         fix = {"role": "system", "content": "确定性校验（把学生的答案代回原方程精确计算）：学生的答案%s。"
                "请据此按同样的 JSON 格式重写，student_correct 填 %s；答错时不要给出正确结果，引导他自己找错。" %
                ("正确" if verdict else "不正确", "true" if verdict else "false")}
         try:
-            out2 = normalize(llm.chat(msgs + [{"role": "assistant", "content": out["reply"]}, fix], vision=ctx["vision"], task=ctx["task"]))
+            out2 = normalize(llm.chat(context.repair_messages(msgs, out["reply"], fix), vision=ctx["vision"], task=ctx["task"]))
             out2["subject"] = out2.get("subject") or out.get("subject")
             canon_topic(out2, profile)
             if out2.get("student_correct") is verdict and not leak_of(ctx, out2):
@@ -452,27 +464,37 @@ def deterministic_grade(q, a):
 
 
 def grade_answers(profile, st, questions, answers):
+    answers = list(answers or [])[:len(questions)]
+    answers += [""] * (len(questions) - len(answers))
     det = [deterministic_grade(q, a) for q, a in zip(questions, answers)]
+    if len(det) == len(questions) and all(d is not None for d in det):
+        return [{"correct": d, "feedback": "代回检验：答案正确。" if d else "代回检验：这个答案不满足题目，请检查过程。",
+                 "checked": True} for d in det]
     if not llm.enabled():
         return [{"correct": d if d is not None else (a or "").strip() == str(q.get("answer", "")).strip(),
                  "feedback": "（代回检验）" if d is not None else "（演示模式按字面比对）", "checked": d is not None}
                 for q, a, d in zip(questions, answers, det)]
-    items = "\n".join(f"{i+1}. 题目：{q['q']}\n   标准答案：{q['answer']}\n   学生答案：{a or '（空）'}"
-                      for i, (q, a) in enumerate(zip(questions, answers)))
+    unknown = [i for i, d in enumerate(det) if d is None]
+    items = "\n".join(f"{j+1}. 题目：{questions[i]['q']}\n   标准答案：{questions[i]['answer']}\n   学生答案：{answers[i] or '（空）'}"
+                      for j, i in enumerate(unknown))
     prompt = f"""你在批改{GRADES.get(int(profile.get('grade') or 8))}学生的练习。判断每道题学生答案是否正确：数值相等、等价表达式、同义表述都算对；空白或只写过程没写结果算错。反馈要具体、简短（一两句），错了指出错在哪，用 LaTeX 写公式。
 {items}
 只输出 JSON：{{"results": [{{"correct": true/false, "feedback": "..."}}]}}，顺序与题目一致。"""
     out = llm.chat([{"role": "user", "content": prompt}], temperature=0.1, task="strong")
-    res = out.get("results") or []
+    res = out.get("results") if isinstance(out, dict) else None
+    if (not isinstance(res, list) or len(res) != len(unknown)
+            or any(not isinstance(r, dict) or type(r.get("correct")) is not bool for r in res)):
+        raise llm.LLMError("批改结果不完整或格式错误；未记录对错，请重试。")
+    by_index = dict(zip(unknown, res))
     fixed = []
-    for i in range(len(questions)):
-        r = res[i] if i < len(res) and isinstance(res[i], dict) else {"correct": False, "feedback": "这题没批出来，再试一次。"}
-        item = {"correct": bool(r.get("correct")), "feedback": r.get("feedback") or "", "checked": False}
-        if det[i] is not None:          # 验证：确定性结论优先，和模型不一致时改判并说明
-            if det[i] != item["correct"]:
-                item["feedback"] = ("代回检验：答案正确。" if det[i] else "代回检验：这个答案不满足题目。") + item["feedback"]
-            item["correct"], item["checked"] = det[i], True
-        fixed.append(item)
+    for i, d in enumerate(det):
+        if d is not None:
+            fixed.append({"correct": d, "feedback": "代回检验：答案正确。" if d else "代回检验：这个答案不满足题目，请检查过程。",
+                          "checked": True})
+        else:
+            r = by_index.get(i)
+            r = r if isinstance(r, dict) else {"correct": False, "feedback": "这题没批出来，再试一次。"}
+            fixed.append({"correct": bool(r.get("correct")), "feedback": r.get("feedback") or "", "checked": False})
     return fixed
 
 
