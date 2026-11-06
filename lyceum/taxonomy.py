@@ -214,11 +214,13 @@ def canonical(subject, raw, band=None):
 
 
 # ---------------- 提示词用 ----------------
-def prompt_block(band, subject=None):
-    """给模型看的规范知识点表：该学段各科（当前学科放最前）。"""
+def prompt_block(band, subject=None, *, focused=False):
+    """已知学科时可按需加载；未知学科仍提供完整表，规范化索引始终不裁剪。"""
     subs = [s for s in INDEX if band in INDEX[s]]
     if subject in subs:
         subs.remove(subject)
         subs.insert(0, subject)
+        if focused:
+            subs = [subject]
     lines = [f"- {s}：" + "、".join(names(s, band)) for s in subs]
     return f"{BAND_NAMES.get(band, '')}各学科规范知识点（人教版口径）：\n" + "\n".join(lines)

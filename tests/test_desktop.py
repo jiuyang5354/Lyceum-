@@ -158,14 +158,18 @@ class SettingsHTTPTest(unittest.TestCase):
         llm.chat = no_model
         import importlib
         import server
+        server.db.conn.close()  # reload replaces the module DB; close the previous fixture first.
         cls.server_mod = importlib.reload(server)
         cls.srv = cls.server_mod.make_server("127.0.0.1", 0)
         cls.port = cls.srv.server_address[1]
-        threading.Thread(target=cls.srv.serve_forever, daemon=True).start()
+        cls.thread = threading.Thread(target=cls.srv.serve_forever, daemon=True)
+        cls.thread.start()
 
     @classmethod
     def tearDownClass(cls):
         cls.srv.shutdown()
+        cls.srv.server_close()
+        cls.thread.join(timeout=5)
         cls.server_mod.db.conn.close()
         shutil.rmtree(cls.dir)
         llm = cls.llm
