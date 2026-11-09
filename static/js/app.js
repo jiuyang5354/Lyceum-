@@ -143,6 +143,7 @@ function initHome() {
     $('#stickers').style.opacity = idx === 0 ? 1 : 0; heroIdx = idx;
     $('#homeReturn').style.opacity = idx === 0 ? 1 : 0; $('#homeReturn').style.pointerEvents = idx === 0 ? 'auto' : 'none';
     $('#orders').style.opacity = idx === 0 ? 1 : 0; $('#orderNote').style.opacity = idx === 0 ? 1 : 0;
+    avoidStickers();
     steps.forEach((s, i) => s.classList.toggle('on', i + 1 === idx));
     rail.forEach((r, i) => r.classList.toggle('on', i === idx));
   };
@@ -156,6 +157,7 @@ function initHome() {
     d.style.left = x + '%'; d.style.top = y + '%'; d.style.setProperty('--r', r + 'deg'); d.style.setProperty('--s', sc);
     d.style.animationDelay = (600 + i * 120) + 'ms'; d.innerHTML = sticker(k);
     $('#stickers').appendChild(d);
+    setTimeout(avoidStickers, 900 + i * 130);
   });
   sticky.addEventListener('click', (e) => {
     if (e.target.closest('a,button,.hero-copy,.story-step,.orders')) return;
@@ -164,6 +166,7 @@ function initHome() {
     d.style.left = (e.clientX - r.left) + 'px'; d.style.top = (e.clientY - r.top) + 'px';
     d.style.setProperty('--r', (Math.random() * 30 - 15).toFixed(1) + 'deg'); d.innerHTML = sticker();
     $('#stickers').appendChild(d); const all = $$('#stickers .sticker'); if (all.length > 10) all[0].remove();
+    avoidStickers();
     if (stage) stage.cheer();
   });
   let over = false;
@@ -1008,7 +1011,24 @@ async function route() {
   if (changed) scrollTo(0, 0);
   if (name === 'study') { studyPanels?.dismiss(); await openSession(id ? +id : null); }
   if (name === 'notebook') renderBook().catch((e) => toast(e.message));
-  if (name === 'home') { dispatchEvent(new Event('scroll')); renderHomeReturn().catch(() => { $('#homeReturn').hidden = true; }); }
+  if (name === 'home') { dispatchEvent(new Event('scroll')); renderHomeReturn().then(avoidStickers).catch(() => { $('#homeReturn').hidden = true; }); }
+}
+
+// 装饰贴纸不能压在「继续上次的题」卡片上：按矩形相交隐藏重叠的那几个
+function avoidStickers() {
+  const card = $('#homeReturn'), box = $('#stickers');
+  if (!card || !box) return;
+  const c = card.getBoundingClientRect();
+  const on = !card.hidden && c.width > 0;
+  $$('.sticker', box).forEach((s) => {
+    // 入场动画把 scale 从 0 拉到 1，getBoundingClientRect 在动画前会量到 0 宽；
+    // 用未变换的 offsetWidth/offsetHeight 加上中心点，任何时刻都能量准。
+    const r = s.getBoundingClientRect();
+    const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+    const w = s.offsetWidth, h = s.offsetHeight;
+    const hit = on && w > 0 && cx + w / 2 > c.left && cx - w / 2 < c.right && cy + h / 2 > c.top && cy - h / 2 < c.bottom;
+    s.style.visibility = hit ? 'hidden' : '';
+  });
 }
 
 async function boot() {
@@ -1027,8 +1047,10 @@ async function boot() {
     api('/api/settings').then((st) => { applyUi(st.ui); paintMode(st); }).catch(() => {});
   } catch (e) { toast('连不上本地服务'); }
   addEventListener('hashchange', route);
+  addEventListener('resize', () => { clearTimeout(avoidStickers.t); avoidStickers.t = setTimeout(avoidStickers, 150); });
   await route();
   if (state.profile) paintProfile(); else { setOrder('doric'); openOnboarding(); }
+  avoidStickers();
   // 静默查一次更新：有新版本只在当天提示一次，不打断使用
   (async () => {
     try {
