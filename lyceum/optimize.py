@@ -31,6 +31,8 @@ MIN_LIFT = 0.05
 ALPHA = 0.05
 MAX_REPLY_CHARS = 160
 MIN_REPLY_CHARS = 12
+MIN_WORD_CHARS = 8          # 一条回复至少要有的实义字符数
+MIN_DISTINCT_WORDS = 4      # 且不能是同一个字重复
 
 # 已发布提示词在写这个文件时的受保护面指纹。改了原则/输出契约/授权行/语气/学科表，
 # 就必须显式更新它——这正是「冻结」的意思。tools/optimize_prompt.py --require-guard
@@ -59,9 +61,18 @@ SCENARIOS = [
 
 # 直接抛出最终答案的写法。注意「答案是否…」「结果就是我们要找的吗」都是正常教学用语，
 # 所以用正则的否定前瞻，而不是裸子串匹配。
-_LEAK = re.compile(r"(?:最终)?答案(?:是|为|就是)(?![否不])|(?:最终)?结果(?:是|为)(?![否不])|所以\s*[A-Za-z]\s*=\s*-?\d")
+# 「答案/结果 + 判断词」的否定前瞻要连「什么」一起排除，否则「结果为什么是 3？」
+# 这种正常追问会被当成漏题。「结果就是 3」这种直接给结果的写法单独匹配。
+_LEAK = re.compile(
+    r"(?:最终)?答案(?:是|为|就是)(?![否不什])"
+    r"|(?:最终)?结果(?:是|为)(?![否不什])"
+    r"|结果就是(?=\s*[-+A-Za-z0-9一二三四五六七八九十])"
+    r"|(?:所以|即|得|解得)\s*[A-Za-z]\s*=\s*-?\d"
+)
 # 一个「有内容的提问」：问号前至少有 6 个非空白字符
 _QUESTION = re.compile(r"[^\s？?]{6,}[？?]")
+# 实义字符：中文、拉丁字母、数字（表情和标点不算）
+_WORD = re.compile(r"[\u4e00-\u9fffA-Za-z0-9]")
 
 
 def _profile(sc):
@@ -90,14 +101,23 @@ def mock_runner(prompt, scenario):
     return out if isinstance(out, dict) else {"reply": str(out)}
 
 
-def _score(reply, scenario=None):
-    """行为分：有没有提出**有内容**的问题、有没有直接抛最终答案、长度是否合适。
+def _substantive(text):
+    """是不是一段「有内容」的话：实义字符够多、不重复、不全是一个字。
 
-    三条下限防止「把回复压成一个问号」也被判满分：
-    太短（<12 字）直接 0；问号前必须真的有内容；过长扣分。
+    只卡长度挡不住「嗯嗯嗯…？」或十二个表情：前者有问号，后者没有漏题、
+    又够短，两项都拿分。所以先过这道门，不过就直接 0 分。
     """
+    words = _WORD.findall(text)
+    if len(words) < MIN_WORD_CHARS or len(set(words)) < MIN_DISTINCT_WORDS:
+        return False
+    most = max(words.count(w) for w in set(words))
+    return most / len(words) <= 0.5
+
+
+def _score(reply, scenario=None):
+    """行为分：有没有提出**有内容**的问题、有没有直接抛最终答案、长度是否合适。"""
     reply = str(reply or "").strip()
-    if len(reply) < MIN_REPLY_CHARS:
+    if len(reply) < MIN_REPLY_CHARS or not _substantive(reply):
         return 0.0
     asked = bool(_QUESTION.search(reply))
     leaked = bool(_LEAK.search(reply))
@@ -240,6 +260,11 @@ def promote(result, approved=False, approver=""):
     except ValueError:
         return {"promoted": False, "reason": "invalid_evidence"}
     if p_value > ALPHA or lift < MIN_LIFT or improved + worsened == 0 or count < MIN_SCENARIOS or improved <= worsened:
+        return {"promoted": False, "reason": "invalid_evidence"}
+    # 数字必须自洽：p 要能从 improved/worsened 复算出来，lift 在 [0,1]，样本数不能被超额使用
+    if improved + worsened > count or not 0.0 <= lift <= 1.0:
+        return {"promoted": False, "reason": "invalid_evidence"}
+    if abs(_sign_test_p(int(improved), int(worsened)) - p_value) > 1e-6:
         return {"promoted": False, "reason": "invalid_evidence"}
     if result.get("guard") != prompts.guard_fingerprint():
         return {"promoted": False, "reason": "guard_changed"}

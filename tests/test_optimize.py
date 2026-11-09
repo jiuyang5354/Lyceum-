@@ -37,6 +37,12 @@ class CandidateGateTest(unittest.TestCase):
         self.assertFalse(result["accept"])
         self.assertEqual(result["decision"], "duplicate_scenarios")
 
+    def test_rejects_relabelled_copies_of_one_problem(self):
+        copies = [dict(optimize.SCENARIOS[0], id="s%d" % i) for i in range(8)]
+        result = optimize.evaluate(optimize.CANDIDATES[0], runner=runner_factory(1), scenarios=copies)
+        self.assertFalse(result["accept"])
+        self.assertEqual(result["decision"], "duplicate_scenarios")
+
     def test_accepts_a_consistent_lift_over_the_paired_baseline(self):
         result = optimize.evaluate(optimize.CANDIDATES[0], runner=runner_factory(1), scenarios=optimize.SCENARIOS)
         self.assertTrue(result["accept"], result)
@@ -67,16 +73,20 @@ class CandidateGateTest(unittest.TestCase):
         self.assertEqual((result["improved"], result["worsened"]), (6, 2))
         self.assertGreater(result["p_value"], optimize.ALPHA)
 
-    def test_a_bare_question_mark_cannot_score_full_marks(self):
-        self.assertEqual(optimize._score("？"), 0.0)
-        self.assertEqual(optimize._score("好"), 0.0)
-        self.assertLess(optimize._score("？"), optimize._score("题目里的已知条件是什么？"))
+    def test_filler_and_emoji_cannot_score(self):
+        for filler in ["？", "好", "😀" * 12, "嗯" * 11 + "？", "a" * 12 + "？", "。" * 14]:
+            with self.subTest(filler=filler):
+                self.assertEqual(optimize._score(filler), 0.0)
+        self.assertEqual(optimize._score("题目里的已知条件是什么？"), 1.0)
 
     def test_legitimate_wording_is_not_mistaken_for_a_leak(self):
-        self.assertFalse(optimize._LEAK.search("先看看你上一步的答案是否正确？"))
-        self.assertFalse(optimize._LEAK.search("这个结果就是我们要找的吗？"))
-        self.assertTrue(optimize._LEAK.search("答案是 x=3。"))
-        self.assertTrue(optimize._LEAK.search("最终结果为 5"))
+        for text in ["先看看你上一步的答案是否正确？", "这个结果就是我们要找的吗？",
+                     "想一想，结果为什么是 3？", "答案为什么不一致？", "最终答案是否一致？"]:
+            with self.subTest(text=text):
+                self.assertFalse(optimize._LEAK.search(text))
+        for text in ["答案是 x=3。", "最终结果为 5", "答案就是 3", "所以x=3", "结果就是 3"]:
+            with self.subTest(text=text):
+                self.assertTrue(optimize._LEAK.search(text))
 
     def test_a_shrinking_runner_cannot_win_by_emptying_the_reply(self):
         def runner(prompt, scenario):
@@ -165,7 +175,9 @@ class CandidateGateTest(unittest.TestCase):
         real.synthetic = False
         good = dict(optimize.evaluate(optimize.CANDIDATES[0], runner=real, scenarios=optimize.SCENARIOS))
         for patch in [{"p_value": 0.99}, {"lift": -1.0}, {"improved": 0, "worsened": 8},
-                      {"p_value": None}, {"accept": "yes"}, {"synthetic": 0}]:
+                      {"p_value": None}, {"accept": "yes"}, {"synthetic": 0},
+                      {"improved": 2, "lift": 0.9},
+                      {"improved": 8, "worsened": 4}, {"lift": 3.0}]:
             with self.subTest(patch=patch):
                 bad = dict(good)
                 bad.update(patch)
