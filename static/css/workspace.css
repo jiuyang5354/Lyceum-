@@ -162,7 +162,7 @@ button:disabled { cursor: not-allowed; }
 .rules-disclosure .ms-rule { margin-bottom: 20px; }
 .rec-grid > * { min-width: 0; }
 /* Returning learners get real shortcuts, not made-up activity metrics. */
-.home-return { position: absolute; z-index: 4; right: clamp(40px, 6.5vw, 104px); top: 28px; width: min(500px, 40vw); background: var(--paper-hi); border-top: 1px solid var(--line-2); border-bottom: 1px solid var(--line-2); padding: 14px 0; }
+.home-return { position: absolute; z-index: 6; /* 内容压在装饰贴纸之上：贴纸是背景，不能盖住可读文字 */ right: clamp(40px, 6.5vw, 104px); top: 28px; width: min(500px, 40vw); background: var(--paper-hi); border-top: 1px solid var(--line-2); border-bottom: 1px solid var(--line-2); padding: 14px 0; }
 .home-return .return-head { display: flex; justify-content: space-between; color: var(--muted); font-size: 11px; margin-bottom: 10px; }
 .home-return .return-links { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 24px; }
 .home-return a { text-decoration: none; min-width: 0; }
