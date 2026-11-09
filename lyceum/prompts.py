@@ -144,6 +144,12 @@ def guard_fingerprint(tactic=None, pace=None, lessons=()):
     否则每个变体都会看起来像「护栏被改」。
     """
     h = hashlib.sha256()
+    # 标题与顺序也进指纹：改掉「# 原则」这行标题同样是在动受保护面
+    h.update("|".join(ORDER).encode())
+    h.update(b"\x00")
+    for name in ORDER:
+        h.update(SECTIONS[name].heading.encode())
+        h.update(b"\x00")
     for name in PROTECTED:
         h.update(name.encode())
         h.update(b"\x00")

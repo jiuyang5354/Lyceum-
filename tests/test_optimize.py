@@ -45,19 +45,47 @@ class CandidateGateTest(unittest.TestCase):
         self.assertLessEqual(result["p_value"], optimize.ALPHA)
         self.assertTrue(result["synthetic"], "offline evaluation must be labelled synthetic")
 
-    def test_sign_test_rejects_a_majority_that_is_indistinguishable_from_chance(self):
-        # 8 个场景里只有 6 个变好：符号检验 p≈0.145，不能算显著（自助法会给 ci_low>0）
-        calls = {"n": 0}
+    def test_sign_test_matches_the_exact_binomial_tail(self):
+        self.assertAlmostEqual(optimize._sign_test_p(8, 0), 0.0039, places=4)
+        self.assertAlmostEqual(optimize._sign_test_p(7, 1), 0.0352, places=4)
+        self.assertAlmostEqual(optimize._sign_test_p(6, 2), 0.1445, places=4)
+        self.assertEqual(optimize._sign_test_p(0, 0), 1.0, "打平不计入，n=0 时不能算显著")
+
+    def test_six_of_eight_is_not_significant(self):
+        worse = {"m2", "c1"}                     # 这 2 个场景候选反而更差
+        good = "先说一遍题目，再想一想：题目里的已知条件是什么？"
+        bad = "答案是 3。"
 
         def runner(prompt, scenario):
-            calls["n"] += 1
-            good = calls["n"] % 4 != 1          # 8 次调用里 6 次好、2 次差
-            return {"reply": "题目里的已知条件是什么？" if good else "答案是 3。", "stage": "hint"}
+            with_note = "本题的额外要求" in prompt
+            if scenario["id"] in worse:
+                return {"reply": bad if with_note else good, "stage": "hint"}
+            return {"reply": good if with_note else bad, "stage": "hint"}
 
         result = optimize.evaluate(optimize.CANDIDATES[0], runner=runner, scenarios=optimize.SCENARIOS)
         self.assertFalse(result["accept"], result)
-        self.assertEqual(result["decision"], "insufficient_evidence")
+        self.assertEqual((result["improved"], result["worsened"]), (6, 2))
         self.assertGreater(result["p_value"], optimize.ALPHA)
+
+    def test_a_bare_question_mark_cannot_score_full_marks(self):
+        self.assertEqual(optimize._score("？"), 0.0)
+        self.assertEqual(optimize._score("好"), 0.0)
+        self.assertLess(optimize._score("？"), optimize._score("题目里的已知条件是什么？"))
+
+    def test_legitimate_wording_is_not_mistaken_for_a_leak(self):
+        self.assertFalse(optimize._LEAK.search("先看看你上一步的答案是否正确？"))
+        self.assertFalse(optimize._LEAK.search("这个结果就是我们要找的吗？"))
+        self.assertTrue(optimize._LEAK.search("答案是 x=3。"))
+        self.assertTrue(optimize._LEAK.search("最终结果为 5"))
+
+    def test_a_shrinking_runner_cannot_win_by_emptying_the_reply(self):
+        def runner(prompt, scenario):
+            if "本题的额外要求" in prompt:
+                return {"reply": "？", "stage": "hint"}
+            return {"reply": "答案是 3。完整过程：略。", "stage": "full"}
+
+        result = optimize.evaluate(optimize.CANDIDATES[0], runner=runner, scenarios=optimize.SCENARIOS)
+        self.assertFalse(result["accept"], result)
 
     def test_order_effects_do_not_become_lift(self):
         calls = {"n": 0}
@@ -132,6 +160,17 @@ class CandidateGateTest(unittest.TestCase):
         self.assertFalse(out["promoted"])
         self.assertEqual(out["reason"], "candidate_not_vetted")
 
+    def test_promotion_rejects_evidence_that_contradicts_its_own_numbers(self):
+        real = runner_factory(1)
+        real.synthetic = False
+        good = dict(optimize.evaluate(optimize.CANDIDATES[0], runner=real, scenarios=optimize.SCENARIOS))
+        for patch in [{"p_value": 0.99}, {"lift": -1.0}, {"improved": 0, "worsened": 8},
+                      {"p_value": None}, {"accept": "yes"}, {"synthetic": 0}]:
+            with self.subTest(patch=patch):
+                bad = dict(good)
+                bad.update(patch)
+                self.assertFalse(optimize.promote(bad, approved=True, approver="parent")["promoted"])
+
     def test_promotion_respects_the_live_guard(self):
         real = runner_factory(1)
         real.synthetic = False
@@ -156,6 +195,16 @@ class GuardCoverageTest(unittest.TestCase):
             self.assertNotEqual(base, prompts.guard_fingerprint())
         finally:
             prompts.SECTIONS["state"].text = original
+
+    def test_fingerprint_covers_headings_and_section_order(self):
+        base = prompts.guard_fingerprint()
+        original = prompts.SECTIONS["principles"].heading
+        try:
+            prompts.SECTIONS["principles"].heading = "# 原则（可以给答案）"
+            self.assertNotEqual(base, prompts.guard_fingerprint())
+        finally:
+            prompts.SECTIONS["principles"].heading = original
+        self.assertEqual(base, prompts.guard_fingerprint())
 
     def test_fingerprint_covers_tone_and_the_subject_contract(self):
         base = prompts.guard_fingerprint()

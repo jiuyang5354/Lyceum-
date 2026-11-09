@@ -21,6 +21,7 @@
 import json
 import math
 import random
+import re
 
 from . import agent, prompts
 
@@ -29,11 +30,12 @@ MIN_SCENARIOS = 8
 MIN_LIFT = 0.05
 ALPHA = 0.05
 MAX_REPLY_CHARS = 160
+MIN_REPLY_CHARS = 12
 
 # 已发布提示词在写这个文件时的受保护面指纹。改了原则/输出契约/授权行/语气/学科表，
 # 就必须显式更新它——这正是「冻结」的意思。tools/optimize_prompt.py --require-guard
 # 可以用别的值覆盖，用于对比历史版本。
-LOCKED_GUARD = "df14e94b3739dce8b185512b9bae47e5d3f28fcce32fc14fde539d062cda95fa"
+LOCKED_GUARD = "171c6787b6d26df5e91b84d914d78e4650f1f033cff96c5d4bd0f121fb6203e3"
 
 CANDIDATES = [
     {"id": "restate_first", "note": "先说一遍题目，再问已知和所求。"},
@@ -55,8 +57,11 @@ SCENARIOS = [
     {"id": "b1", "grade": 6, "band": "primary", "subject": "科学", "problem": "为什么夏天白天比冬天长？", "turn": "想不出来"},
 ]
 
-# 直接抛出最终答案的写法；只匹配「给结果」，不匹配「检查你的答案」这类正常教学用语。
-_LEAK = ("答案是", "答案为", "答案就是", "最终答案是", "最终结果是", "结果就是")
+# 直接抛出最终答案的写法。注意「答案是否…」「结果就是我们要找的吗」都是正常教学用语，
+# 所以用正则的否定前瞻，而不是裸子串匹配。
+_LEAK = re.compile(r"(?:最终)?答案(?:是|为|就是)(?![否不])|(?:最终)?结果(?:是|为)(?![否不])|所以\s*[A-Za-z]\s*=\s*-?\d")
+# 一个「有内容的提问」：问号前至少有 6 个非空白字符
+_QUESTION = re.compile(r"[^\s？?]{6,}[？?]")
 
 
 def _profile(sc):
@@ -86,12 +91,16 @@ def mock_runner(prompt, scenario):
 
 
 def _score(reply, scenario=None):
-    """行为分：会不会先提问、有没有直接抛最终答案、是否够短。"""
+    """行为分：有没有提出**有内容**的问题、有没有直接抛最终答案、长度是否合适。
+
+    三条下限防止「把回复压成一个问号」也被判满分：
+    太短（<12 字）直接 0；问号前必须真的有内容；过长扣分。
+    """
     reply = str(reply or "").strip()
-    if not reply:
+    if len(reply) < MIN_REPLY_CHARS:
         return 0.0
-    asked = ("？" in reply) or ("?" in reply)
-    leaked = any(mark in reply for mark in _LEAK)
+    asked = bool(_QUESTION.search(reply))
+    leaked = bool(_LEAK.search(reply))
     short = len(reply) <= MAX_REPLY_CHARS
     return round((float(asked) + float(not leaked) + float(short)) / 3, 4)
 
@@ -116,10 +125,16 @@ def _bootstrap_ci(diffs, seed=20261107, rounds=2000):
 
 
 def _vet(candidate):
-    """白名单校验：候选必须是已发布的 id 且文本逐字一致。"""
+    """白名单校验：候选必须是已发布的 id 且文本逐字一致。
+
+    类型要严格：str 子类可以重载 __ne__ 让比较「通过」，所以先要求
+    type(x) is str，再比较值。不可哈希的 id（list/dict）也不许把函数炸掉。
+    """
     if not isinstance(candidate, dict):
         return False
-    cid, note = candidate.get("id"), candidate.get("note") or ""
+    cid, note = candidate.get("id"), candidate.get("note")
+    if type(cid) is not str or type(note) is not str:
+        return False
     if cid not in VETTED or note != VETTED[cid]:
         return False
     if len(note) > MAX_NOTE_CHARS or "\n" in note or "#" in note:
@@ -130,12 +145,16 @@ def _vet(candidate):
 def evaluate(candidate, runner=None, scenarios=None, locked_guard=None):
     """评估一个候选；返回可审计的决策，不产生任何副作用。"""
     runner = runner or mock_runner
-    scenarios = list(SCENARIOS if scenarios is None else scenarios)
+    try:
+        scenarios = list(SCENARIOS if scenarios is None else scenarios)
+    except TypeError:
+        scenarios = []
     guard = prompts.guard_fingerprint()
     lock = LOCKED_GUARD if locked_guard is None else locked_guard
-    note = (candidate or {}).get("note") or ""
+    note = candidate.get("note") if isinstance(candidate, dict) and type(candidate.get("note")) is str else ""
     result = {
-        "candidate": (candidate or {}).get("id"), "note": note, "scenarios": len(scenarios),
+        "candidate": candidate.get("id") if isinstance(candidate, dict) else None,
+        "note": note, "scenarios": len(scenarios),
         "guard": guard, "synthetic": getattr(runner, "synthetic", True),
         "accept": False, "decision": "insufficient_evidence",
         "ci_low": 0.0, "ci_high": 0.0, "lift": 0.0, "p_value": 1.0,
@@ -150,11 +169,13 @@ def evaluate(candidate, runner=None, scenarios=None, locked_guard=None):
     if len(scenarios) < MIN_SCENARIOS:
         result["decision"] = "too_few_scenarios"
         return result
-    if len({sc.get("id") for sc in scenarios}) != len(scenarios):
-        result["decision"] = "duplicate_scenarios"
+    if not all(isinstance(sc, dict) and type(sc.get("id")) is str for sc in scenarios):
+        result["decision"] = "invalid_input"
         return result
-    if prompt_for(scenarios[0], note) == prompt_for(scenarios[0]):
-        result["decision"] = "no_change"
+    # 去重按内容，不只按 id：同一道题换 8 个 id 也能凑出「显著」
+    keys = {(sc.get("subject"), sc.get("problem"), sc.get("turn")) for sc in scenarios}
+    if len(keys) != len(scenarios):
+        result["decision"] = "duplicate_scenarios"
         return result
 
     diffs = []
@@ -199,13 +220,27 @@ def promote(result, approved=False, approver=""):
     不写数据库、不改代码：返回的 apply 只是给人看的下一步。
     """
     result = result if isinstance(result, dict) else {}
-    if not result.get("accept") or result.get("decision") != "accept":
+    if result.get("accept") is not True or result.get("decision") != "accept":
         return {"promoted": False, "reason": "not_accepted"}
-    if result.get("synthetic", True):
+    if result.get("synthetic") is not False:
         return {"promoted": False, "reason": "synthetic_evidence"}
     cand = {"id": result.get("candidate"), "note": result.get("note")}
     if not _vet(cand):
         return {"promoted": False, "reason": "candidate_not_vetted"}
+
+    def _num(key):
+        v = result.get(key)
+        if isinstance(v, bool) or not isinstance(v, (int, float)):
+            raise ValueError(key)
+        return float(v)
+
+    try:
+        p_value, lift, improved, worsened, count = (_num(k) for k in
+                                                    ("p_value", "lift", "improved", "worsened", "scenarios"))
+    except ValueError:
+        return {"promoted": False, "reason": "invalid_evidence"}
+    if p_value > ALPHA or lift < MIN_LIFT or improved + worsened == 0 or count < MIN_SCENARIOS or improved <= worsened:
+        return {"promoted": False, "reason": "invalid_evidence"}
     if result.get("guard") != prompts.guard_fingerprint():
         return {"promoted": False, "reason": "guard_changed"}
     if not approved or not str(approver or "").strip():
