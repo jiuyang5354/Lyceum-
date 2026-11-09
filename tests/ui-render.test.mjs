@@ -20,6 +20,10 @@ test('the review brief shows what to practise next and why', () => {
   assert.match(withItem, /试一题/);
   assert.match(withItem, /难度 0.58/);
   assert.match(withItem, /展开 \(3x\+8\)\(5x\+9\)/);
+  assert.match(withItem, /<form class="next-q" data-item="x"/);
+  assert.match(withItem, /name="a"/);
+  assert.match(withItem, /type="submit"/);
+  assert.match(withItem, /role="status"/);
   assert.doesNotMatch(reviewBrief({ topics_due: 0, mistakes_due: 0 }, '2026-01-02'), /下一步/);
   assert.doesNotMatch(reviewBrief({ topics_due: 0, mistakes_due: 0, next: { topic: '<img onerror=x>' } }, '2026-01-02'), /<img/);
 });

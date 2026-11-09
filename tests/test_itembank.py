@@ -57,6 +57,44 @@ def recompute(it):
         return Fraction(sum(p["atoms"].values()))
     if kind == "amount":
         return Fraction(str(round(p["m"] / p["M"], 3)))
+    if kind == "ineq":
+        return Fraction((p["c"] - p["b"] - 1) // p["a"])
+    if kind == "negops":
+        return Fraction(-p["a"] + p["b"] * p["c"])
+    if kind == "fracval":
+        return Fraction(p["a"] * p["x"] + p["b"], p["x"])
+    if kind == "sqrt":
+        return Fraction(p["a"] * p["b"])
+    if kind == "real":
+        return Fraction(p["a"] + int(p["b"] ** 0.5))
+    if kind == "linear_fn":
+        return Fraction(p["k"] * p["x"] + p["b"])
+    if kind == "inv_fn":
+        return Fraction(p["k"], p["x"])
+    if kind == "quad_fn":
+        return Fraction(p["a"] * (p["x"] - p["h"]) ** 2 + p["k"])
+    if kind == "similar":
+        return Fraction(p["b"] * p["scale"])
+    if kind == "trig":
+        return Fraction(p["opp"], p["hyp"])
+    if kind == "circum":
+        return Fraction(str(round(2 * 3.14 * p["r"], 2)))
+    if kind == "bag":
+        return Fraction(p["red"], p["red"] + p["blue"])
+    if kind == "mean":
+        return Fraction(str(round(sum(p["vals"]) / len(p["vals"]), 2)))
+    if kind == "speed":
+        return Fraction(str(round(p["s"] / p["t"], 2)))
+    if kind == "buoyancy":
+        return Fraction(str(round(1000 * 10 * float(p["v"]), 2)))
+    if kind == "work":
+        return Fraction(p["f"] * p["s"])
+    if kind == "heat":
+        return Fraction(p["c"] * p["m"] * p["dt"])
+    if kind == "massfrac":
+        return Fraction(str(round(p["solute"] / p["total"] * 100, 1)))
+    if kind == "eqcalc":
+        return Fraction(p["h2"] * 9)
     raise AssertionError("未知模板 " + kind)
 
 
@@ -66,8 +104,8 @@ class BankTest(unittest.TestCase):
             self.assertEqual(Fraction(it["answer"]), recompute(it), it["id"] + " " + it["stem"])
 
     def test_bank_is_big_enough_and_covers_several_topics(self):
-        self.assertGreaterEqual(len(B.ITEMS), 120)
-        self.assertGreaterEqual(len(B.topics()), 12)
+        self.assertGreaterEqual(len(B.ITEMS), 250)
+        self.assertGreaterEqual(len(B.topics()), 35)
         self.assertEqual({s for s, _ in B.topics()}, {"数学", "物理", "化学"})
 
     def test_ids_and_prior_are_consistent(self):

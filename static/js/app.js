@@ -721,7 +721,10 @@ function reviewBrief(rev, today) {
     <h2>${count ? `今天，回顾 ${count} 个知识点` : '今天没有到期复习'}</h2>
     <p>${count ? '先自己想一遍，再展开答案核对。' + (rev.mistakes_due ? `其中有 ${rev.mistakes_due} 道错题到期。` : '用新的变式题，检查是不是真的会了。') : rev.next_date ? '下次复习在' + fmtDay(rev.next_date, today) + '，也可以从一道旧题开始。' : '问一道题，或完成一组变式练习，复习安排会从这里开始。'}</p>
     ${rev.next ? `<p class="next-step"><span class="mono">下一步 · ${esc(rev.next.subject || '')}</span><b>${esc(rev.next.topic || '')}</b>${nextWhy(rev.next)}</p>
-      ${rev.next.item ? `<p class="next-q"><span class="mono">试一题 · 难度 ${Number(rev.next.item.difficulty || 0).toFixed(2)}</span>${esc(rev.next.item.stem || '')}</p>` : ''}` : ''}</div>
+      ${rev.next.item ? `<form class="next-q" data-item="${esc(rev.next.item.id)}" data-subject="${esc(rev.next.subject || '')}" data-topic="${esc(rev.next.topic || '')}">
+        <span class="mono">试一题 · 难度 ${Number(rev.next.item.difficulty || 0).toFixed(2)}</span><span class="q-stem">${esc(rev.next.item.stem || '')}</span>
+        <span class="q-row"><input name="a" autocomplete="off" inputmode="text" aria-label="你的答案" placeholder="写下答案，不用写单位"><button class="sel sm" type="submit">对答案</button></span>
+        <span class="q-fb" role="status" aria-live="polite"></span></form>` : ''}` : ''}</div>
     ${action}</section>`;
 }
 function mistakeCard(m, today) {
@@ -740,6 +743,39 @@ function bindBook(body) {
   $$('[data-rskill]', body).forEach((b) => { b.onclick = () => { location.hash = '#/study'; setTimeout(() => practice(null, +b.dataset.rskill), 80); }; });
   $$('.sel', body).forEach(handles);
 }
+// 卡片上的「试一题」：判分 → 显示对错与难度变化 → 换一道同知识点的题
+document.addEventListener('click', (e) => {
+  const b = e.target.closest && e.target.closest('form.next-q button[data-next]');
+  if (!b) return;
+  e.preventDefault();
+  if (typeof renderBook === 'function') renderBook();
+});
+document.addEventListener('submit', async (e) => {
+  const f = e.target.closest && e.target.closest('form.next-q');
+  if (!f || f.dataset.done) return;
+  e.preventDefault();
+  const input = f.querySelector('input[name="a"]');
+  const fb = f.querySelector('.q-fb');
+  const btn = f.querySelector('button');
+  const answer = String(input.value || '').trim();
+  if (!answer) { fb.className = 'q-fb bad'; fb.textContent = '先写一个答案'; return; }
+  btn.disabled = true; btn.textContent = '判分中…';
+  try {
+    const r = await api('/api/practice/answer', { item_id: f.dataset.item, answer });
+    const move = `难度 ${Number(r.difficulty_before).toFixed(2)} → ${Number(r.difficulty_after).toFixed(2)}`;
+    fb.className = 'q-fb ' + (r.correct ? 'good' : 'bad');
+    fb.textContent = r.correct ? `对了。${move}` : `不对，参考答案 ${r.expected}。${move}`;
+    input.disabled = true;
+    // 不自动换题：让学生看清答案，自己点「下一题」
+    btn.type = 'button'; btn.disabled = false; btn.textContent = '下一题 →'; btn.dataset.next = '1';
+    f.dataset.done = '1';
+  } catch (err) {
+    const msg = (err && err.message) || '';
+    fb.className = 'q-fb bad';
+    fb.textContent = /判不了|409/.test(msg) ? '这道题没法自动判分，去问小雅吧' : (msg || '判分失败，再试一次');
+    btn.disabled = false; btn.textContent = '对答案';
+  }
+});
 async function renderBook() {
   const tab = state.tab;
   $$('.tabs button').forEach((b) => b.classList.toggle('on', b.dataset.tab === tab));

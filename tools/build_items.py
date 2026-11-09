@@ -140,6 +140,109 @@ def build(seed=20261109):
         make(it, "化学", "high", "物质的量", "质量 %s 克、摩尔质量 %s 克每摩尔的物质，物质的量是多少摩尔？" % (m, M),
              round(m / M, 3), {"kind": "amount", "m": m, "M": M}, steps=2, ops=2, unit="摩尔")
 
+    # —— 第二批：初中代数的其余主干 ——
+    for _ in range(8):
+        a, b, c = rnd.choice([2, 3, 4, 5]), rnd.randint(1, 9), rnd.randint(10, 30)
+        # a x + b < c 的最大整数解
+        k = (c - b - 1) // a
+        make(it, "数学", "middle", "不等式与不等式组",
+             "解不等式：%dx + %d < %d，x 的最大整数值是多少？" % (a, b, c), k,
+             {"kind": "ineq", "a": a, "b": b, "c": c}, steps=2, ops=3)
+    for _ in range(8):
+        a, b, c = rnd.randint(2, 9), rnd.randint(1, 5), rnd.randint(2, 6)
+        make(it, "数学", "middle", "有理数的运算",
+             "计算：−%d + %d × %d" % (a, b, c), -a + b * c, {"kind": "negops", "a": a, "b": b, "c": c}, steps=2, ops=2)
+    for _ in range(6):
+        a, b, x = rnd.choice([2, 3, 4]), rnd.choice([1, 3, 5]), rnd.choice([2, 3, 4])
+        # (a x + b) / x at x → a + b/x
+        val = a + Fraction(b, x)
+        make(it, "数学", "middle", "分式",
+             "当 x = %d 时，分式 (%dx + %d)/x 的值是多少？（写成分数或整数）" % (x, a, b),
+             "%d/%d" % (val.numerator, val.denominator), {"kind": "fracval", "a": a, "b": b, "x": x},
+             steps=2, ops=3)
+    for _ in range(6):
+        a, b = rnd.choice([2, 3, 5]), rnd.choice([2, 3, 5])
+        make(it, "数学", "middle", "二次根式",
+             "计算：√%d × √%d" % (a * a, b * b), a * b, {"kind": "sqrt", "a": a, "b": b}, steps=1, ops=2)
+    for _ in range(6):
+        a, b = rnd.randint(2, 12), rnd.choice([4, 9, 16, 25])
+        make(it, "数学", "middle", "实数",
+             "计算：|−%d| + √%d" % (a, b), a + int(b ** 0.5), {"kind": "real", "a": a, "b": b}, steps=2, ops=2)
+    for _ in range(6):
+        k, b, x = rnd.choice([2, 3, -2]), rnd.randint(1, 9), rnd.choice([2, 3, 4, 5])
+        make(it, "数学", "middle", "一次函数",
+             "一次函数 y = %dx + %d，当 x = %d 时 y 是多少？" % (k, b, x), k * x + b,
+             {"kind": "linear_fn", "k": k, "b": b, "x": x}, steps=2, ops=2)
+    for _ in range(6):
+        k, x = rnd.choice([6, 12, 18, 24]), rnd.choice([2, 3, 4, 6])
+        make(it, "数学", "middle", "反比例函数",
+             "反比例函数 y = %d/x，当 x = %d 时 y 是多少？" % (k, x), Fraction(k, x),
+             {"kind": "inv_fn", "k": k, "x": x}, steps=1, ops=1)
+    for _ in range(6):
+        a, h, k, x = rnd.choice([1, 2, -1]), rnd.randint(1, 4), rnd.randint(-4, 4), rnd.choice([0, 1, 2, 3])
+        make(it, "数学", "middle", "二次函数",
+             "二次函数 y = %d(x − %d)² + %d，当 x = %d 时 y 是多少？" % (a, h, k, x), a * (x - h) ** 2 + k,
+             {"kind": "quad_fn", "a": a, "h": h, "k": k, "x": x}, steps=3, ops=4)
+    for _ in range(6):
+        a, b, c = 3, 4, 5
+        scale = rnd.choice([2, 3, 4])
+        make(it, "数学", "middle", "相似三角形",
+             "两个相似三角形对应边之比为 3:%d，小三角形的一条边是 %d，大三角形的对应边是多少？" % (scale * 3, b),
+             b * scale, {"kind": "similar", "b": b, "scale": scale}, steps=2, ops=2)
+    for _ in range(6):
+        opp, adj, hyp = rnd.choice([(3, 4, 5), (5, 12, 13), (8, 15, 17)])
+        make(it, "数学", "middle", "锐角三角函数",
+             "直角三角形中，对边 %d、邻边 %d、斜边 %d，sin 的值是多少？（写成分数）" % (opp, adj, hyp),
+             "%d/%d" % (opp, hyp), {"kind": "trig", "opp": opp, "hyp": hyp}, steps=2, ops=2)
+    for _ in range(6):
+        r = rnd.choice([1, 2, 3, 4])
+        make(it, "数学", "middle", "圆的性质",
+             "半径 %d 厘米的圆，周长是多少厘米？（π 取 3.14）" % r, round(2 * 3.14 * r, 2),
+             {"kind": "circum", "r": r}, steps=2, ops=2, unit="厘米")
+    for _ in range(6):
+        red, blue = rnd.randint(2, 5), rnd.randint(1, 4)
+        make(it, "数学", "middle", "概率初步",
+             "袋子里有 %d 个红球、%d 个蓝球，随机摸一个是红球的概率是多少？（写成分数）" % (red, blue),
+             "%d/%d" % (red, red + blue), {"kind": "bag", "red": red, "blue": blue}, steps=2, ops=2)
+    for _ in range(6):
+        vals = [rnd.randint(60, 100) for _ in range(5)]
+        make(it, "数学", "middle", "数据的分析",
+             "五个数据 %s 的平均数是多少？" % "、".join(str(v) for v in vals), round(sum(vals) / 5, 2),
+             {"kind": "mean", "vals": vals}, steps=2, ops=2)
+
+    # —— 第二批：物理 ——
+    for _ in range(6):
+        s, t = rnd.choice([120, 240, 360, 600]), rnd.choice([2, 3, 4, 5])
+        make(it, "物理", "middle", "机械运动",
+             "物体在 %d 秒内运动了 %d 米，平均速度是多少米每秒？" % (t, s), round(s / t, 2),
+             {"kind": "speed", "s": s, "t": t}, steps=2, ops=2, unit="米每秒")
+    for _ in range(6):
+        v = rnd.choice([0.001, 0.002, 0.004])
+        make(it, "物理", "middle", "浮力",
+             "物体排开水的体积是 %s 立方米，受到的浮力是多少牛？（ρ水=1000 千克每立方米，g 取 10）" % v,
+             round(1000 * 10 * float(v), 2), {"kind": "buoyancy", "v": v}, steps=2, ops=3, unit="牛")
+    for _ in range(6):
+        f, s = rnd.choice([20, 50, 100]), rnd.choice([2, 3, 5])
+        make(it, "物理", "middle", "功和机械能", "用 %d 牛的力沿力的方向移动 %d 米，做功多少焦？" % (f, s), f * s,
+             {"kind": "work", "f": f, "s": s}, steps=2, ops=2, unit="焦")
+    for _ in range(6):
+        c, m, dt = 4200, rnd.choice([1, 2, 3]), rnd.choice([10, 20, 30])
+        make(it, "物理", "middle", "内能", "质量 %d 千克的水温度升高 %d ℃，吸收的热量是多少焦？（c水=4200 焦每千克摄氏度）" % (m, dt),
+             c * m * dt, {"kind": "heat", "c": c, "m": m, "dt": dt}, steps=2, ops=2, unit="焦")
+
+    # —— 第二批：化学 ——
+    for _ in range(6):
+        solute, total = rnd.choice([10, 20, 25]), rnd.choice([50, 100, 200])
+        make(it, "化学", "middle", "溶液",
+             "%d 克溶质溶于水配成 %d 克溶液，溶质质量分数是多少？（百分比，保留一位小数）" % (solute, total),
+             round(solute / total * 100, 1), {"kind": "massfrac", "solute": solute, "total": total}, steps=2, ops=2, unit="%")
+    for _ in range(5):
+        h2 = rnd.choice([4, 8, 12])
+        # 2H2 + O2 -> 2H2O：m(H2)=2 → 18 g 水，按比例
+        make(it, "化学", "middle", "根据化学方程式计算",
+             "2H₂ + O₂ → 2H₂O。完全燃烧 %d 克氢气，生成多少克水？（H=1，O=16）" % h2, h2 * 9,
+             {"kind": "eqcalc", "h2": h2}, steps=3, ops=4, unit="克")
+
     for item in it:
         item["difficulty_prior"] = prior(item["band"], item["steps"], item["ops"])
     return it

@@ -2602,6 +2602,2171 @@
    },
    "tags": [],
    "difficulty_prior": 0.67
+  },
+  {
+   "id": "ineq-142",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "不等式与不等式组",
+   "stem": "解不等式：4x + 4 < 16，x 的最大整数值是多少？",
+   "answer": "2",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "ineq",
+    "a": 4,
+    "b": 4,
+    "c": 16
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "ineq-143",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "不等式与不等式组",
+   "stem": "解不等式：4x + 4 < 11，x 的最大整数值是多少？",
+   "answer": "1",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "ineq",
+    "a": 4,
+    "b": 4,
+    "c": 11
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "ineq-144",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "不等式与不等式组",
+   "stem": "解不等式：4x + 8 < 28，x 的最大整数值是多少？",
+   "answer": "4",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "ineq",
+    "a": 4,
+    "b": 8,
+    "c": 28
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "ineq-145",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "不等式与不等式组",
+   "stem": "解不等式：4x + 8 < 10，x 的最大整数值是多少？",
+   "answer": "0",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "ineq",
+    "a": 4,
+    "b": 8,
+    "c": 10
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "ineq-146",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "不等式与不等式组",
+   "stem": "解不等式：3x + 9 < 17，x 的最大整数值是多少？",
+   "answer": "2",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "ineq",
+    "a": 3,
+    "b": 9,
+    "c": 17
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "ineq-147",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "不等式与不等式组",
+   "stem": "解不等式：2x + 6 < 22，x 的最大整数值是多少？",
+   "answer": "7",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "ineq",
+    "a": 2,
+    "b": 6,
+    "c": 22
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "ineq-148",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "不等式与不等式组",
+   "stem": "解不等式：5x + 1 < 15，x 的最大整数值是多少？",
+   "answer": "2",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "ineq",
+    "a": 5,
+    "b": 1,
+    "c": 15
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "ineq-149",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "不等式与不等式组",
+   "stem": "解不等式：3x + 7 < 28，x 的最大整数值是多少？",
+   "answer": "6",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "ineq",
+    "a": 3,
+    "b": 7,
+    "c": 28
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "negops-150",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "有理数的运算",
+   "stem": "计算：−6 + 4 × 4",
+   "answer": "10",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "negops",
+    "a": 6,
+    "b": 4,
+    "c": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "negops-151",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "有理数的运算",
+   "stem": "计算：−9 + 5 × 3",
+   "answer": "6",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "negops",
+    "a": 9,
+    "b": 5,
+    "c": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "negops-152",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "有理数的运算",
+   "stem": "计算：−7 + 5 × 5",
+   "answer": "18",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "negops",
+    "a": 7,
+    "b": 5,
+    "c": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "negops-153",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "有理数的运算",
+   "stem": "计算：−2 + 2 × 5",
+   "answer": "8",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "negops",
+    "a": 2,
+    "b": 2,
+    "c": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "negops-154",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "有理数的运算",
+   "stem": "计算：−4 + 5 × 3",
+   "answer": "11",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "negops",
+    "a": 4,
+    "b": 5,
+    "c": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "negops-155",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "有理数的运算",
+   "stem": "计算：−6 + 4 × 5",
+   "answer": "14",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "negops",
+    "a": 6,
+    "b": 4,
+    "c": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "negops-156",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "有理数的运算",
+   "stem": "计算：−6 + 1 × 4",
+   "answer": "-2",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "negops",
+    "a": 6,
+    "b": 1,
+    "c": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "negops-157",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "有理数的运算",
+   "stem": "计算：−5 + 4 × 3",
+   "answer": "7",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "negops",
+    "a": 5,
+    "b": 4,
+    "c": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "fracval-158",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "分式",
+   "stem": "当 x = 4 时，分式 (3x + 3)/x 的值是多少？（写成分数或整数）",
+   "answer": "15/4",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "fracval",
+    "a": 3,
+    "b": 3,
+    "x": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "fracval-159",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "分式",
+   "stem": "当 x = 4 时，分式 (2x + 3)/x 的值是多少？（写成分数或整数）",
+   "answer": "11/4",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "fracval",
+    "a": 2,
+    "b": 3,
+    "x": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "fracval-160",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "分式",
+   "stem": "当 x = 2 时，分式 (2x + 3)/x 的值是多少？（写成分数或整数）",
+   "answer": "7/2",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "fracval",
+    "a": 2,
+    "b": 3,
+    "x": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "fracval-161",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "分式",
+   "stem": "当 x = 3 时，分式 (2x + 5)/x 的值是多少？（写成分数或整数）",
+   "answer": "11/3",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "fracval",
+    "a": 2,
+    "b": 5,
+    "x": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "fracval-162",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "分式",
+   "stem": "当 x = 2 时，分式 (3x + 3)/x 的值是多少？（写成分数或整数）",
+   "answer": "9/2",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "fracval",
+    "a": 3,
+    "b": 3,
+    "x": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "fracval-163",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "分式",
+   "stem": "当 x = 3 时，分式 (2x + 5)/x 的值是多少？（写成分数或整数）",
+   "answer": "11/3",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "fracval",
+    "a": 2,
+    "b": 5,
+    "x": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "sqrt-164",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "二次根式",
+   "stem": "计算：√25 × √25",
+   "answer": "25",
+   "unit": "",
+   "steps": 1,
+   "ops": 2,
+   "params": {
+    "kind": "sqrt",
+    "a": 5,
+    "b": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.47
+  },
+  {
+   "id": "sqrt-165",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "二次根式",
+   "stem": "计算：√9 × √4",
+   "answer": "6",
+   "unit": "",
+   "steps": 1,
+   "ops": 2,
+   "params": {
+    "kind": "sqrt",
+    "a": 3,
+    "b": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.47
+  },
+  {
+   "id": "sqrt-166",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "二次根式",
+   "stem": "计算：√4 × √25",
+   "answer": "10",
+   "unit": "",
+   "steps": 1,
+   "ops": 2,
+   "params": {
+    "kind": "sqrt",
+    "a": 2,
+    "b": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.47
+  },
+  {
+   "id": "sqrt-167",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "二次根式",
+   "stem": "计算：√25 × √25",
+   "answer": "25",
+   "unit": "",
+   "steps": 1,
+   "ops": 2,
+   "params": {
+    "kind": "sqrt",
+    "a": 5,
+    "b": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.47
+  },
+  {
+   "id": "sqrt-168",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "二次根式",
+   "stem": "计算：√9 × √9",
+   "answer": "9",
+   "unit": "",
+   "steps": 1,
+   "ops": 2,
+   "params": {
+    "kind": "sqrt",
+    "a": 3,
+    "b": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.47
+  },
+  {
+   "id": "sqrt-169",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "二次根式",
+   "stem": "计算：√25 × √25",
+   "answer": "25",
+   "unit": "",
+   "steps": 1,
+   "ops": 2,
+   "params": {
+    "kind": "sqrt",
+    "a": 5,
+    "b": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.47
+  },
+  {
+   "id": "real-170",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "实数",
+   "stem": "计算：|−4| + √16",
+   "answer": "8",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "real",
+    "a": 4,
+    "b": 16
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "real-171",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "实数",
+   "stem": "计算：|−4| + √25",
+   "answer": "9",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "real",
+    "a": 4,
+    "b": 25
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "real-172",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "实数",
+   "stem": "计算：|−6| + √4",
+   "answer": "8",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "real",
+    "a": 6,
+    "b": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "real-173",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "实数",
+   "stem": "计算：|−3| + √25",
+   "answer": "8",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "real",
+    "a": 3,
+    "b": 25
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "real-174",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "实数",
+   "stem": "计算：|−6| + √4",
+   "answer": "8",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "real",
+    "a": 6,
+    "b": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "real-175",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "实数",
+   "stem": "计算：|−4| + √9",
+   "answer": "7",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "real",
+    "a": 4,
+    "b": 9
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "linear_fn-176",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "一次函数",
+   "stem": "一次函数 y = -2x + 1，当 x = 3 时 y 是多少？",
+   "answer": "-5",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "linear_fn",
+    "k": -2,
+    "b": 1,
+    "x": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "linear_fn-177",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "一次函数",
+   "stem": "一次函数 y = 3x + 8，当 x = 2 时 y 是多少？",
+   "answer": "14",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "linear_fn",
+    "k": 3,
+    "b": 8,
+    "x": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "linear_fn-178",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "一次函数",
+   "stem": "一次函数 y = -2x + 2，当 x = 4 时 y 是多少？",
+   "answer": "-6",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "linear_fn",
+    "k": -2,
+    "b": 2,
+    "x": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "linear_fn-179",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "一次函数",
+   "stem": "一次函数 y = 3x + 7，当 x = 2 时 y 是多少？",
+   "answer": "13",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "linear_fn",
+    "k": 3,
+    "b": 7,
+    "x": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "linear_fn-180",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "一次函数",
+   "stem": "一次函数 y = 2x + 8，当 x = 4 时 y 是多少？",
+   "answer": "16",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "linear_fn",
+    "k": 2,
+    "b": 8,
+    "x": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "linear_fn-181",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "一次函数",
+   "stem": "一次函数 y = 3x + 1，当 x = 5 时 y 是多少？",
+   "answer": "16",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "linear_fn",
+    "k": 3,
+    "b": 1,
+    "x": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "inv_fn-182",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "反比例函数",
+   "stem": "反比例函数 y = 12/x，当 x = 3 时 y 是多少？",
+   "answer": "4",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "inv_fn",
+    "k": 12,
+    "x": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "inv_fn-183",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "反比例函数",
+   "stem": "反比例函数 y = 24/x，当 x = 3 时 y 是多少？",
+   "answer": "8",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "inv_fn",
+    "k": 24,
+    "x": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "inv_fn-184",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "反比例函数",
+   "stem": "反比例函数 y = 24/x，当 x = 6 时 y 是多少？",
+   "answer": "4",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "inv_fn",
+    "k": 24,
+    "x": 6
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "inv_fn-185",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "反比例函数",
+   "stem": "反比例函数 y = 12/x，当 x = 4 时 y 是多少？",
+   "answer": "3",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "inv_fn",
+    "k": 12,
+    "x": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "inv_fn-186",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "反比例函数",
+   "stem": "反比例函数 y = 18/x，当 x = 3 时 y 是多少？",
+   "answer": "6",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "inv_fn",
+    "k": 18,
+    "x": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "inv_fn-187",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "反比例函数",
+   "stem": "反比例函数 y = 24/x，当 x = 2 时 y 是多少？",
+   "answer": "12",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "inv_fn",
+    "k": 24,
+    "x": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "quad_fn-188",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "二次函数",
+   "stem": "二次函数 y = 1(x − 3)² + -4，当 x = 3 时 y 是多少？",
+   "answer": "-4",
+   "unit": "",
+   "steps": 3,
+   "ops": 4,
+   "params": {
+    "kind": "quad_fn",
+    "a": 1,
+    "h": 3,
+    "k": -4,
+    "x": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.58
+  },
+  {
+   "id": "quad_fn-189",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "二次函数",
+   "stem": "二次函数 y = -1(x − 1)² + -1，当 x = 1 时 y 是多少？",
+   "answer": "-1",
+   "unit": "",
+   "steps": 3,
+   "ops": 4,
+   "params": {
+    "kind": "quad_fn",
+    "a": -1,
+    "h": 1,
+    "k": -1,
+    "x": 1
+   },
+   "tags": [],
+   "difficulty_prior": 0.58
+  },
+  {
+   "id": "quad_fn-190",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "二次函数",
+   "stem": "二次函数 y = 2(x − 4)² + -3，当 x = 1 时 y 是多少？",
+   "answer": "15",
+   "unit": "",
+   "steps": 3,
+   "ops": 4,
+   "params": {
+    "kind": "quad_fn",
+    "a": 2,
+    "h": 4,
+    "k": -3,
+    "x": 1
+   },
+   "tags": [],
+   "difficulty_prior": 0.58
+  },
+  {
+   "id": "quad_fn-191",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "二次函数",
+   "stem": "二次函数 y = 1(x − 4)² + -2，当 x = 0 时 y 是多少？",
+   "answer": "14",
+   "unit": "",
+   "steps": 3,
+   "ops": 4,
+   "params": {
+    "kind": "quad_fn",
+    "a": 1,
+    "h": 4,
+    "k": -2,
+    "x": 0
+   },
+   "tags": [],
+   "difficulty_prior": 0.58
+  },
+  {
+   "id": "quad_fn-192",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "二次函数",
+   "stem": "二次函数 y = 1(x − 4)² + -1，当 x = 2 时 y 是多少？",
+   "answer": "3",
+   "unit": "",
+   "steps": 3,
+   "ops": 4,
+   "params": {
+    "kind": "quad_fn",
+    "a": 1,
+    "h": 4,
+    "k": -1,
+    "x": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.58
+  },
+  {
+   "id": "quad_fn-193",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "二次函数",
+   "stem": "二次函数 y = -1(x − 4)² + 1，当 x = 3 时 y 是多少？",
+   "answer": "0",
+   "unit": "",
+   "steps": 3,
+   "ops": 4,
+   "params": {
+    "kind": "quad_fn",
+    "a": -1,
+    "h": 4,
+    "k": 1,
+    "x": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.58
+  },
+  {
+   "id": "similar-194",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "相似三角形",
+   "stem": "两个相似三角形对应边之比为 3:6，小三角形的一条边是 4，大三角形的对应边是多少？",
+   "answer": "8",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "similar",
+    "b": 4,
+    "scale": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "similar-195",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "相似三角形",
+   "stem": "两个相似三角形对应边之比为 3:9，小三角形的一条边是 4，大三角形的对应边是多少？",
+   "answer": "12",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "similar",
+    "b": 4,
+    "scale": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "similar-196",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "相似三角形",
+   "stem": "两个相似三角形对应边之比为 3:12，小三角形的一条边是 4，大三角形的对应边是多少？",
+   "answer": "16",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "similar",
+    "b": 4,
+    "scale": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "similar-197",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "相似三角形",
+   "stem": "两个相似三角形对应边之比为 3:12，小三角形的一条边是 4，大三角形的对应边是多少？",
+   "answer": "16",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "similar",
+    "b": 4,
+    "scale": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "similar-198",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "相似三角形",
+   "stem": "两个相似三角形对应边之比为 3:12，小三角形的一条边是 4，大三角形的对应边是多少？",
+   "answer": "16",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "similar",
+    "b": 4,
+    "scale": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "similar-199",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "相似三角形",
+   "stem": "两个相似三角形对应边之比为 3:9，小三角形的一条边是 4，大三角形的对应边是多少？",
+   "answer": "12",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "similar",
+    "b": 4,
+    "scale": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "trig-200",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "锐角三角函数",
+   "stem": "直角三角形中，对边 5、邻边 12、斜边 13，sin 的值是多少？（写成分数）",
+   "answer": "5/13",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "trig",
+    "opp": 5,
+    "hyp": 13
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "trig-201",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "锐角三角函数",
+   "stem": "直角三角形中，对边 5、邻边 12、斜边 13，sin 的值是多少？（写成分数）",
+   "answer": "5/13",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "trig",
+    "opp": 5,
+    "hyp": 13
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "trig-202",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "锐角三角函数",
+   "stem": "直角三角形中，对边 3、邻边 4、斜边 5，sin 的值是多少？（写成分数）",
+   "answer": "3/5",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "trig",
+    "opp": 3,
+    "hyp": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "trig-203",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "锐角三角函数",
+   "stem": "直角三角形中，对边 3、邻边 4、斜边 5，sin 的值是多少？（写成分数）",
+   "answer": "3/5",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "trig",
+    "opp": 3,
+    "hyp": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "trig-204",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "锐角三角函数",
+   "stem": "直角三角形中，对边 5、邻边 12、斜边 13，sin 的值是多少？（写成分数）",
+   "answer": "5/13",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "trig",
+    "opp": 5,
+    "hyp": 13
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "trig-205",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "锐角三角函数",
+   "stem": "直角三角形中，对边 5、邻边 12、斜边 13，sin 的值是多少？（写成分数）",
+   "answer": "5/13",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "trig",
+    "opp": 5,
+    "hyp": 13
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "circum-206",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "圆的性质",
+   "stem": "半径 4 厘米的圆，周长是多少厘米？（π 取 3.14）",
+   "answer": "25.12",
+   "unit": "厘米",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "circum",
+    "r": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "circum-207",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "圆的性质",
+   "stem": "半径 2 厘米的圆，周长是多少厘米？（π 取 3.14）",
+   "answer": "12.56",
+   "unit": "厘米",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "circum",
+    "r": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "circum-208",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "圆的性质",
+   "stem": "半径 1 厘米的圆，周长是多少厘米？（π 取 3.14）",
+   "answer": "6.28",
+   "unit": "厘米",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "circum",
+    "r": 1
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "circum-209",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "圆的性质",
+   "stem": "半径 3 厘米的圆，周长是多少厘米？（π 取 3.14）",
+   "answer": "18.84",
+   "unit": "厘米",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "circum",
+    "r": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "circum-210",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "圆的性质",
+   "stem": "半径 3 厘米的圆，周长是多少厘米？（π 取 3.14）",
+   "answer": "18.84",
+   "unit": "厘米",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "circum",
+    "r": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "circum-211",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "圆的性质",
+   "stem": "半径 2 厘米的圆，周长是多少厘米？（π 取 3.14）",
+   "answer": "12.56",
+   "unit": "厘米",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "circum",
+    "r": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "bag-212",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "概率初步",
+   "stem": "袋子里有 2 个红球、4 个蓝球，随机摸一个是红球的概率是多少？（写成分数）",
+   "answer": "2/6",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "bag",
+    "red": 2,
+    "blue": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "bag-213",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "概率初步",
+   "stem": "袋子里有 3 个红球、3 个蓝球，随机摸一个是红球的概率是多少？（写成分数）",
+   "answer": "3/6",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "bag",
+    "red": 3,
+    "blue": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "bag-214",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "概率初步",
+   "stem": "袋子里有 5 个红球、4 个蓝球，随机摸一个是红球的概率是多少？（写成分数）",
+   "answer": "5/9",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "bag",
+    "red": 5,
+    "blue": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "bag-215",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "概率初步",
+   "stem": "袋子里有 4 个红球、3 个蓝球，随机摸一个是红球的概率是多少？（写成分数）",
+   "answer": "4/7",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "bag",
+    "red": 4,
+    "blue": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "bag-216",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "概率初步",
+   "stem": "袋子里有 3 个红球、3 个蓝球，随机摸一个是红球的概率是多少？（写成分数）",
+   "answer": "3/6",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "bag",
+    "red": 3,
+    "blue": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "bag-217",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "概率初步",
+   "stem": "袋子里有 5 个红球、1 个蓝球，随机摸一个是红球的概率是多少？（写成分数）",
+   "answer": "5/6",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "bag",
+    "red": 5,
+    "blue": 1
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "mean-218",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "数据的分析",
+   "stem": "五个数据 85、78、60、95、79 的平均数是多少？",
+   "answer": "79.4",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "mean",
+    "vals": [
+     85,
+     78,
+     60,
+     95,
+     79
+    ]
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "mean-219",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "数据的分析",
+   "stem": "五个数据 62、100、72、78、60 的平均数是多少？",
+   "answer": "74.4",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "mean",
+    "vals": [
+     62,
+     100,
+     72,
+     78,
+     60
+    ]
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "mean-220",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "数据的分析",
+   "stem": "五个数据 65、100、64、77、98 的平均数是多少？",
+   "answer": "80.8",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "mean",
+    "vals": [
+     65,
+     100,
+     64,
+     77,
+     98
+    ]
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "mean-221",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "数据的分析",
+   "stem": "五个数据 66、92、98、83、64 的平均数是多少？",
+   "answer": "80.6",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "mean",
+    "vals": [
+     66,
+     92,
+     98,
+     83,
+     64
+    ]
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "mean-222",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "数据的分析",
+   "stem": "五个数据 90、85、67、89、72 的平均数是多少？",
+   "answer": "80.6",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "mean",
+    "vals": [
+     90,
+     85,
+     67,
+     89,
+     72
+    ]
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "mean-223",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "数据的分析",
+   "stem": "五个数据 65、60、67、91、77 的平均数是多少？",
+   "answer": "72.0",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "mean",
+    "vals": [
+     65,
+     60,
+     67,
+     91,
+     77
+    ]
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "speed-224",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "机械运动",
+   "stem": "物体在 4 秒内运动了 600 米，平均速度是多少米每秒？",
+   "answer": "150.0",
+   "unit": "米每秒",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "speed",
+    "s": 600,
+    "t": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "speed-225",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "机械运动",
+   "stem": "物体在 2 秒内运动了 360 米，平均速度是多少米每秒？",
+   "answer": "180.0",
+   "unit": "米每秒",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "speed",
+    "s": 360,
+    "t": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "speed-226",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "机械运动",
+   "stem": "物体在 4 秒内运动了 360 米，平均速度是多少米每秒？",
+   "answer": "90.0",
+   "unit": "米每秒",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "speed",
+    "s": 360,
+    "t": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "speed-227",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "机械运动",
+   "stem": "物体在 5 秒内运动了 600 米，平均速度是多少米每秒？",
+   "answer": "120.0",
+   "unit": "米每秒",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "speed",
+    "s": 600,
+    "t": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "speed-228",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "机械运动",
+   "stem": "物体在 5 秒内运动了 360 米，平均速度是多少米每秒？",
+   "answer": "72.0",
+   "unit": "米每秒",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "speed",
+    "s": 360,
+    "t": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "speed-229",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "机械运动",
+   "stem": "物体在 4 秒内运动了 120 米，平均速度是多少米每秒？",
+   "answer": "30.0",
+   "unit": "米每秒",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "speed",
+    "s": 120,
+    "t": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "buoyancy-230",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "浮力",
+   "stem": "物体排开水的体积是 0.001 立方米，受到的浮力是多少牛？（ρ水=1000 千克每立方米，g 取 10）",
+   "answer": "10.0",
+   "unit": "牛",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "buoyancy",
+    "v": 0.001
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "buoyancy-231",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "浮力",
+   "stem": "物体排开水的体积是 0.004 立方米，受到的浮力是多少牛？（ρ水=1000 千克每立方米，g 取 10）",
+   "answer": "40.0",
+   "unit": "牛",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "buoyancy",
+    "v": 0.004
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "buoyancy-232",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "浮力",
+   "stem": "物体排开水的体积是 0.004 立方米，受到的浮力是多少牛？（ρ水=1000 千克每立方米，g 取 10）",
+   "answer": "40.0",
+   "unit": "牛",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "buoyancy",
+    "v": 0.004
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "buoyancy-233",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "浮力",
+   "stem": "物体排开水的体积是 0.002 立方米，受到的浮力是多少牛？（ρ水=1000 千克每立方米，g 取 10）",
+   "answer": "20.0",
+   "unit": "牛",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "buoyancy",
+    "v": 0.002
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "buoyancy-234",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "浮力",
+   "stem": "物体排开水的体积是 0.001 立方米，受到的浮力是多少牛？（ρ水=1000 千克每立方米，g 取 10）",
+   "answer": "10.0",
+   "unit": "牛",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "buoyancy",
+    "v": 0.001
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "buoyancy-235",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "浮力",
+   "stem": "物体排开水的体积是 0.004 立方米，受到的浮力是多少牛？（ρ水=1000 千克每立方米，g 取 10）",
+   "answer": "40.0",
+   "unit": "牛",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "buoyancy",
+    "v": 0.004
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "work-236",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "功和机械能",
+   "stem": "用 20 牛的力沿力的方向移动 5 米，做功多少焦？",
+   "answer": "100",
+   "unit": "焦",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "work",
+    "f": 20,
+    "s": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "work-237",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "功和机械能",
+   "stem": "用 100 牛的力沿力的方向移动 3 米，做功多少焦？",
+   "answer": "300",
+   "unit": "焦",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "work",
+    "f": 100,
+    "s": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "work-238",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "功和机械能",
+   "stem": "用 20 牛的力沿力的方向移动 3 米，做功多少焦？",
+   "answer": "60",
+   "unit": "焦",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "work",
+    "f": 20,
+    "s": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "work-239",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "功和机械能",
+   "stem": "用 50 牛的力沿力的方向移动 2 米，做功多少焦？",
+   "answer": "100",
+   "unit": "焦",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "work",
+    "f": 50,
+    "s": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "work-240",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "功和机械能",
+   "stem": "用 20 牛的力沿力的方向移动 2 米，做功多少焦？",
+   "answer": "40",
+   "unit": "焦",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "work",
+    "f": 20,
+    "s": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "work-241",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "功和机械能",
+   "stem": "用 100 牛的力沿力的方向移动 3 米，做功多少焦？",
+   "answer": "300",
+   "unit": "焦",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "work",
+    "f": 100,
+    "s": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "heat-242",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "内能",
+   "stem": "质量 1 千克的水温度升高 20 ℃，吸收的热量是多少焦？（c水=4200 焦每千克摄氏度）",
+   "answer": "84000",
+   "unit": "焦",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "heat",
+    "c": 4200,
+    "m": 1,
+    "dt": 20
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "heat-243",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "内能",
+   "stem": "质量 3 千克的水温度升高 30 ℃，吸收的热量是多少焦？（c水=4200 焦每千克摄氏度）",
+   "answer": "378000",
+   "unit": "焦",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "heat",
+    "c": 4200,
+    "m": 3,
+    "dt": 30
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "heat-244",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "内能",
+   "stem": "质量 3 千克的水温度升高 30 ℃，吸收的热量是多少焦？（c水=4200 焦每千克摄氏度）",
+   "answer": "378000",
+   "unit": "焦",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "heat",
+    "c": 4200,
+    "m": 3,
+    "dt": 30
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "heat-245",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "内能",
+   "stem": "质量 2 千克的水温度升高 20 ℃，吸收的热量是多少焦？（c水=4200 焦每千克摄氏度）",
+   "answer": "168000",
+   "unit": "焦",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "heat",
+    "c": 4200,
+    "m": 2,
+    "dt": 20
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "heat-246",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "内能",
+   "stem": "质量 2 千克的水温度升高 20 ℃，吸收的热量是多少焦？（c水=4200 焦每千克摄氏度）",
+   "answer": "168000",
+   "unit": "焦",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "heat",
+    "c": 4200,
+    "m": 2,
+    "dt": 20
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "heat-247",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "内能",
+   "stem": "质量 2 千克的水温度升高 20 ℃，吸收的热量是多少焦？（c水=4200 焦每千克摄氏度）",
+   "answer": "168000",
+   "unit": "焦",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "heat",
+    "c": 4200,
+    "m": 2,
+    "dt": 20
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "massfrac-248",
+   "subject": "化学",
+   "band": "middle",
+   "topic": "溶液",
+   "stem": "10 克溶质溶于水配成 100 克溶液，溶质质量分数是多少？（百分比，保留一位小数）",
+   "answer": "10.0",
+   "unit": "%",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "massfrac",
+    "solute": 10,
+    "total": 100
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "massfrac-249",
+   "subject": "化学",
+   "band": "middle",
+   "topic": "溶液",
+   "stem": "20 克溶质溶于水配成 200 克溶液，溶质质量分数是多少？（百分比，保留一位小数）",
+   "answer": "10.0",
+   "unit": "%",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "massfrac",
+    "solute": 20,
+    "total": 200
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "massfrac-250",
+   "subject": "化学",
+   "band": "middle",
+   "topic": "溶液",
+   "stem": "25 克溶质溶于水配成 200 克溶液，溶质质量分数是多少？（百分比，保留一位小数）",
+   "answer": "12.5",
+   "unit": "%",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "massfrac",
+    "solute": 25,
+    "total": 200
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "massfrac-251",
+   "subject": "化学",
+   "band": "middle",
+   "topic": "溶液",
+   "stem": "20 克溶质溶于水配成 200 克溶液，溶质质量分数是多少？（百分比，保留一位小数）",
+   "answer": "10.0",
+   "unit": "%",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "massfrac",
+    "solute": 20,
+    "total": 200
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "massfrac-252",
+   "subject": "化学",
+   "band": "middle",
+   "topic": "溶液",
+   "stem": "20 克溶质溶于水配成 50 克溶液，溶质质量分数是多少？（百分比，保留一位小数）",
+   "answer": "40.0",
+   "unit": "%",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "massfrac",
+    "solute": 20,
+    "total": 50
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "massfrac-253",
+   "subject": "化学",
+   "band": "middle",
+   "topic": "溶液",
+   "stem": "20 克溶质溶于水配成 200 克溶液，溶质质量分数是多少？（百分比，保留一位小数）",
+   "answer": "10.0",
+   "unit": "%",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "massfrac",
+    "solute": 20,
+    "total": 200
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "eqcalc-254",
+   "subject": "化学",
+   "band": "middle",
+   "topic": "根据化学方程式计算",
+   "stem": "2H₂ + O₂ → 2H₂O。完全燃烧 4 克氢气，生成多少克水？（H=1，O=16）",
+   "answer": "36",
+   "unit": "克",
+   "steps": 3,
+   "ops": 4,
+   "params": {
+    "kind": "eqcalc",
+    "h2": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.58
+  },
+  {
+   "id": "eqcalc-255",
+   "subject": "化学",
+   "band": "middle",
+   "topic": "根据化学方程式计算",
+   "stem": "2H₂ + O₂ → 2H₂O。完全燃烧 8 克氢气，生成多少克水？（H=1，O=16）",
+   "answer": "72",
+   "unit": "克",
+   "steps": 3,
+   "ops": 4,
+   "params": {
+    "kind": "eqcalc",
+    "h2": 8
+   },
+   "tags": [],
+   "difficulty_prior": 0.58
+  },
+  {
+   "id": "eqcalc-256",
+   "subject": "化学",
+   "band": "middle",
+   "topic": "根据化学方程式计算",
+   "stem": "2H₂ + O₂ → 2H₂O。完全燃烧 4 克氢气，生成多少克水？（H=1，O=16）",
+   "answer": "36",
+   "unit": "克",
+   "steps": 3,
+   "ops": 4,
+   "params": {
+    "kind": "eqcalc",
+    "h2": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.58
+  },
+  {
+   "id": "eqcalc-257",
+   "subject": "化学",
+   "band": "middle",
+   "topic": "根据化学方程式计算",
+   "stem": "2H₂ + O₂ → 2H₂O。完全燃烧 8 克氢气，生成多少克水？（H=1，O=16）",
+   "answer": "72",
+   "unit": "克",
+   "steps": 3,
+   "ops": 4,
+   "params": {
+    "kind": "eqcalc",
+    "h2": 8
+   },
+   "tags": [],
+   "difficulty_prior": 0.58
+  },
+  {
+   "id": "eqcalc-258",
+   "subject": "化学",
+   "band": "middle",
+   "topic": "根据化学方程式计算",
+   "stem": "2H₂ + O₂ → 2H₂O。完全燃烧 8 克氢气，生成多少克水？（H=1，O=16）",
+   "answer": "72",
+   "unit": "克",
+   "steps": 3,
+   "ops": 4,
+   "params": {
+    "kind": "eqcalc",
+    "h2": 8
+   },
+   "tags": [],
+   "difficulty_prior": 0.58
   }
  ]
 }
