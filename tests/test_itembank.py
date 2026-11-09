@@ -1,4 +1,5 @@
 """题库与在线难度标定的测试：答案必须能被 params 复算，推荐必须可解释。"""
+import math
 import os
 import sys
 import tempfile
@@ -119,6 +120,83 @@ def recompute(it):
         return Fraction(p["v"] * p["t"])
     if kind == "kwh":
         return Fraction(str(round(p["p"] * p["t"] / 1000, 2)))
+    if kind == "divq":
+        return Fraction(p["q"])
+    if kind == "area_rect":
+        return Fraction(p["w"] * p["h"])
+    if kind == "unit_len":
+        return Fraction(p["m"] * 100)
+    if kind == "avg3":
+        return Fraction(sum(p["vals"]), 3)
+    if kind == "time_min":
+        return Fraction(p["h"] * 60)
+    if kind == "change":
+        return Fraction(p["pay"] - p["price"])
+    if kind == "trip_p":
+        return Fraction(p["v"] * p["t"])
+    if kind == "sqdiff_const":
+        return Fraction(-p["a"] * p["a"])
+    if kind == "perfect_linear":
+        return Fraction(2 * p["a"])
+    if kind == "scinot":
+        return Fraction(int(Fraction(str(p["c"])) * 10 ** p["n"]))
+    if kind == "median5":
+        return Fraction(sorted(p["vals"])[2])
+    if kind == "log":
+        return Fraction(p["k"])
+    if kind == "exp_eq":
+        return Fraction(p["k"])
+    if kind == "trig_special":
+        return {"sin 30°": Fraction(1, 2), "cos 60°": Fraction(1, 2),
+                "tan 45°": Fraction(1), "sin 90°": Fraction(1)}[p["name"]]
+    if kind in ("comb", "binom"):
+        return Fraction(math.comb(p["n"], p["k"]))
+    if kind == "series_r":
+        return Fraction(p["r1"] + p["r2"])
+    if kind == "parallel_r":
+        return Fraction(p["r1"] * p["r2"], p["r1"] + p["r2"])
+    if kind == "eff":
+        return Fraction(p["useful"] * 100 // p["total"])
+    if kind == "accel_disp":
+        return Fraction(p["a"] * p["t"] * p["t"], 2)
+    if kind == "kinetic":
+        return Fraction(p["m"] * p["v"] * p["v"], 2)
+    if kind == "momentum":
+        return Fraction(p["m"] * p["v"])
+    if kind == "conserve":
+        return Fraction(p["ma"] + p["mb"])
+    if kind == "atoms_count":
+        return Fraction(p["n"])
+    if kind == "molar_vol":
+        return Fraction(str(round(float(p["n"]) * 22.4, 1)))
+    if kind == "ph":
+        return Fraction(p["k"])
+    if kind == "gene":
+        return Fraction(3, 4) if p["which"] == "显性性状" else Fraction(1, 4)
+    if kind == "microscope":
+        return Fraction(p["eye"] * p["obj"])
+    if kind == "energy":
+        return Fraction(p["base"] // 10)
+    if kind == "cell_split":
+        return Fraction(2 ** p["n"])
+    if kind == "breath":
+        return Fraction(p["rate"] * p["min"])
+    if kind == "heart":
+        return Fraction(p["hr"] * p["min"])
+    if kind == "scale":
+        return Fraction(p["cm"] * p["den"] // 100000)
+    if kind == "density_pop":
+        return Fraction(p["pop"] // p["area"])
+    if kind == "lapse":
+        return Fraction(str(round(0.6 * p["h"], 1)))
+    if kind == "tz":
+        return Fraction(p["diff"])
+    if kind == "sun_alt":
+        return Fraction(90 - abs(p["lat"] - p["decl"]))
+    if kind == "contour":
+        return Fraction(p["step"] * p["n"])
+    if kind == "annual_range":
+        return Fraction(p["hi"] - p["lo"])
     raise AssertionError("未知模板 " + kind)
 
 
@@ -128,9 +206,21 @@ class BankTest(unittest.TestCase):
             self.assertEqual(Fraction(it["answer"]), recompute(it), it["id"] + " " + it["stem"])
 
     def test_bank_is_big_enough_and_covers_several_topics(self):
-        self.assertGreaterEqual(len(B.ITEMS), 320)
-        self.assertGreaterEqual(len(B.topics()), 50)
-        self.assertEqual({s for s, _ in B.topics()}, {"数学", "物理", "化学"})
+        self.assertGreaterEqual(len(B.ITEMS), 480)
+        self.assertGreaterEqual(len(B.topics()), 70)
+        self.assertEqual({s for s, _ in B.topics()}, {"数学", "物理", "化学", "生物", "地理"})
+
+    def test_every_topic_has_at_least_two_items_to_choose_from(self):
+        from collections import Counter
+        counts = Counter((it["subject"], it["topic"]) for it in B.ITEMS)
+        thin = {k: v for k, v in counts.items() if v < 2}
+        self.assertEqual(thin, {}, "每个知识点至少要能换一道题：%s" % thin)
+
+    def test_every_subject_band_has_a_real_pool(self):
+        from collections import Counter
+        pools = Counter((it["subject"], it["band"]) for it in B.ITEMS)
+        for key, n in pools.items():
+            self.assertGreaterEqual(n, 5, "%s 的题太少：%d" % (key, n))
 
     def test_ids_and_prior_are_consistent(self):
         self.assertEqual(len({it["id"] for it in B.ITEMS}), len(B.ITEMS))
