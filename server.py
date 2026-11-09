@@ -17,7 +17,7 @@ from urllib.parse import parse_qs, urlparse
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, ROOT)
-from lyceum import agent, evolve, insight, llm, mastery, strategies  # noqa: E402
+from lyceum import agent, evolve, insight, itembank, llm, mastery, strategies  # noqa: E402
 from lyceum import __version__ as VERSION  # noqa: E402
 from lyceum import backup as bakmod  # noqa: E402
 from lyceum import config as cfgmod  # noqa: E402
@@ -123,7 +123,11 @@ class H(BaseHTTPRequestHandler):
             if p == "/api/stats":
                 return self.send_json({"stats": db.stats(), "sessions": db.list_sessions(12)})
             if p == "/api/review/today":
-                return self.send_json(db.review_today())
+                return self.send_json(self.with_next_item(db.review_today()))
+            if p == "/api/practice/next":
+                qs = parse_qs(u.query)
+                return self.practice_next(qs.get("subject", [None])[0], qs.get("topic", [None])[0],
+                                          qs.get("exclude", [""])[0])
             if p == "/api/mastery":
                 qs = parse_qs(u.query)
                 return self.send_json({"skills": db.mastery_list(qs.get("subject", [None])[0]), "params": mastery.params(),
@@ -191,6 +195,8 @@ class H(BaseHTTPRequestHandler):
                 return self.chat_stream(b)
             if p == "/api/practice":
                 return self.practice(b)
+            if p == "/api/practice/answer":
+                return self.practice_answer(b)
             if p == "/api/grade":
                 return self.grade(b)
             m = re.match(r"^/api/mistakes/(\d+)/(master|unmaster|delete)$", p)
@@ -472,6 +478,57 @@ class H(BaseHTTPRequestHandler):
             self.wfile.flush()
         except Exception:
             pass
+
+    # ---------- 题库：下一题 / 判分
+    def practice_next(self, subject, topic, exclude=""):
+        if not subject or not topic:
+            return self.send_json({"error": "要指定学科和知识点"}, 400)
+        stats = db.item_stats()
+        theta = 0.45
+        sk = db.skill(subject, topic)
+        if sk and sk.get("p_l") is not None:
+            theta = itembank.theta_from_mastery(sk["p_l"])
+        skip = {x for x in exclude.split(",") if x}
+        item, why = itembank.select(subject, topic, theta, stats, skip)
+        if not item:
+            return self.send_json({"error": "这个知识点还没有可判分的题", "available": itembank.topics()}, 404)
+        return self.send_json({"item": self.public_item(item, stats), "why": why, "theta": theta})
+
+    def practice_answer(self, b):
+        item = itembank.BY_ID.get(str(b.get("item_id") or ""))
+        if not item:
+            return self.send_json({"error": "没有这道题"}, 404)
+        verdict = itembank.check(item, b.get("answer"))
+        if verdict is None:
+            return self.send_json({"error": "这道题判不了，交给小雅讲解吧", "item_id": item["id"]}, 409)
+        sk = db.skill(item["subject"], item["topic"])
+        theta = itembank.theta_from_mastery(sk["p_l"]) if sk and sk.get("p_l") is not None else 0.45
+        before, after, n = db.record_item_attempt(
+            item["id"], item["subject"], item["topic"], theta,
+            itembank.effective_difficulty(item, db.item_stats()), verdict, b.get("answer") or "")
+        db.record_evidence(item["subject"], item["topic"], "variant_right" if verdict else "variant_wrong",
+                           ref="item:" + item["id"])
+        return self.send_json({"correct": bool(verdict), "expected": item["answer"], "item_id": item["id"],
+                               "difficulty_before": before, "difficulty_after": after, "attempts": n,
+                               "skill": db.skill(item["subject"], item["topic"])})
+
+    def public_item(self, item, stats):
+        """给前端去掉答案与参数，只留题干和难度。"""
+        return {"id": item["id"], "subject": item["subject"], "topic": item["topic"], "stem": item["stem"],
+                "unit": item.get("unit") or "", "steps": item["steps"],
+                "difficulty": itembank.effective_difficulty(item, stats)}
+
+    def with_next_item(self, rev):
+        nxt = rev.get("next")
+        if not nxt:
+            return rev
+        stats = db.item_stats()
+        theta = itembank.theta_from_mastery(nxt.get("p_l") or 0.45)
+        item, why = itembank.select(nxt["subject"], nxt["topic"], theta, stats)
+        if item:
+            nxt["item"] = self.public_item(item, stats)
+            nxt["item"]["why"] = why
+        return rev
 
     def practice(self, b):
         profile = db.get_profile() or {"grade": 8}

@@ -1,0 +1,2607 @@
+{
+ "version": 1,
+ "note": "题库 v1：只收能用数值/分数确定性判分的题；答案可由 params 复算。",
+ "items": [
+  {
+   "id": "mul-001",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "表内乘法",
+   "stem": "计算：4 × 2",
+   "answer": "8",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "mul",
+    "a": 4,
+    "b": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.22
+  },
+  {
+   "id": "mul-002",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "表内乘法",
+   "stem": "计算：9 × 6",
+   "answer": "54",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "mul",
+    "a": 9,
+    "b": 6
+   },
+   "tags": [],
+   "difficulty_prior": 0.22
+  },
+  {
+   "id": "mul-003",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "表内乘法",
+   "stem": "计算：4 × 8",
+   "answer": "32",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "mul",
+    "a": 4,
+    "b": 8
+   },
+   "tags": [],
+   "difficulty_prior": 0.22
+  },
+  {
+   "id": "mul-004",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "表内乘法",
+   "stem": "计算：7 × 4",
+   "answer": "28",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "mul",
+    "a": 7,
+    "b": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.22
+  },
+  {
+   "id": "mul-005",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "表内乘法",
+   "stem": "计算：2 × 9",
+   "answer": "18",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "mul",
+    "a": 2,
+    "b": 9
+   },
+   "tags": [],
+   "difficulty_prior": 0.22
+  },
+  {
+   "id": "mul-006",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "表内乘法",
+   "stem": "计算：3 × 5",
+   "answer": "15",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "mul",
+    "a": 3,
+    "b": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.22
+  },
+  {
+   "id": "add-007",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "100以内加减法",
+   "stem": "计算：51 + 13",
+   "answer": "64",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "add",
+    "a": 51,
+    "b": 13
+   },
+   "tags": [],
+   "difficulty_prior": 0.22
+  },
+  {
+   "id": "add-008",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "100以内加减法",
+   "stem": "计算：43 + 12",
+   "answer": "55",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "add",
+    "a": 43,
+    "b": 12
+   },
+   "tags": [],
+   "difficulty_prior": 0.22
+  },
+  {
+   "id": "add-009",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "100以内加减法",
+   "stem": "计算：40 + 20",
+   "answer": "60",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "add",
+    "a": 40,
+    "b": 20
+   },
+   "tags": [],
+   "difficulty_prior": 0.22
+  },
+  {
+   "id": "add-010",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "100以内加减法",
+   "stem": "计算：73 + 14",
+   "answer": "87",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "add",
+    "a": 73,
+    "b": 14
+   },
+   "tags": [],
+   "difficulty_prior": 0.22
+  },
+  {
+   "id": "add-011",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "100以内加减法",
+   "stem": "计算：71 + 12",
+   "answer": "83",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "add",
+    "a": 71,
+    "b": 12
+   },
+   "tags": [],
+   "difficulty_prior": 0.22
+  },
+  {
+   "id": "add-012",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "100以内加减法",
+   "stem": "计算：43 + 16",
+   "answer": "59",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "add",
+    "a": 43,
+    "b": 16
+   },
+   "tags": [],
+   "difficulty_prior": 0.22
+  },
+  {
+   "id": "perimeter-013",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "周长",
+   "stem": "一个长方形长 9 厘米、宽 5 厘米，周长是多少厘米？",
+   "answer": "28",
+   "unit": "厘米",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "perimeter",
+    "w": 9,
+    "h": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.31
+  },
+  {
+   "id": "perimeter-014",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "周长",
+   "stem": "一个长方形长 12 厘米、宽 8 厘米，周长是多少厘米？",
+   "answer": "40",
+   "unit": "厘米",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "perimeter",
+    "w": 12,
+    "h": 8
+   },
+   "tags": [],
+   "difficulty_prior": 0.31
+  },
+  {
+   "id": "perimeter-015",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "周长",
+   "stem": "一个长方形长 4 厘米、宽 5 厘米，周长是多少厘米？",
+   "answer": "18",
+   "unit": "厘米",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "perimeter",
+    "w": 4,
+    "h": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.31
+  },
+  {
+   "id": "perimeter-016",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "周长",
+   "stem": "一个长方形长 5 厘米、宽 6 厘米，周长是多少厘米？",
+   "answer": "22",
+   "unit": "厘米",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "perimeter",
+    "w": 5,
+    "h": 6
+   },
+   "tags": [],
+   "difficulty_prior": 0.31
+  },
+  {
+   "id": "perimeter-017",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "周长",
+   "stem": "一个长方形长 5 厘米、宽 9 厘米，周长是多少厘米？",
+   "answer": "28",
+   "unit": "厘米",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "perimeter",
+    "w": 5,
+    "h": 9
+   },
+   "tags": [],
+   "difficulty_prior": 0.31
+  },
+  {
+   "id": "linear-018",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "一元一次方程",
+   "stem": "解方程：4x + 11 = 35",
+   "answer": "6",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "linear",
+    "a": 4,
+    "b": 11,
+    "c": 35
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "linear-019",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "一元一次方程",
+   "stem": "解方程：7x + 16 = 100",
+   "answer": "12",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "linear",
+    "a": 7,
+    "b": 16,
+    "c": 100
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "linear-020",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "一元一次方程",
+   "stem": "解方程：4x + 5 = 41",
+   "answer": "9",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "linear",
+    "a": 4,
+    "b": 5,
+    "c": 41
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "linear-021",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "一元一次方程",
+   "stem": "解方程：5x + 23 = 58",
+   "answer": "7",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "linear",
+    "a": 5,
+    "b": 23,
+    "c": 58
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "linear-022",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "一元一次方程",
+   "stem": "解方程：3x + 5 = 11",
+   "answer": "2",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "linear",
+    "a": 3,
+    "b": 5,
+    "c": 11
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "linear-023",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "一元一次方程",
+   "stem": "解方程：5x + 13 = 23",
+   "answer": "2",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "linear",
+    "a": 5,
+    "b": 13,
+    "c": 23
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "linear-024",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "一元一次方程",
+   "stem": "解方程：6x + 27 = 57",
+   "answer": "5",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "linear",
+    "a": 6,
+    "b": 27,
+    "c": 57
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "linear-025",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "一元一次方程",
+   "stem": "解方程：6x + 29 = 89",
+   "answer": "10",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "linear",
+    "a": 6,
+    "b": 29,
+    "c": 89
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "linear-026",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "一元一次方程",
+   "stem": "解方程：4x + 17 = 65",
+   "answer": "12",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "linear",
+    "a": 4,
+    "b": 17,
+    "c": 65
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "linear-027",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "一元一次方程",
+   "stem": "解方程：9x + 25 = 97",
+   "answer": "8",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "linear",
+    "a": 9,
+    "b": 25,
+    "c": 97
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "linear-028",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "一元一次方程",
+   "stem": "解方程：9x + 15 = 33",
+   "answer": "2",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "linear",
+    "a": 9,
+    "b": 15,
+    "c": 33
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "linear-029",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "一元一次方程",
+   "stem": "解方程：4x + 8 = 20",
+   "answer": "3",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "linear",
+    "a": 4,
+    "b": 8,
+    "c": 20
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "system2-030",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "二元一次方程组",
+   "stem": "解方程组：x + y = 2，x − y = 0。求 x。",
+   "answer": "1",
+   "unit": "",
+   "steps": 2,
+   "ops": 4,
+   "params": {
+    "kind": "system2",
+    "x": 1,
+    "y": 1
+   },
+   "tags": [],
+   "difficulty_prior": 0.56
+  },
+  {
+   "id": "system2-031",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "二元一次方程组",
+   "stem": "解方程组：x + y = 6，x − y = 2。求 x。",
+   "answer": "4",
+   "unit": "",
+   "steps": 2,
+   "ops": 4,
+   "params": {
+    "kind": "system2",
+    "x": 4,
+    "y": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.56
+  },
+  {
+   "id": "system2-032",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "二元一次方程组",
+   "stem": "解方程组：x + y = 3，x − y = 1。求 x。",
+   "answer": "2",
+   "unit": "",
+   "steps": 2,
+   "ops": 4,
+   "params": {
+    "kind": "system2",
+    "x": 2,
+    "y": 1
+   },
+   "tags": [],
+   "difficulty_prior": 0.56
+  },
+  {
+   "id": "system2-033",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "二元一次方程组",
+   "stem": "解方程组：x + y = 10，x − y = 4。求 x。",
+   "answer": "7",
+   "unit": "",
+   "steps": 2,
+   "ops": 4,
+   "params": {
+    "kind": "system2",
+    "x": 7,
+    "y": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.56
+  },
+  {
+   "id": "system2-034",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "二元一次方程组",
+   "stem": "解方程组：x + y = 9，x − y = -5。求 x。",
+   "answer": "2",
+   "unit": "",
+   "steps": 2,
+   "ops": 4,
+   "params": {
+    "kind": "system2",
+    "x": 2,
+    "y": 7
+   },
+   "tags": [],
+   "difficulty_prior": 0.56
+  },
+  {
+   "id": "system2-035",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "二元一次方程组",
+   "stem": "解方程组：x + y = 6，x − y = -2。求 x。",
+   "answer": "2",
+   "unit": "",
+   "steps": 2,
+   "ops": 4,
+   "params": {
+    "kind": "system2",
+    "x": 2,
+    "y": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.56
+  },
+  {
+   "id": "system2-036",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "二元一次方程组",
+   "stem": "解方程组：x + y = 6，x − y = -4。求 x。",
+   "answer": "1",
+   "unit": "",
+   "steps": 2,
+   "ops": 4,
+   "params": {
+    "kind": "system2",
+    "x": 1,
+    "y": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.56
+  },
+  {
+   "id": "system2-037",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "二元一次方程组",
+   "stem": "解方程组：x + y = 15，x − y = 1。求 x。",
+   "answer": "8",
+   "unit": "",
+   "steps": 2,
+   "ops": 4,
+   "params": {
+    "kind": "system2",
+    "x": 8,
+    "y": 7
+   },
+   "tags": [],
+   "difficulty_prior": 0.56
+  },
+  {
+   "id": "factor-038",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "因式分解",
+   "stem": "把 x² + 13x + 42 分解成 (x + p)(x + q)（p < q），求 p。",
+   "answer": "6",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "factor",
+    "p": 6,
+    "q": 7
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "factor-039",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "因式分解",
+   "stem": "把 x² + 9x + 20 分解成 (x + p)(x + q)（p < q），求 p。",
+   "answer": "4",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "factor",
+    "p": 4,
+    "q": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "factor-040",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "因式分解",
+   "stem": "把 x² + 14x + 45 分解成 (x + p)(x + q)（p < q），求 p。",
+   "answer": "5",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "factor",
+    "p": 5,
+    "q": 9
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "factor-041",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "因式分解",
+   "stem": "把 x² + 9x + 20 分解成 (x + p)(x + q)（p < q），求 p。",
+   "answer": "4",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "factor",
+    "p": 4,
+    "q": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "factor-042",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "因式分解",
+   "stem": "把 x² + 11x + 24 分解成 (x + p)(x + q)（p < q），求 p。",
+   "answer": "3",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "factor",
+    "p": 8,
+    "q": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "factor-043",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "因式分解",
+   "stem": "把 x² + 7x + 6 分解成 (x + p)(x + q)（p < q），求 p。",
+   "answer": "1",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "factor",
+    "p": 6,
+    "q": 1
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "factor-044",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "因式分解",
+   "stem": "把 x² + 10x + 9 分解成 (x + p)(x + q)（p < q），求 p。",
+   "answer": "1",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "factor",
+    "p": 1,
+    "q": 9
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "factor-045",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "因式分解",
+   "stem": "把 x² + 11x + 30 分解成 (x + p)(x + q)（p < q），求 p。",
+   "answer": "5",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "factor",
+    "p": 6,
+    "q": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "factor-046",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "因式分解",
+   "stem": "把 x² + 11x + 30 分解成 (x + p)(x + q)（p < q），求 p。",
+   "answer": "5",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "factor",
+    "p": 5,
+    "q": 6
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "factor-047",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "因式分解",
+   "stem": "把 x² + 10x + 24 分解成 (x + p)(x + q)（p < q），求 p。",
+   "answer": "4",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "factor",
+    "p": 4,
+    "q": 6
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "quadratic-048",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "一元二次方程",
+   "stem": "解方程：x² − 15x + 56 = 0，求较大的根。",
+   "answer": "8",
+   "unit": "",
+   "steps": 2,
+   "ops": 4,
+   "params": {
+    "kind": "quadratic",
+    "p": 8,
+    "q": 7
+   },
+   "tags": [],
+   "difficulty_prior": 0.56
+  },
+  {
+   "id": "quadratic-049",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "一元二次方程",
+   "stem": "解方程：x² − 6x + 8 = 0，求较大的根。",
+   "answer": "4",
+   "unit": "",
+   "steps": 2,
+   "ops": 4,
+   "params": {
+    "kind": "quadratic",
+    "p": 2,
+    "q": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.56
+  },
+  {
+   "id": "quadratic-050",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "一元二次方程",
+   "stem": "解方程：x² − 13x + 42 = 0，求较大的根。",
+   "answer": "7",
+   "unit": "",
+   "steps": 2,
+   "ops": 4,
+   "params": {
+    "kind": "quadratic",
+    "p": 6,
+    "q": 7
+   },
+   "tags": [],
+   "difficulty_prior": 0.56
+  },
+  {
+   "id": "quadratic-051",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "一元二次方程",
+   "stem": "解方程：x² − 11x + 28 = 0，求较大的根。",
+   "answer": "7",
+   "unit": "",
+   "steps": 2,
+   "ops": 4,
+   "params": {
+    "kind": "quadratic",
+    "p": 7,
+    "q": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.56
+  },
+  {
+   "id": "quadratic-052",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "一元二次方程",
+   "stem": "解方程：x² − 9x + 8 = 0，求较大的根。",
+   "answer": "8",
+   "unit": "",
+   "steps": 2,
+   "ops": 4,
+   "params": {
+    "kind": "quadratic",
+    "p": 8,
+    "q": 1
+   },
+   "tags": [],
+   "difficulty_prior": 0.56
+  },
+  {
+   "id": "quadratic-053",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "一元二次方程",
+   "stem": "解方程：x² − 15x + 56 = 0，求较大的根。",
+   "answer": "8",
+   "unit": "",
+   "steps": 2,
+   "ops": 4,
+   "params": {
+    "kind": "quadratic",
+    "p": 7,
+    "q": 8
+   },
+   "tags": [],
+   "difficulty_prior": 0.56
+  },
+  {
+   "id": "quadratic-054",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "一元二次方程",
+   "stem": "解方程：x² − 9x + 20 = 0，求较大的根。",
+   "answer": "5",
+   "unit": "",
+   "steps": 2,
+   "ops": 4,
+   "params": {
+    "kind": "quadratic",
+    "p": 5,
+    "q": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.56
+  },
+  {
+   "id": "quadratic-055",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "一元二次方程",
+   "stem": "解方程：x² − 8x + 7 = 0，求较大的根。",
+   "answer": "7",
+   "unit": "",
+   "steps": 2,
+   "ops": 4,
+   "params": {
+    "kind": "quadratic",
+    "p": 1,
+    "q": 7
+   },
+   "tags": [],
+   "difficulty_prior": 0.56
+  },
+  {
+   "id": "quadratic-056",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "一元二次方程",
+   "stem": "解方程：x² − 6x + 8 = 0，求较大的根。",
+   "answer": "4",
+   "unit": "",
+   "steps": 2,
+   "ops": 4,
+   "params": {
+    "kind": "quadratic",
+    "p": 4,
+    "q": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.56
+  },
+  {
+   "id": "quadratic-057",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "一元二次方程",
+   "stem": "解方程：x² − 15x + 54 = 0，求较大的根。",
+   "answer": "9",
+   "unit": "",
+   "steps": 2,
+   "ops": 4,
+   "params": {
+    "kind": "quadratic",
+    "p": 9,
+    "q": 6
+   },
+   "tags": [],
+   "difficulty_prior": 0.56
+  },
+  {
+   "id": "expand-058",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "整式的乘法",
+   "stem": "展开 (5x + 9)(3x + 7)，一次项系数是多少？",
+   "answer": "62",
+   "unit": "",
+   "steps": 3,
+   "ops": 4,
+   "params": {
+    "kind": "expand",
+    "a": 5,
+    "b": 9,
+    "c": 3,
+    "d": 7
+   },
+   "tags": [],
+   "difficulty_prior": 0.58
+  },
+  {
+   "id": "expand-059",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "整式的乘法",
+   "stem": "展开 (5x + 9)(4x + 6)，一次项系数是多少？",
+   "answer": "66",
+   "unit": "",
+   "steps": 3,
+   "ops": 4,
+   "params": {
+    "kind": "expand",
+    "a": 5,
+    "b": 9,
+    "c": 4,
+    "d": 6
+   },
+   "tags": [],
+   "difficulty_prior": 0.58
+  },
+  {
+   "id": "expand-060",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "整式的乘法",
+   "stem": "展开 (4x + 8)(3x + 4)，一次项系数是多少？",
+   "answer": "40",
+   "unit": "",
+   "steps": 3,
+   "ops": 4,
+   "params": {
+    "kind": "expand",
+    "a": 4,
+    "b": 8,
+    "c": 3,
+    "d": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.58
+  },
+  {
+   "id": "expand-061",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "整式的乘法",
+   "stem": "展开 (6x + 9)(3x + 4)，一次项系数是多少？",
+   "answer": "51",
+   "unit": "",
+   "steps": 3,
+   "ops": 4,
+   "params": {
+    "kind": "expand",
+    "a": 6,
+    "b": 9,
+    "c": 3,
+    "d": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.58
+  },
+  {
+   "id": "expand-062",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "整式的乘法",
+   "stem": "展开 (3x + 8)(5x + 9)，一次项系数是多少？",
+   "answer": "67",
+   "unit": "",
+   "steps": 3,
+   "ops": 4,
+   "params": {
+    "kind": "expand",
+    "a": 3,
+    "b": 8,
+    "c": 5,
+    "d": 9
+   },
+   "tags": [],
+   "difficulty_prior": 0.58
+  },
+  {
+   "id": "expand-063",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "整式的乘法",
+   "stem": "展开 (5x + 1)(4x + 9)，一次项系数是多少？",
+   "answer": "49",
+   "unit": "",
+   "steps": 3,
+   "ops": 4,
+   "params": {
+    "kind": "expand",
+    "a": 5,
+    "b": 1,
+    "c": 4,
+    "d": 9
+   },
+   "tags": [],
+   "difficulty_prior": 0.58
+  },
+  {
+   "id": "expand-064",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "整式的乘法",
+   "stem": "展开 (5x + 8)(5x + 5)，一次项系数是多少？",
+   "answer": "65",
+   "unit": "",
+   "steps": 3,
+   "ops": 4,
+   "params": {
+    "kind": "expand",
+    "a": 5,
+    "b": 8,
+    "c": 5,
+    "d": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.58
+  },
+  {
+   "id": "expand-065",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "整式的乘法",
+   "stem": "展开 (2x + 8)(4x + 4)，一次项系数是多少？",
+   "answer": "40",
+   "unit": "",
+   "steps": 3,
+   "ops": 4,
+   "params": {
+    "kind": "expand",
+    "a": 2,
+    "b": 8,
+    "c": 4,
+    "d": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.58
+  },
+  {
+   "id": "pythagoras-066",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "勾股定理",
+   "stem": "直角三角形两条直角边分别是 3 和 4，斜边是多少？",
+   "answer": "5",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "pythagoras",
+    "a": 3,
+    "b": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "pythagoras-067",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "勾股定理",
+   "stem": "直角三角形两条直角边分别是 6 和 8，斜边是多少？",
+   "answer": "10",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "pythagoras",
+    "a": 6,
+    "b": 8
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "pythagoras-068",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "勾股定理",
+   "stem": "直角三角形两条直角边分别是 5 和 12，斜边是多少？",
+   "answer": "13",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "pythagoras",
+    "a": 5,
+    "b": 12
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "pythagoras-069",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "勾股定理",
+   "stem": "直角三角形两条直角边分别是 8 和 15，斜边是多少？",
+   "answer": "17",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "pythagoras",
+    "a": 8,
+    "b": 15
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "pythagoras-070",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "勾股定理",
+   "stem": "直角三角形两条直角边分别是 7 和 24，斜边是多少？",
+   "answer": "25",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "pythagoras",
+    "a": 7,
+    "b": 24
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "pythagoras-071",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "勾股定理",
+   "stem": "直角三角形两条直角边分别是 9 和 12，斜边是多少？",
+   "answer": "15",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "pythagoras",
+    "a": 9,
+    "b": 12
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "fracadd-072",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "分数加减法",
+   "stem": "计算：2/5 + 2/5（结果写成最简分数）",
+   "answer": "4/5",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "fracadd",
+    "a": 2,
+    "b": 2,
+    "den": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "fracadd-073",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "分数加减法",
+   "stem": "计算：10/12 + 8/12（结果写成最简分数）",
+   "answer": "18/12",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "fracadd",
+    "a": 10,
+    "b": 8,
+    "den": 12
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "fracadd-074",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "分数加减法",
+   "stem": "计算：1/11 + 7/11（结果写成最简分数）",
+   "answer": "8/11",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "fracadd",
+    "a": 1,
+    "b": 7,
+    "den": 11
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "fracadd-075",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "分数加减法",
+   "stem": "计算：4/12 + 6/12（结果写成最简分数）",
+   "answer": "10/12",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "fracadd",
+    "a": 4,
+    "b": 6,
+    "den": 12
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "fracadd-076",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "分数加减法",
+   "stem": "计算：3/5 + 1/5（结果写成最简分数）",
+   "answer": "4/5",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "fracadd",
+    "a": 3,
+    "b": 1,
+    "den": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "fracadd-077",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "分数加减法",
+   "stem": "计算：5/11 + 7/11（结果写成最简分数）",
+   "answer": "12/11",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "fracadd",
+    "a": 5,
+    "b": 7,
+    "den": 11
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "fracadd-078",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "分数加减法",
+   "stem": "计算：3/5 + 3/5（结果写成最简分数）",
+   "answer": "6/5",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "fracadd",
+    "a": 3,
+    "b": 3,
+    "den": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "fracadd-079",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "分数加减法",
+   "stem": "计算：3/11 + 3/11（结果写成最简分数）",
+   "answer": "6/11",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "fracadd",
+    "a": 3,
+    "b": 3,
+    "den": 11
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "discount-080",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "百分数",
+   "stem": "一件商品原价 300 元，打 8 折（即降价 25%）后是多少元？",
+   "answer": "225",
+   "unit": "元",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "discount",
+    "price": 300,
+    "off": 25
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "discount-081",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "百分数",
+   "stem": "一件商品原价 500 元，打 9 折（即降价 10%）后是多少元？",
+   "answer": "450",
+   "unit": "元",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "discount",
+    "price": 500,
+    "off": 10
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "discount-082",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "百分数",
+   "stem": "一件商品原价 200 元，打 8 折（即降价 25%）后是多少元？",
+   "answer": "150",
+   "unit": "元",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "discount",
+    "price": 200,
+    "off": 25
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "discount-083",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "百分数",
+   "stem": "一件商品原价 400 元，打 8 折（即降价 25%）后是多少元？",
+   "answer": "300",
+   "unit": "元",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "discount",
+    "price": 400,
+    "off": 25
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "discount-084",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "百分数",
+   "stem": "一件商品原价 200 元，打 5 折（即降价 50%）后是多少元？",
+   "answer": "100",
+   "unit": "元",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "discount",
+    "price": 200,
+    "off": 50
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "discount-085",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "百分数",
+   "stem": "一件商品原价 300 元，打 9 折（即降价 10%）后是多少元？",
+   "answer": "270",
+   "unit": "元",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "discount",
+    "price": 300,
+    "off": 10
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "triarea-086",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "多边形的面积",
+   "stem": "一个三角形的底是 12 厘米、高是 3 厘米，面积是多少平方厘米？",
+   "answer": "18",
+   "unit": "平方厘米",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "triarea",
+    "w": 12,
+    "h": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "triarea-087",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "多边形的面积",
+   "stem": "一个三角形的底是 5 厘米、高是 4 厘米，面积是多少平方厘米？",
+   "answer": "10",
+   "unit": "平方厘米",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "triarea",
+    "w": 5,
+    "h": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "triarea-088",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "多边形的面积",
+   "stem": "一个三角形的底是 15 厘米、高是 3 厘米，面积是多少平方厘米？",
+   "answer": "45/2",
+   "unit": "平方厘米",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "triarea",
+    "w": 15,
+    "h": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "triarea-089",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "多边形的面积",
+   "stem": "一个三角形的底是 9 厘米、高是 5 厘米，面积是多少平方厘米？",
+   "answer": "45/2",
+   "unit": "平方厘米",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "triarea",
+    "w": 9,
+    "h": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "triarea-090",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "多边形的面积",
+   "stem": "一个三角形的底是 3 厘米、高是 3 厘米，面积是多少平方厘米？",
+   "answer": "9/2",
+   "unit": "平方厘米",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "triarea",
+    "w": 3,
+    "h": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "triarea-091",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "多边形的面积",
+   "stem": "一个三角形的底是 10 厘米、高是 5 厘米，面积是多少平方厘米？",
+   "answer": "25",
+   "unit": "平方厘米",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "triarea",
+    "w": 10,
+    "h": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "ap-092",
+   "subject": "数学",
+   "band": "high",
+   "topic": "等差数列",
+   "stem": "等差数列首项 3、公差 3，第 12 项是多少？",
+   "answer": "36",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "ap",
+    "a1": 3,
+    "d": 3,
+    "n": 12
+   },
+   "tags": [],
+   "difficulty_prior": 0.71
+  },
+  {
+   "id": "ap-093",
+   "subject": "数学",
+   "band": "high",
+   "topic": "等差数列",
+   "stem": "等差数列首项 1、公差 6，第 7 项是多少？",
+   "answer": "37",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "ap",
+    "a1": 1,
+    "d": 6,
+    "n": 7
+   },
+   "tags": [],
+   "difficulty_prior": 0.71
+  },
+  {
+   "id": "ap-094",
+   "subject": "数学",
+   "band": "high",
+   "topic": "等差数列",
+   "stem": "等差数列首项 8、公差 6，第 9 项是多少？",
+   "answer": "56",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "ap",
+    "a1": 8,
+    "d": 6,
+    "n": 9
+   },
+   "tags": [],
+   "difficulty_prior": 0.71
+  },
+  {
+   "id": "ap-095",
+   "subject": "数学",
+   "band": "high",
+   "topic": "等差数列",
+   "stem": "等差数列首项 7、公差 5，第 12 项是多少？",
+   "answer": "62",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "ap",
+    "a1": 7,
+    "d": 5,
+    "n": 12
+   },
+   "tags": [],
+   "difficulty_prior": 0.71
+  },
+  {
+   "id": "ap-096",
+   "subject": "数学",
+   "band": "high",
+   "topic": "等差数列",
+   "stem": "等差数列首项 4、公差 2，第 9 项是多少？",
+   "answer": "20",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "ap",
+    "a1": 4,
+    "d": 2,
+    "n": 9
+   },
+   "tags": [],
+   "difficulty_prior": 0.71
+  },
+  {
+   "id": "ap-097",
+   "subject": "数学",
+   "band": "high",
+   "topic": "等差数列",
+   "stem": "等差数列首项 1、公差 7，第 7 项是多少？",
+   "answer": "43",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "ap",
+    "a1": 1,
+    "d": 7,
+    "n": 7
+   },
+   "tags": [],
+   "difficulty_prior": 0.71
+  },
+  {
+   "id": "gp-098",
+   "subject": "数学",
+   "band": "high",
+   "topic": "等比数列",
+   "stem": "等比数列首项 3、公比 3，第 4 项是多少？",
+   "answer": "81",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "gp",
+    "a1": 3,
+    "q": 3,
+    "n": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.71
+  },
+  {
+   "id": "gp-099",
+   "subject": "数学",
+   "band": "high",
+   "topic": "等比数列",
+   "stem": "等比数列首项 1、公比 2，第 6 项是多少？",
+   "answer": "32",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "gp",
+    "a1": 1,
+    "q": 2,
+    "n": 6
+   },
+   "tags": [],
+   "difficulty_prior": 0.71
+  },
+  {
+   "id": "gp-100",
+   "subject": "数学",
+   "band": "high",
+   "topic": "等比数列",
+   "stem": "等比数列首项 1、公比 3，第 6 项是多少？",
+   "answer": "243",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "gp",
+    "a1": 1,
+    "q": 3,
+    "n": 6
+   },
+   "tags": [],
+   "difficulty_prior": 0.71
+  },
+  {
+   "id": "gp-101",
+   "subject": "数学",
+   "band": "high",
+   "topic": "等比数列",
+   "stem": "等比数列首项 4、公比 2，第 4 项是多少？",
+   "answer": "32",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "gp",
+    "a1": 4,
+    "q": 2,
+    "n": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.71
+  },
+  {
+   "id": "gp-102",
+   "subject": "数学",
+   "band": "high",
+   "topic": "等比数列",
+   "stem": "等比数列首项 4、公比 3，第 3 项是多少？",
+   "answer": "36",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "gp",
+    "a1": 4,
+    "q": 3,
+    "n": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.71
+  },
+  {
+   "id": "gp-103",
+   "subject": "数学",
+   "band": "high",
+   "topic": "等比数列",
+   "stem": "等比数列首项 4、公比 3，第 6 项是多少？",
+   "answer": "972",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "gp",
+    "a1": 4,
+    "q": 3,
+    "n": 6
+   },
+   "tags": [],
+   "difficulty_prior": 0.71
+  },
+  {
+   "id": "dice-104",
+   "subject": "数学",
+   "band": "high",
+   "topic": "概率",
+   "stem": "同时抛两枚均匀骰子，点数之和为 6 的概率是多少？（写成分数）",
+   "answer": "5/36",
+   "unit": "",
+   "steps": 3,
+   "ops": 4,
+   "params": {
+    "kind": "dice",
+    "sum": 6,
+    "ways": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.76
+  },
+  {
+   "id": "dice-105",
+   "subject": "数学",
+   "band": "high",
+   "topic": "概率",
+   "stem": "同时抛两枚均匀骰子，点数之和为 7 的概率是多少？（写成分数）",
+   "answer": "1/6",
+   "unit": "",
+   "steps": 3,
+   "ops": 4,
+   "params": {
+    "kind": "dice",
+    "sum": 7,
+    "ways": 6
+   },
+   "tags": [],
+   "difficulty_prior": 0.76
+  },
+  {
+   "id": "dice-106",
+   "subject": "数学",
+   "band": "high",
+   "topic": "概率",
+   "stem": "同时抛两枚均匀骰子，点数之和为 8 的概率是多少？（写成分数）",
+   "answer": "5/36",
+   "unit": "",
+   "steps": 3,
+   "ops": 4,
+   "params": {
+    "kind": "dice",
+    "sum": 8,
+    "ways": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.76
+  },
+  {
+   "id": "dice-107",
+   "subject": "数学",
+   "band": "high",
+   "topic": "概率",
+   "stem": "同时抛两枚均匀骰子，点数之和为 9 的概率是多少？（写成分数）",
+   "answer": "1/9",
+   "unit": "",
+   "steps": 3,
+   "ops": 4,
+   "params": {
+    "kind": "dice",
+    "sum": 9,
+    "ways": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.76
+  },
+  {
+   "id": "dice-108",
+   "subject": "数学",
+   "band": "high",
+   "topic": "概率",
+   "stem": "同时抛两枚均匀骰子，点数之和为 10 的概率是多少？（写成分数）",
+   "answer": "1/12",
+   "unit": "",
+   "steps": 3,
+   "ops": 4,
+   "params": {
+    "kind": "dice",
+    "sum": 10,
+    "ways": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.76
+  },
+  {
+   "id": "dice-109",
+   "subject": "数学",
+   "band": "high",
+   "topic": "概率",
+   "stem": "同时抛两枚均匀骰子，点数之和为 11 的概率是多少？（写成分数）",
+   "answer": "1/18",
+   "unit": "",
+   "steps": 3,
+   "ops": 4,
+   "params": {
+    "kind": "dice",
+    "sum": 11,
+    "ways": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.76
+  },
+  {
+   "id": "ohm-110",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "欧姆定律",
+   "stem": "一个 5 欧的电阻，通过 0.2 安的电流，两端电压是多少伏？",
+   "answer": "1.0",
+   "unit": "伏",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "ohm",
+    "r": 5,
+    "i": 0.2
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "ohm-111",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "欧姆定律",
+   "stem": "一个 10 欧的电阻，通过 0.3 安的电流，两端电压是多少伏？",
+   "answer": "3.0",
+   "unit": "伏",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "ohm",
+    "r": 10,
+    "i": 0.3
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "ohm-112",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "欧姆定律",
+   "stem": "一个 15 欧的电阻，通过 0.5 安的电流，两端电压是多少伏？",
+   "answer": "7.5",
+   "unit": "伏",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "ohm",
+    "r": 15,
+    "i": 0.5
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "ohm-113",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "欧姆定律",
+   "stem": "一个 10 欧的电阻，通过 0.3 安的电流，两端电压是多少伏？",
+   "answer": "3.0",
+   "unit": "伏",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "ohm",
+    "r": 10,
+    "i": 0.3
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "ohm-114",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "欧姆定律",
+   "stem": "一个 20 欧的电阻，通过 1.0 安的电流，两端电压是多少伏？",
+   "answer": "20.0",
+   "unit": "伏",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "ohm",
+    "r": 20,
+    "i": 1.0
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "ohm-115",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "欧姆定律",
+   "stem": "一个 15 欧的电阻，通过 0.3 安的电流，两端电压是多少伏？",
+   "answer": "4.5",
+   "unit": "伏",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "ohm",
+    "r": 15,
+    "i": 0.3
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "power-116",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "电功率",
+   "stem": "某用电器两端电压 12 伏、电流 2 安，电功率是多少瓦？",
+   "answer": "24",
+   "unit": "瓦",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "power",
+    "u": 12,
+    "i": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "power-117",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "电功率",
+   "stem": "某用电器两端电压 24 伏、电流 2 安，电功率是多少瓦？",
+   "answer": "48",
+   "unit": "瓦",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "power",
+    "u": 24,
+    "i": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "power-118",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "电功率",
+   "stem": "某用电器两端电压 3 伏、电流 0.5 安，电功率是多少瓦？",
+   "answer": "1.5",
+   "unit": "瓦",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "power",
+    "u": 3,
+    "i": 0.5
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "power-119",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "电功率",
+   "stem": "某用电器两端电压 6 伏、电流 0.5 安，电功率是多少瓦？",
+   "answer": "3.0",
+   "unit": "瓦",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "power",
+    "u": 6,
+    "i": 0.5
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "power-120",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "电功率",
+   "stem": "某用电器两端电压 12 伏、电流 0.5 安，电功率是多少瓦？",
+   "answer": "6.0",
+   "unit": "瓦",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "power",
+    "u": 12,
+    "i": 0.5
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "density-121",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "质量与密度",
+   "stem": "质量 800 克、体积 200 立方厘米，密度是多少克每立方厘米？",
+   "answer": "4.0",
+   "unit": "克/立方厘米",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "density",
+    "m": 800,
+    "v": 200
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "density-122",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "质量与密度",
+   "stem": "质量 400 克、体积 100 立方厘米，密度是多少克每立方厘米？",
+   "answer": "4.0",
+   "unit": "克/立方厘米",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "density",
+    "m": 400,
+    "v": 100
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "density-123",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "质量与密度",
+   "stem": "质量 200 克、体积 200 立方厘米，密度是多少克每立方厘米？",
+   "answer": "1.0",
+   "unit": "克/立方厘米",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "density",
+    "m": 200,
+    "v": 200
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "density-124",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "质量与密度",
+   "stem": "质量 400 克、体积 250 立方厘米，密度是多少克每立方厘米？",
+   "answer": "1.6",
+   "unit": "克/立方厘米",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "density",
+    "m": 400,
+    "v": 250
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "density-125",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "质量与密度",
+   "stem": "质量 200 克、体积 100 立方厘米，密度是多少克每立方厘米？",
+   "answer": "2.0",
+   "unit": "克/立方厘米",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "density",
+    "m": 200,
+    "v": 100
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "pressure-126",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "压强",
+   "stem": "压力 200 牛，受力面积 2 平方米，压强是多少帕？",
+   "answer": "100.0",
+   "unit": "帕",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "pressure",
+    "f": 200,
+    "s": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "pressure-127",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "压强",
+   "stem": "压力 100 牛，受力面积 4 平方米，压强是多少帕？",
+   "answer": "25.0",
+   "unit": "帕",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "pressure",
+    "f": 100,
+    "s": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "pressure-128",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "压强",
+   "stem": "压力 400 牛，受力面积 4 平方米，压强是多少帕？",
+   "answer": "100.0",
+   "unit": "帕",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "pressure",
+    "f": 400,
+    "s": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "pressure-129",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "压强",
+   "stem": "压力 100 牛，受力面积 4 平方米，压强是多少帕？",
+   "answer": "25.0",
+   "unit": "帕",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "pressure",
+    "f": 100,
+    "s": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "pressure-130",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "压强",
+   "stem": "压力 200 牛，受力面积 5 平方米，压强是多少帕？",
+   "answer": "40.0",
+   "unit": "帕",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "pressure",
+    "f": 200,
+    "s": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "molarmass-131",
+   "subject": "化学",
+   "band": "middle",
+   "topic": "化学式与化合价",
+   "stem": "已知 H 的相对原子质量为 1、O 的相对原子质量为 16，H2O 的相对分子质量是多少？",
+   "answer": "17",
+   "unit": "",
+   "steps": 3,
+   "ops": 3,
+   "params": {
+    "kind": "molarmass",
+    "atoms": {
+     "H": 1,
+     "O": 16
+    }
+   },
+   "tags": [],
+   "difficulty_prior": 0.54
+  },
+  {
+   "id": "molarmass-132",
+   "subject": "化学",
+   "band": "middle",
+   "topic": "化学式与化合价",
+   "stem": "已知 C 的相对原子质量为 12、O 的相对原子质量为 16，CO2 的相对分子质量是多少？",
+   "answer": "28",
+   "unit": "",
+   "steps": 3,
+   "ops": 3,
+   "params": {
+    "kind": "molarmass",
+    "atoms": {
+     "C": 12,
+     "O": 16
+    }
+   },
+   "tags": [],
+   "difficulty_prior": 0.54
+  },
+  {
+   "id": "molarmass-133",
+   "subject": "化学",
+   "band": "middle",
+   "topic": "化学式与化合价",
+   "stem": "已知 Na 的相对原子质量为 23、Cl 的相对原子质量为 35.5，NaCl 的相对分子质量是多少？",
+   "answer": "58.5",
+   "unit": "",
+   "steps": 3,
+   "ops": 3,
+   "params": {
+    "kind": "molarmass",
+    "atoms": {
+     "Na": 23,
+     "Cl": 35.5
+    }
+   },
+   "tags": [],
+   "difficulty_prior": 0.54
+  },
+  {
+   "id": "molarmass-134",
+   "subject": "化学",
+   "band": "middle",
+   "topic": "化学式与化合价",
+   "stem": "已知 Ca 的相对原子质量为 40、C 的相对原子质量为 12、O 的相对原子质量为 16，CaCO3 的相对分子质量是多少？",
+   "answer": "68",
+   "unit": "",
+   "steps": 3,
+   "ops": 3,
+   "params": {
+    "kind": "molarmass",
+    "atoms": {
+     "Ca": 40,
+     "C": 12,
+     "O": 16
+    }
+   },
+   "tags": [],
+   "difficulty_prior": 0.54
+  },
+  {
+   "id": "molarmass-135",
+   "subject": "化学",
+   "band": "middle",
+   "topic": "化学式与化合价",
+   "stem": "已知 Na 的相对原子质量为 23、O 的相对原子质量为 16、H 的相对原子质量为 1，NaOH 的相对分子质量是多少？",
+   "answer": "40",
+   "unit": "",
+   "steps": 3,
+   "ops": 3,
+   "params": {
+    "kind": "molarmass",
+    "atoms": {
+     "Na": 23,
+     "O": 16,
+     "H": 1
+    }
+   },
+   "tags": [],
+   "difficulty_prior": 0.54
+  },
+  {
+   "id": "molarmass-136",
+   "subject": "化学",
+   "band": "middle",
+   "topic": "化学式与化合价",
+   "stem": "已知 H 的相对原子质量为 1、S 的相对原子质量为 32、O 的相对原子质量为 16，H2SO4 的相对分子质量是多少？",
+   "answer": "49",
+   "unit": "",
+   "steps": 3,
+   "ops": 3,
+   "params": {
+    "kind": "molarmass",
+    "atoms": {
+     "H": 1,
+     "S": 32,
+     "O": 16
+    }
+   },
+   "tags": [],
+   "difficulty_prior": 0.54
+  },
+  {
+   "id": "amount-137",
+   "subject": "化学",
+   "band": "high",
+   "topic": "物质的量",
+   "stem": "质量 8.8 克、摩尔质量 44 克每摩尔的物质，物质的量是多少摩尔？",
+   "answer": "0.2",
+   "unit": "摩尔",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "amount",
+    "m": 8.8,
+    "M": 44
+   },
+   "tags": [],
+   "difficulty_prior": 0.67
+  },
+  {
+   "id": "amount-138",
+   "subject": "化学",
+   "band": "high",
+   "topic": "物质的量",
+   "stem": "质量 8.8 克、摩尔质量 32 克每摩尔的物质，物质的量是多少摩尔？",
+   "answer": "0.275",
+   "unit": "摩尔",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "amount",
+    "m": 8.8,
+    "M": 32
+   },
+   "tags": [],
+   "difficulty_prior": 0.67
+  },
+  {
+   "id": "amount-139",
+   "subject": "化学",
+   "band": "high",
+   "topic": "物质的量",
+   "stem": "质量 4.4 克、摩尔质量 44 克每摩尔的物质，物质的量是多少摩尔？",
+   "answer": "0.1",
+   "unit": "摩尔",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "amount",
+    "m": 4.4,
+    "M": 44
+   },
+   "tags": [],
+   "difficulty_prior": 0.67
+  },
+  {
+   "id": "amount-140",
+   "subject": "化学",
+   "band": "high",
+   "topic": "物质的量",
+   "stem": "质量 8.8 克、摩尔质量 44 克每摩尔的物质，物质的量是多少摩尔？",
+   "answer": "0.2",
+   "unit": "摩尔",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "amount",
+    "m": 8.8,
+    "M": 44
+   },
+   "tags": [],
+   "difficulty_prior": 0.67
+  },
+  {
+   "id": "amount-141",
+   "subject": "化学",
+   "band": "high",
+   "topic": "物质的量",
+   "stem": "质量 4.4 克、摩尔质量 44 克每摩尔的物质，物质的量是多少摩尔？",
+   "answer": "0.1",
+   "unit": "摩尔",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "amount",
+    "m": 4.4,
+    "M": 44
+   },
+   "tags": [],
+   "difficulty_prior": 0.67
+  }
+ ]
+}

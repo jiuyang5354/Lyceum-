@@ -720,7 +720,8 @@ function reviewBrief(rev, today) {
   return `<section class="review-brief" aria-label="今日学习安排"><div><span class="mono">温故 · 把学过的变成自己的</span>
     <h2>${count ? `今天，回顾 ${count} 个知识点` : '今天没有到期复习'}</h2>
     <p>${count ? '先自己想一遍，再展开答案核对。' + (rev.mistakes_due ? `其中有 ${rev.mistakes_due} 道错题到期。` : '用新的变式题，检查是不是真的会了。') : rev.next_date ? '下次复习在' + fmtDay(rev.next_date, today) + '，也可以从一道旧题开始。' : '问一道题，或完成一组变式练习，复习安排会从这里开始。'}</p>
-    ${rev.next ? `<p class="next-step"><span class="mono">下一步 · ${esc(rev.next.subject || '')}</span><b>${esc(rev.next.topic || '')}</b>${nextWhy(rev.next)}</p>` : ''}</div>
+    ${rev.next ? `<p class="next-step"><span class="mono">下一步 · ${esc(rev.next.subject || '')}</span><b>${esc(rev.next.topic || '')}</b>${nextWhy(rev.next)}</p>
+      ${rev.next.item ? `<p class="next-q"><span class="mono">试一题 · 难度 ${Number(rev.next.item.difficulty || 0).toFixed(2)}</span>${esc(rev.next.item.stem || '')}</p>` : ''}` : ''}</div>
     ${action}</section>`;
 }
 function mistakeCard(m, today) {
