@@ -7,7 +7,9 @@ import json
 import mimetypes
 import os
 import re
+import subprocess
 import sys
+import tempfile
 import threading
 import time
 import traceback
@@ -34,6 +36,9 @@ db = DB(os.path.join(DATA, "lyceum.db"))
 cfgmod.apply(llm, DATA)  # 模型设置：环境变量 > DATA/config.json > 默认
 MAX_IMAGE = 6 * 1024 * 1024
 HEARTBEAT = float(os.environ.get("LYCEUM_HEARTBEAT", "15"))
+UPDATE_DIR = os.path.join(tempfile.gettempdir(), "lyceum-update")
+UPDATE_STATE = {"running": False, "done": False, "got": 0, "total": 0,
+                "path": None, "name": None, "latest": None, "error": None}
 mimetypes.add_type("text/javascript", ".js")
 mimetypes.add_type("font/woff2", ".woff2")
 
@@ -151,6 +156,8 @@ class H(BaseHTTPRequestHandler):
                 return self.send_json(dict(llm.USAGE, totals=llm.usage_totals()))
             if p == "/api/update":
                 return self.send_json(bakmod.check_update(VERSION))
+            if p == "/api/update/progress":
+                return self.send_json(dict(UPDATE_STATE))
             if p == "/api/backup":
                 if not _loopback(self.client_address[0]):
                     return self.send_json({"error": "只能在本机导出备份"}, 403)
@@ -200,6 +207,10 @@ class H(BaseHTTPRequestHandler):
                 return self.practice(b)
             if p == "/api/practice/answer":
                 return self.practice_answer(b)
+            if p == "/api/update/download":
+                return self.update_download()
+            if p == "/api/update/install":
+                return self.update_install(b)
             if p == "/api/writing/review":
                 res = writing.review(b.get("text") or "", b.get("subject") or "语文", b.get("band") or "middle",
                                      b.get("task") or "", use_model=bool(b.get("use_model")))
@@ -489,6 +500,55 @@ class H(BaseHTTPRequestHandler):
             pass
 
     # ---------- 题库：下一题 / 判分
+    def update_download(self):
+        """后台线程下载安装包；进度由 /api/update/progress 轮询。"""
+        if not _loopback(self.client_address[0]):
+            return self.send_json({"error": "只能在本机下载更新"}, 403)
+        if UPDATE_STATE["running"]:
+            return self.send_json(dict(UPDATE_STATE, ok=True), 202)
+        UPDATE_STATE.update(running=True, done=False, got=0, total=0, path=None, name=None, error=None, latest=None)
+
+        def work():
+            try:
+                info = bakmod.check_update(VERSION)
+                if not info.get("ok"):
+                    raise RuntimeError(info.get("error") or "查不到更新")
+                if not info.get("newer"):
+                    raise RuntimeError("已经是最新版本 v%s" % info.get("current"))
+                if not info.get("exe"):
+                    raise RuntimeError("这个版本没有 Windows 安装包")
+                UPDATE_STATE["latest"] = info.get("latest")
+
+                def prog(got, total):
+                    UPDATE_STATE.update(got=got, total=total or UPDATE_STATE.get("total") or 0)
+
+                got = bakmod.download_installer(info["exe"], UPDATE_DIR, on_progress=prog)
+                UPDATE_STATE.update(path=got["path"], name=got["name"], got=got["bytes"], total=max(got["bytes"], UPDATE_STATE.get("total") or 0))
+            except Exception as e:  # noqa: BLE001
+                UPDATE_STATE["error"] = str(e)[:200]
+            finally:
+                UPDATE_STATE.update(running=False, done=True)
+
+        threading.Thread(target=work, name="lyceum-update", daemon=True).start()
+        return self.send_json(dict(UPDATE_STATE, ok=True), 202)
+
+    def update_install(self, b):
+        """启动已下载的安装包。只允许启动临时更新目录里的 exe。"""
+        if not _loopback(self.client_address[0]):
+            return self.send_json({"error": "只能在本机安装更新"}, 403)
+        path = str(b.get("path") or UPDATE_STATE.get("path") or "")
+        real = os.path.realpath(path)
+        base = os.path.realpath(UPDATE_DIR)
+        if not path or not real.startswith(base + os.sep) or not real.lower().endswith(".exe") or not os.path.isfile(real):
+            return self.send_json({"error": "安装包不在更新目录里，拒绝启动"}, 400)
+        if os.name == "nt":
+            subprocess.Popen([real, "/SILENT", "/CLOSEAPPLICATIONS", "/NORESTART"], close_fds=True)
+        elif sys.platform == "darwin":
+            subprocess.Popen(["open", real])
+        else:
+            subprocess.Popen([real])
+        return self.send_json({"ok": True, "path": real})
+
     def practice_next(self, subject, topic, exclude=""):
         if not subject or not topic:
             return self.send_json({"error": "要指定学科和知识点"}, 400)

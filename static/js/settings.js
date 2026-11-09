@@ -199,9 +199,37 @@ function bind(box) {
     try {
       const r = await D.api('/api/update');
       if (!r.ok) { o.textContent = r.error; return; }
-      o.innerHTML = r.newer ? `有新版 v${D.esc(r.latest)} · <a href="${D.esc(r.exe || r.url)}" target="_blank" rel="noopener">下载</a> · <a href="${D.esc(r.url)}" target="_blank" rel="noopener">说明</a>` : `已是最新（最新 v${D.esc(r.latest || r.current)}）`;
+      if (!r.newer) { o.textContent = `已是最新（最新 v${D.esc(r.latest || r.current)}）`; return; }
+      o.innerHTML = `有新版 v${D.esc(r.latest)} · <button type="button" class="ghost" id="sUpdGo">下载并安装</button>
+        <a href="${D.esc(r.url)}" target="_blank" rel="noopener">说明</a> <span id="sUpdP" class="sres"></span>`;
+      $('#sUpdGo').onclick = () => startUpdateDownload(o);
     } catch (e) { o.textContent = e.message; }
   };
+}
+
+async function startUpdateDownload(o) {
+  const go = $('#sUpdGo', o), p = $('#sUpdP', o);
+  go.disabled = true; p.textContent = '准备下载…';
+  try { await D.api('/api/update/download', {}); } catch (e) { p.textContent = e.message; go.disabled = false; return; }
+  const mb = (n) => (n / 1048576).toFixed(1);
+  const timer = setInterval(async () => {
+    let s;
+    try { s = await D.api('/api/update/progress'); } catch (e) { return; }
+    if (s.error) { clearInterval(timer); p.textContent = s.error; go.disabled = false; return; }
+    if (s.running) {
+      p.textContent = s.total ? `下载中 ${Math.round(s.got / s.total * 100)}%（${mb(s.got)}/${mb(s.total)} MB）` : `下载中 ${mb(s.got)} MB`;
+      return;
+    }
+    clearInterval(timer);
+    if (!s.path) { p.textContent = '下载没有完成'; go.disabled = false; return; }
+    p.textContent = '下载完成';
+    go.textContent = '立即安装'; go.disabled = false;
+    go.onclick = async () => {
+      go.disabled = true;
+      try { await D.api('/api/update/install', { path: s.path }); p.textContent = '安装程序已启动，按提示完成后重新打开'; }
+      catch (e) { p.textContent = e.message; go.disabled = false; }
+    };
+  }, 500);
 }
 
 function bindModels() {
