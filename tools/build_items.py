@@ -243,6 +243,61 @@ def build(seed=20261109):
              "2H₂ + O₂ → 2H₂O。完全燃烧 %d 克氢气，生成多少克水？（H=1，O=16）" % h2, h2 * 9,
              {"kind": "eqcalc", "h2": h2}, steps=3, ops=4, unit="克")
 
+    # —— 第三批：小学应用与几何 ——
+    for _ in range(6):
+        m = rnd.choice([1.5, 2.5, 3.2, 4.8])
+        make(it, "数学", "primary", "单位换算", "%s 米等于多少厘米？" % m, int(m * 100),
+             {"kind": "convert", "m": m}, steps=1, ops=1, unit="厘米")
+    for _ in range(6):
+        a, k = rnd.randint(2, 6), rnd.randint(2, 5)
+        make(it, "数学", "primary", "比和比例", "若 a : b = %d : %d，且 a = %d，则 b 是多少？" % (a, a + k, a),
+             a + k, {"kind": "ratio", "a": a, "k": k}, steps=2, ops=2)
+    for _ in range(5):
+        w, h, d = rnd.randint(2, 9), rnd.randint(2, 9), rnd.randint(2, 6)
+        make(it, "数学", "primary", "长方体和正方体", "长 %d、宽 %d、高 %d 的长方体，体积是多少？" % (w, h, d),
+             w * h * d, {"kind": "boxvol", "w": w, "h": h, "d": d}, steps=2, ops=3)
+    for _ in range(5):
+        r, h = rnd.choice([1, 2, 3]), rnd.choice([2, 4, 5])
+        make(it, "数学", "primary", "圆柱与圆锥", "底面半径 %d、高 %d 的圆柱，体积是多少？（π 取 3.14）" % (r, h),
+             round(3.14 * r * r * h, 2), {"kind": "cylvol", "r": r, "h": h}, steps=3, ops=4)
+    for _ in range(6):
+        heads, rabbits = rnd.randint(6, 12), rnd.randint(1, 4)
+        chickens = heads - rabbits
+        make(it, "数学", "primary", "鸡兔同笼",
+             "笼子里鸡和兔共 %d 只，腿共 %d 条，兔有几只？" % (heads, chickens * 2 + rabbits * 4), rabbits,
+             {"kind": "chicken", "heads": heads, "rabbits": rabbits}, steps=3, ops=4)
+    for _ in range(6):
+        length, gap = rnd.choice([20, 30, 40, 50]), rnd.choice([2, 4, 5])
+        make(it, "数学", "primary", "植树问题", "一条 %d 米的路，每隔 %d 米种一棵树（两端都种），共种多少棵？" % (length, gap),
+             length // gap + 1, {"kind": "trees", "length": length, "gap": gap}, steps=2, ops=3)
+    for _ in range(6):
+        v1, v2 = rnd.choice([40, 50, 60]), rnd.choice([20, 30, 40])
+        s = rnd.choice([120, 180, 240])
+        make(it, "数学", "primary", "行程问题", "两人相向而行，速度分别是 %d 和 %d，相距 %d，几小时相遇？" % (v1, v2, s),
+             round(s / (v1 + v2), 2), {"kind": "travel", "v1": v1, "v2": v2, "s": s}, steps=2, ops=3, unit="小时")
+
+    # —— 第三批：高中与物理 ——
+    for _ in range(6):
+        a = rnd.choice([1, 2, 3])
+        make(it, "数学", "high", "集合", "集合 A = {1, 2, %d}，A 有多少个真子集？" % a, 2 ** 3 - 1,
+             {"kind": "subset", "n": 3}, steps=2, ops=2)
+    for _ in range(5):
+        a, b = rnd.choice([3, 4, 5]), rnd.choice([2, 1, 3])
+        make(it, "数学", "high", "复数", "复数 (%d + %di) + (%d − %di) 的实部是多少？" % (a, b, b, a), a + b,
+             {"kind": "complex_add", "a": a, "b": b}, steps=2, ops=2)
+    for _ in range(5):
+        x, y = rnd.choice([2, 3, 4]), rnd.choice([1, 5, 6])
+        make(it, "物理", "middle", "简单机械", "杠杆平衡时，动力臂 %d、阻力 %d、阻力臂 %d，动力是多少牛？" % (x * 10, y * 10, 10), round(y * 10 * 10 / (x * 10), 2),
+             {"kind": "lever", "l1": x * 10, "f2": y * 10, "l2": 10}, steps=2, ops=3, unit="牛")
+    for _ in range(5):
+        f, v = rnd.choice([340, 680, 170]), rnd.choice([2, 4, 5])
+        make(it, "物理", "middle", "声现象", "声音在空气中速度 %d 米每秒，%d 秒内传播多远？" % (f, v), f * v,
+             {"kind": "sound", "v": f, "t": v}, steps=1, ops=2, unit="米")
+    for _ in range(5):
+        p, t = rnd.choice([500, 1000, 2000]), rnd.choice([2, 5, 10])
+        make(it, "物理", "middle", "生活用电", "功率 %d 瓦的用电器工作 %d 小时，消耗多少千瓦时电能？" % (p, t),
+             round(p * t / 1000, 2), {"kind": "kwh", "p": p, "t": t}, steps=2, ops=2, unit="千瓦时")
+
     for item in it:
         item["difficulty_prior"] = prior(item["band"], item["steps"], item["ops"])
     return it

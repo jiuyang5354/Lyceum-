@@ -125,14 +125,14 @@ test('375px record layout constrains long titles and wraps intact metadata', asy
     '/api/mastery': { today: '2026-01-02', skills: [] },
     '/api/review/today': { topics_due: 0 },
   };
-  const renderSource = app.slice(app.indexOf('async function renderBook('), app.indexOf('// 单个知识点的事件历史'));
+  const renderSource = app.slice(app.indexOf('async function renderBook('), app.indexOf('// 写作体检：形式维度当场算'));
   const reviewSource = app.slice(app.indexOf('function reviewBrief('), app.indexOf('function mistakeCard('));
   const renderBook = vm.runInNewContext(`(${renderSource.trim()})`, {
     $: (selector) => selector === '#bookBody' ? body : {}, $$: () => [],
     state: { tab: 'record' },
     api: async (path) => { assert.ok(path in responses, path); return responses[path]; },
     reviewBrief: vm.runInNewContext(`(${reviewSource.trim()})`),
-    esc: String, ago: () => '11月7日', bindBook() {}, animateBook() {},
+    esc: String, ago: () => '11月7日', bindBook() {}, bindWriting() {}, writingPanel: () => '', animateBook() {},
   });
   await renderBook();
   assert.ok(body.innerHTML.includes(`<a class="r" href="#/study/7"><span class="t">${title}</span><span class="m">物理 · 11月7日</span></a>`));
