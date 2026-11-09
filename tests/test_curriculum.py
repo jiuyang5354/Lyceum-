@@ -17,8 +17,8 @@ class PrereqDataTest(unittest.TestCase):
                     self.assertIn(p, topics[subject])
 
     def test_the_table_is_not_trivial(self):
-        self.assertGreaterEqual(sum(len(v) for v in curriculum.EDGES.values()), 60)
-        self.assertGreaterEqual(len(curriculum.EDGES), 4)
+        self.assertGreaterEqual(sum(len(v) for v in curriculum.EDGES.values()), 150)
+        self.assertEqual(set(curriculum.EDGES), {"数学", "物理", "化学", "英语", "语文", "生物", "历史", "地理"})
 
     def test_a_cycle_is_refused_at_load_time(self):
         with tempfile.TemporaryDirectory() as d:

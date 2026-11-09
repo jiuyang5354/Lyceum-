@@ -121,6 +121,9 @@ button:disabled { cursor: not-allowed; }
 .review-brief h2 { font: 500 25px/1.5 var(--serif); margin: 8px 0; }
 .review-brief p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.8; }
 .review-brief .sel { font-size: 14px; }
+.review-brief .next-step { margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--line-2); color: var(--ink); }
+.review-brief .next-step .mono { margin-right: 8px; }
+.review-brief .next-step b { font-weight: 600; margin-right: 6px; }
 .filters { gap: 6px; margin-bottom: 12px; }
 .filters button { min-height: 40px; padding: 7px 14px; font-size: 13px; border-color: transparent; }
 .filters button:not(.on):hover { background: var(--card); border-color: var(--line); }

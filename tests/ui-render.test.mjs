@@ -6,7 +6,17 @@ const app = readFileSync(new URL('../static/js/app.js', import.meta.url), 'utf8'
 const escLine = app.split('\n').find((l) => l.startsWith('const esc = ')).slice(12).replace(/;$/, '');
 const esc = vm.runInNewContext('(' + escLine + ')');
 const reviewSource = app.slice(app.indexOf('function reviewBrief('), app.indexOf('function mistakeCard('));
-const reviewBrief = vm.runInNewContext('(' + reviewSource.trim() + ')', { fmtDay: String });
+const reviewBrief = vm.runInNewContext('(' + reviewSource.trim() + ')', { fmtDay: String, esc });
+test('the review brief shows what to practise next and why', () => {
+  const brief = reviewBrief({ topics_due: 1, mistakes_due: 0, skills: [{ id: 9 }], mistakes: [],
+    next: { subject: '数学', topic: '整式的乘法', reason: '整式的乘法 还没稳（0.60 < 0.85），先补这一步再看 因式分解' } }, '2026-01-02');
+  assert.match(brief, /下一步/);
+  assert.match(brief, /整式的乘法/);
+  assert.match(brief, /先补这一步再看/);
+  assert.doesNotMatch(reviewBrief({ topics_due: 0, mistakes_due: 0 }, '2026-01-02'), /下一步/);
+  assert.doesNotMatch(reviewBrief({ topics_due: 0, mistakes_due: 0, next: { topic: '<img onerror=x>' } }, '2026-01-02'), /<img/);
+});
+
 test('the review action opens an actual due exercise rather than linking to itself', () => {
   assert.match(reviewBrief({ topics_due: 1, mistakes_due: 1, mistakes: [{ id: 8 }], skills: [] }, '2026-01-02'), /data-retry="8"/);
   assert.match(reviewBrief({ topics_due: 1, mistakes_due: 0, mistakes: [], skills: [{ id: 9 }] }, '2026-01-02'), /data-rskill="9"/);
