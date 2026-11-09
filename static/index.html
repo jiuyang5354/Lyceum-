@@ -175,7 +175,8 @@ try { var u = JSON.parse(localStorage.getItem('lyceum.ui') || '{}'), h = documen
 <section id="v-notebook" class="view hidden">
   <div class="book">
     <div class="book-head">
-      <div><span class="mono">Σημειώσεις · 记下来的，才是自己的</span><h1 id="bookTitle">错题本</h1><p id="bookSub">做错的变式题、看了完整解法才弄懂的题，都在这里。按学科和知识点排好，隔几天再练一次。</p></div>
+      <div><span class="mono">Σημειώσεις · 记下来的，才是自己的</span><h1 id="bookTitle">错题本</h1><p id="bookSub">做错的变式题、看了完整解法才弄懂的题，都在这里。按学科和知识点排好，隔几天再练一次。</p>
+        <a class="report-link" href="/api/report/week" download>导出本周周报 · 给家长看的一页纸 ↗</a></div>
       <div class="nums" id="bookNums"></div>
     </div>
     <div class="tabs"><button data-tab="notebook" class="on">错题本</button><button data-tab="record">学习记录</button><button data-tab="memory">小雅记得的事</button><button data-tab="growth">小雅的成长</button></div>

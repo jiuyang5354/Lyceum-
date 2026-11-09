@@ -19,7 +19,7 @@ from urllib.parse import parse_qs, urlparse
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, ROOT)
-from lyceum import agent, evolve, insight, itembank, llm, mastery, strategies, writing  # noqa: E402
+from lyceum import agent, evolve, insight, itembank, llm, mastery, report as reportmod, strategies, writing  # noqa: E402
 from lyceum import __version__ as VERSION  # noqa: E402
 from lyceum import backup as bakmod  # noqa: E402
 from lyceum import config as cfgmod  # noqa: E402
@@ -129,6 +129,17 @@ class H(BaseHTTPRequestHandler):
                 return self.send_json({"stats": db.stats(), "sessions": db.list_sessions(12)})
             if p == "/api/review/today":
                 return self.send_json(self.with_next_item(db.review_today()))
+            if p == "/api/report/week":
+                body = reportmod.render(reportmod.week(db)).encode("utf-8")
+                name = "lyceum-week-%s.html" % time.strftime("%Y%m%d")
+                self.send_response(200)
+                self.send_header("Content-Type", "text/html; charset=utf-8")
+                self.send_header("Content-Length", str(len(body)))
+                self.send_header("Cache-Control", "no-store")
+                self.send_header("Content-Disposition", 'attachment; filename="%s"' % name)
+                self.end_headers()
+                self.wfile.write(body)
+                return
             if p == "/api/writing/history":
                 qs = parse_qs(u.query)
                 return self.send_json({"history": db.writing_history(qs.get("subject", [None])[0])})

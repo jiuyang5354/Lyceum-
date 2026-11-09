@@ -108,6 +108,9 @@ button:disabled { cursor: not-allowed; }
 .panel-shade { position: absolute; inset: 64px 0 0; z-index: 38; border: 0; background: var(--line-2); }
 /* Notebook: task first, evidence and answers on demand. */
 .book { max-width: 1280px; padding-top: 48px; }
+.book-head .report-link { display: inline-block; margin-top: 10px; font-size: 12px; color: var(--blue);
+  text-decoration: none; border-bottom: 1px solid var(--line-2); padding-bottom: 2px; }
+.book-head .report-link:hover { border-bottom-color: var(--blue); }
 .book-head { align-items: center; gap: 32px; padding-bottom: 32px; }
 .book-head h1 { font-size: clamp(36px, 4vw, 54px); margin-top: 12px; }
 .book-head p { max-width: 34em; font-size: 15px; line-height: 1.9; }
