@@ -13,6 +13,7 @@ test('the review brief shows what to practise next and why', () => {
   assert.match(brief, /下一步/);
   assert.match(brief, /整式的乘法/);
   assert.match(brief, /先补这一步再看/);
+  assert.equal((brief.match(/整式的乘法/g) || []).length, 1, "知识点名不应重复出现");
   assert.doesNotMatch(reviewBrief({ topics_due: 0, mistakes_due: 0 }, '2026-01-02'), /下一步/);
   assert.doesNotMatch(reviewBrief({ topics_due: 0, mistakes_due: 0, next: { topic: '<img onerror=x>' } }, '2026-01-02'), /<img/);
 });

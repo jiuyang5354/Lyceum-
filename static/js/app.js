@@ -704,6 +704,13 @@ function masteryHead(sk, today) {
   return `<div class="mastery ${sk.status}">${mbar(sk.p_l)}<div class="mrow"><span class="pct">${pct(sk.p_l)}<small>%</small></span><span class="st">${sk.status === 'mastered' ? laurelMini() : ''}${STATUS[sk.status]}</span></div><div class="mnext">${nextTxt(sk, today)}</div></div>`;
 }
 function reviewBrief(rev, today) {
+  // 理由本身以知识点名开头（「整式的乘法 还没稳…」），去掉重复的部分，只留后面的话
+  const nextWhy = (n) => {
+    const why = String(n.reason || '').trim();
+    const topic = String(n.topic || '');
+    const rest = topic && why.startsWith(topic) ? why.slice(topic.length).trim() : why;
+    return rest ? ' ' + esc(rest) : '';
+  };
   const count = rev.topics_due;
   const mistake = rev.mistakes?.find((x) => Number.isSafeInteger(x.id) && x.id > 0);
   const skill = rev.skills?.find((x) => Number.isSafeInteger(x.id) && x.id > 0);
@@ -713,7 +720,7 @@ function reviewBrief(rev, today) {
   return `<section class="review-brief" aria-label="今日学习安排"><div><span class="mono">温故 · 把学过的变成自己的</span>
     <h2>${count ? `今天，回顾 ${count} 个知识点` : '今天没有到期复习'}</h2>
     <p>${count ? '先自己想一遍，再展开答案核对。' + (rev.mistakes_due ? `其中有 ${rev.mistakes_due} 道错题到期。` : '用新的变式题，检查是不是真的会了。') : rev.next_date ? '下次复习在' + fmtDay(rev.next_date, today) + '，也可以从一道旧题开始。' : '问一道题，或完成一组变式练习，复习安排会从这里开始。'}</p>
-    ${rev.next ? `<p class="next-step"><span class="mono">下一步 · ${esc(rev.next.subject || '')}</span><b>${esc(rev.next.topic || '')}</b> ${esc(rev.next.reason || '')}</p>` : ''}</div>
+    ${rev.next ? `<p class="next-step"><span class="mono">下一步 · ${esc(rev.next.subject || '')}</span><b>${esc(rev.next.topic || '')}</b>${nextWhy(rev.next)}</p>` : ''}</div>
     ${action}</section>`;
 }
 function mistakeCard(m, today) {
