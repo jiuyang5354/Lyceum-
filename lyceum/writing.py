@@ -177,6 +177,87 @@ def model_dimensions(text, subject, band, task="", chat=None):
         return None, "模型评分失败：%s" % str(exc)[:80]
 
 
+SEMANTIC_PROMPT = """你是{subject}教研员。判断下面这篇{band}学生的作文是否在写题目要求的内容。
+
+题目：{task}
+
+作文：
+{text}
+
+只输出 JSON，不要任何解释：
+{{"verdict":"on_topic|partial|off_topic","evidence":"作文里的一句原话，逐字摘录，不超过40字","reason":"不超过30字，说明判断依据"}}
+
+判定标准：
+- on_topic：正面回应了题目的要求；
+- partial：沾边，但没写到题目要求的重点；
+- off_topic：主要内容写的是别的题目或话题。
+规则：
+1) evidence 必须从作文里原样复制，不得改写、不得引用题目里的句子。
+2) 拿不准时给 partial，不要猜。
+3) reason 指向文本，不写“语言优美”这类空话。
+"""
+
+VERDICT_SCORE = {"off_topic": (0, 8), "partial": (9, 17), "on_topic": (18, 25)}
+VERDICT_LABEL = {"on_topic": "切题", "partial": "部分切题", "off_topic": "偏题"}
+
+
+def _same_text(quote, text):
+    """证据必须是原文。模型常改标点或空格，所以先严格比，再忽略空白和标点比一次。"""
+    quote = str(quote or "").strip()
+    if not quote:
+        return False
+    if quote in text:
+        return True
+    squeeze = lambda s: re.sub(r"[\s\W_]+", "", s)
+    q, t = squeeze(quote), squeeze(text)
+    return bool(q) and q in t
+
+
+def semantic_topic(text, task="", subject="语文", band="middle", chat=None):
+    """让模型判断「是否切题」，并且要求它给出原文证据。
+
+    切题是语义判断，规则算不出来；但模型可以编造，所以这里做三道闸：
+      1) 判定只能是三个枚举值；
+      2) evidence 必须是原文（忽略标点/空白后仍要能对上），否则整条作废；
+      3) 分数锁在判定对应的区间里（off_topic ≤8、partial 9–17、on_topic ≥18）。
+    任何一道不过，返回 (None, 原因)，由调用方降级成「未评估」，绝不冒充评过。
+    """
+    import json
+    text = str(text or "").strip()
+    task = str(task or "").strip()
+    if not text:
+        return None, "没有内容可判切题"
+    if not task:
+        return None, "没有题目，无法判断是否切题"
+    if chat is None:
+        from . import llm
+        chat = llm.chat
+    prompt = SEMANTIC_PROMPT.format(subject=subject, band=band, task=task, text=text)
+    try:
+        raw = chat([{"role": "user", "content": prompt}], task="strong", json_mode=True,
+                   temperature=0.0, max_tokens=320)
+        data = json.loads(raw) if isinstance(raw, str) else raw
+    except Exception as exc:
+        return None, "切题判断失败：%s" % str(exc)[:80]
+    if not isinstance(data, dict):
+        return None, "切题判断返回的不是对象"
+    verdict = str(data.get("verdict", "")).strip()
+    if verdict not in VERDICT_SCORE:
+        return None, "切题判断的结论不可识别"
+    evidence = str(data.get("evidence", "")).strip()
+    if not _same_text(evidence, text):
+        return None, "切题判断的证据不是原文摘录"
+    lo, hi = VERDICT_SCORE[verdict]
+    try:
+        score = int(round(float(data.get("score", (lo + hi) / 2))))
+    except (TypeError, ValueError):
+        score = (lo + hi) // 2
+    score = max(lo, min(hi, score))
+    return {"key": "topic", "name": "切题", "score": score, "max": 25, "source": "model",
+            "verdict": verdict, "label": VERDICT_LABEL[verdict],
+            "evidence": evidence[:120], "reason": str(data.get("reason", ""))[:80]}, ""
+
+
 TIME_WORDS = ["去年", "今年", "那天", "那天", "第一次", "小时候", "上个月", "周末", "放学", "中午",
               "晚上", "清晨", "暑假", "寒假", "昨天", "当时", "后来"]
 FEELING_WORDS = ["我觉得", "我发现", "我明白", "让我", "我意识到", "收获", "感受到", "心里想", "我才知道"]
@@ -234,23 +315,35 @@ def hints(text, task=""):
     return out
 
 
-def review(text, subject="语文", band="middle", task="", chat=None, use_model=False):
-    """返回分项结果。use_model 默认关闭：没有模型时只出形式维度，并说清楚。"""
+def review(text, subject="语文", band="middle", task="", chat=None, use_model=False, semantic=False):
+    """返回分项结果。use_model / semantic 默认都关闭：没有模型时只出形式维度，并说清楚。
+
+    semantic 与 use_model 分开：前者只判断「是否切题」并强制给原文证据，
+    后者给内容/语言两个分数。两个都关时不产生任何模型调用。
+    """
     subject = subject if subject in TARGET else "语文"
     band = band if band in ("primary", "middle", "high") else "middle"
     dims, f = rule_dimensions(text, subject, band)
-    notes = []
+    notes, layers = [], ["形式"]
     if not str(text or "").strip():
         notes.append("没有内容可评")
     if use_model:
         m_dims, why = model_dimensions(text, subject, band, task, chat=chat)
         if m_dims:
             dims += m_dims
+            layers.append("内容")
         elif why:
             notes.append(why)
-    else:
+    if semantic:
+        topic, why = semantic_topic(text, task, subject, band, chat=chat)
+        if topic:
+            dims.append(topic)
+            layers.append("语义切题")
+        elif why:
+            notes.append(why)
+    if not use_model and not semantic:
         notes.append("未启用模型评分：本次只覆盖篇幅/结构/连贯/句式四个形式维度")
     total = sum(d["score"] for d in dims)
     return {"subject": subject, "band": band, "total": total, "max": sum(d["max"] for d in dims),
-            "coverage": "形式 + 内容" if any(d["source"] == "model" for d in dims) else "仅形式维度",
+            "coverage": "仅形式维度" if layers == ["形式"] else " + ".join(layers),
             "dims": dims, "features": f, "notes": notes, "hints": hints(text, task)}
