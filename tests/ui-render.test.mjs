@@ -14,6 +14,12 @@ test('the review brief shows what to practise next and why', () => {
   assert.match(brief, /整式的乘法/);
   assert.match(brief, /先补这一步再看/);
   assert.equal((brief.match(/整式的乘法/g) || []).length, 1, "知识点名不应重复出现");
+
+  const withItem = reviewBrief({ topics_due: 1, skills: [{ id: 1 }],
+    next: { subject: '数学', topic: '整式的乘法', reason: '整式的乘法 还没稳', item: { id: 'x', stem: '展开 (3x+8)(5x+9)', difficulty: 0.58 } } }, '2026-01-02');
+  assert.match(withItem, /试一题/);
+  assert.match(withItem, /难度 0.58/);
+  assert.match(withItem, /展开 \(3x\+8\)\(5x\+9\)/);
   assert.doesNotMatch(reviewBrief({ topics_due: 0, mistakes_due: 0 }, '2026-01-02'), /下一步/);
   assert.doesNotMatch(reviewBrief({ topics_due: 0, mistakes_due: 0, next: { topic: '<img onerror=x>' } }, '2026-01-02'), /<img/);
 });

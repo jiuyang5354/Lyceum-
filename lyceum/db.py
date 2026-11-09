@@ -46,6 +46,13 @@ CREATE TABLE IF NOT EXISTS topic_merges (
   id INTEGER PRIMARY KEY AUTOINCREMENT, ts REAL, subject TEXT, from_skill_id INTEGER, from_topic TEXT,
   to_skill_id INTEGER, to_topic TEXT, method TEXT, events INTEGER, mistakes INTEGER, taxonomy_version INTEGER);
 CREATE TABLE IF NOT EXISTS meta (key TEXT PRIMARY KEY, value TEXT);
+CREATE TABLE IF NOT EXISTS item_stats (
+  item_id TEXT PRIMARY KEY, attempts INTEGER NOT NULL DEFAULT 0, correct INTEGER NOT NULL DEFAULT 0,
+  difficulty REAL NOT NULL, first_seen REAL, updated REAL);
+CREATE TABLE IF NOT EXISTS item_attempts (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, item_id TEXT NOT NULL, subject TEXT, topic TEXT,
+  correct INTEGER, answer TEXT, theta_before REAL, difficulty_before REAL, difficulty_after REAL, ts REAL);
+CREATE INDEX IF NOT EXISTS ix_item_attempts ON item_attempts(item_id, ts);
 """
 # 旧库缺的列：(表, 列, 定义)。只加列，不删不改，旧数据原样保留。
 ADD_COLUMNS = [
@@ -224,6 +231,35 @@ class DB:
             cur = self.conn.execute(sql, args)
             self.conn.commit()
             return cur.lastrowid
+
+    # ---- 题库：在线难度标定
+    def item_stats(self):
+        return {r["item_id"]: {"attempts": r["attempts"], "correct": r["correct"], "difficulty": r["difficulty"]}
+                for r in self.q("SELECT item_id, attempts, correct, difficulty FROM item_stats")}
+
+    def item_stat(self, item_id):
+        return self.q("SELECT item_id, attempts, correct, difficulty FROM item_stats WHERE item_id=?",
+                      (item_id,), one=True)
+
+    def record_item_attempt(self, item_id, subject, topic, theta, difficulty, correct, answer="", now=None):
+        """写一次作答，按 Elo 式更新该题难度。返回 (difficulty_before, difficulty_after, attempts)。"""
+        from . import itembank
+        now = time.time() if now is None else now
+        row = self.item_stat(item_id)
+        attempts = int(row["attempts"]) if row else 0
+        before = float(row["difficulty"]) if row and attempts else float(difficulty)
+        _, after = itembank.update_pair(theta, before, correct, attempts)
+        with _mlock:
+            if row:
+                self.x("UPDATE item_stats SET attempts=attempts+1, correct=correct+?, difficulty=?, updated=? "
+                       "WHERE item_id=?", (1 if correct else 0, after, now, item_id))
+            else:
+                self.x("INSERT INTO item_stats(item_id, attempts, correct, difficulty, first_seen, updated) "
+                       "VALUES(?,1,?,?,?,?)", (item_id, 1 if correct else 0, after, now, now))
+            self.x("INSERT INTO item_attempts(item_id, subject, topic, correct, answer, theta_before, "
+                   "difficulty_before, difficulty_after, ts) VALUES(?,?,?,?,?,?,?,?,?)",
+                   (item_id, subject, topic, 1 if correct else 0, str(answer)[:200], float(theta), before, after, now))
+        return before, after, attempts + 1
 
     # ---- profile
     def get_profile(self):
