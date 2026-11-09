@@ -221,6 +221,6 @@ def report(result, path):
     payload["guard_locked"] = LOCKED_GUARD
     payload["limits"] = ("离线 mock runner 只验证管线与门禁，不代表真实模型或学生的表现；"
                          "真机评估需替换 runner 并把 synthetic 改为 false。")
-    with open(path, "w", encoding="utf-8") as fh:
+    with open(path, "w", encoding="utf-8", newline="\n") as fh:
         json.dump(payload, fh, ensure_ascii=False, indent=2)
     return path
