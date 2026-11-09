@@ -124,6 +124,9 @@ class H(BaseHTTPRequestHandler):
                 return self.send_json({"stats": db.stats(), "sessions": db.list_sessions(12)})
             if p == "/api/review/today":
                 return self.send_json(self.with_next_item(db.review_today()))
+            if p == "/api/writing/history":
+                qs = parse_qs(u.query)
+                return self.send_json({"history": db.writing_history(qs.get("subject", [None])[0])})
             if p == "/api/practice/next":
                 qs = parse_qs(u.query)
                 return self.practice_next(qs.get("subject", [None])[0], qs.get("topic", [None])[0],
@@ -198,9 +201,11 @@ class H(BaseHTTPRequestHandler):
             if p == "/api/practice/answer":
                 return self.practice_answer(b)
             if p == "/api/writing/review":
-                return self.send_json(writing.review(
-                    b.get("text") or "", b.get("subject") or "语文", b.get("band") or "middle",
-                    b.get("task") or "", use_model=bool(b.get("use_model"))))
+                res = writing.review(b.get("text") or "", b.get("subject") or "语文", b.get("band") or "middle",
+                                     b.get("task") or "", use_model=bool(b.get("use_model")))
+                res["id"] = db.save_writing_review(res, b.get("task") or "", b.get("text") or "")
+                res["history"] = list(reversed(db.writing_history(res["subject"], 8)))
+                return self.send_json(res)
             if p == "/api/grade":
                 return self.grade(b)
             m = re.match(r"^/api/mistakes/(\d+)/(master|unmaster|delete)$", p)

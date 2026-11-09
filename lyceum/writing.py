@@ -177,6 +177,63 @@ def model_dimensions(text, subject, band, task="", chat=None):
         return None, "模型评分失败：%s" % str(exc)[:80]
 
 
+TIME_WORDS = ["去年", "今年", "那天", "那天", "第一次", "小时候", "上个月", "周末", "放学", "中午",
+              "晚上", "清晨", "暑假", "寒假", "昨天", "当时", "后来"]
+FEELING_WORDS = ["我觉得", "我发现", "我明白", "让我", "我意识到", "收获", "感受到", "心里想", "我才知道"]
+
+
+STOP_CHARS = set("的了在是我你他她它和与就都也又很把被给让对从到这那有个着过吗呢吧啊")
+
+
+def shared_phrases(task, text, minlen=2, limit=4):
+    """题目与正文共有的**最长**片段（按长度排序）。
+
+    用二元组交集会产生「次难」「忘的」这类碎片；改为最长公共子串，
+    给出的是「一次难忘的经历」这种可读的呼应，而不是噪音。
+    """
+    from difflib import SequenceMatcher
+    a = "".join(c for c in str(task or "") if CJK.match(c))
+    b = "".join(c for c in str(text or "") if CJK.match(c))
+    if not a or not b:
+        return []
+    blocks = [(i, n) for i, _j, n in SequenceMatcher(None, a, b, autojunk=False).get_matching_blocks() if n >= minlen]
+    blocks.sort(key=lambda t: (-t[1], t[0]))
+    return [a[i:i + n] for i, n in blocks[:limit]]
+
+
+def _bigrams(s):
+    chars = [c for c in str(s or "") if CJK.match(c)]
+    return {chars[i] + chars[i + 1] for i in range(len(chars) - 1)}
+
+
+def _content_bigrams(s):
+    """去掉由虚词组成的二元组：的经、忘的 这类没有信息量。"""
+    return {b for b in _bigrams(s) if not (set(b) & STOP_CHARS)}
+
+
+def hints(text, task=""):
+    """写作提示（不计分）：能不能确定判的几件事。
+
+    这些是**线索**，不是分数：点题看题目与首尾段有没有共用词，具体事例看有没有时间/数字，
+    感受看有没有感受句。判不了的（比如立意高不高）不放进这里。
+    """
+    text = str(text or "")
+    paras = [p.strip() for p in PARA_SPLIT.split(text) if p.strip()]
+    out = []
+    shared = shared_phrases(task, (paras[0] if paras else "") + "\n" + (paras[-1] if paras else "")) if paras else []
+    out.append({"key": "topic", "label": "首尾点题", "ok": bool(shared),
+                "evidence": ("首/尾段呼应题目：" + "、".join(shared)) if shared
+                            else "首段和末段都没有出现题目里的词"})
+    has_time = any(w in text for w in TIME_WORDS)
+    has_digit = any(ch.isdigit() for ch in text) or "一二三" in text
+    out.append({"key": "detail", "label": "具体事例", "ok": has_time or has_digit,
+                "evidence": "出现时间或数量线索" if (has_time or has_digit) else "没有时间、数量等具体线索，容易写成概括"})
+    feel = next((w for w in FEELING_WORDS if w in text), "")
+    out.append({"key": "feeling", "label": "写出感受", "ok": bool(feel),
+                "evidence": ("出现「%s」" % feel) if feel else "没有直接写出自己的感受或变化"})
+    return out
+
+
 def review(text, subject="语文", band="middle", task="", chat=None, use_model=False):
     """返回分项结果。use_model 默认关闭：没有模型时只出形式维度，并说清楚。"""
     subject = subject if subject in TARGET else "语文"
@@ -196,4 +253,4 @@ def review(text, subject="语文", band="middle", task="", chat=None, use_model=
     total = sum(d["score"] for d in dims)
     return {"subject": subject, "band": band, "total": total, "max": sum(d["max"] for d in dims),
             "coverage": "形式 + 内容" if any(d["source"] == "model" for d in dims) else "仅形式维度",
-            "dims": dims, "features": f, "notes": notes}
+            "dims": dims, "features": f, "notes": notes, "hints": hints(text, task)}

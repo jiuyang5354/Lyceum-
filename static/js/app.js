@@ -859,7 +859,12 @@ function writingResult(r) {
   const dims = r.dims.map((d) => `<div class="wp-dim"><span class="nm">${esc(d.name)}${d.source === 'model' ? ' · 模型' : ''}</span>
     <span class="bar"><i style="width:${Math.round(d.score / d.max * 100)}%"></i></span>
     <span class="v">${d.score}<small>/${d.max}</small></span><span class="ev">${esc(d.evidence || '')}</span></div>`).join('');
+  const hist = r.history || [];
+  const trend = hist.length > 1
+    ? `<div class="wp-trend"><span class="mono">最近 ${hist.length} 次</span>${hist.map((h) => `<i style="height:${Math.max(8, Math.round(h.total / Math.max(1, h.max) * 100))}%" title="${h.total}/${h.max}"><b>${h.total}</b></i>`).join('')}</div>` : '';
+  const hints = (r.hints || []).map((h) => `<li class="wp-hint ${h.ok ? 'ok' : 'no'}"><span class="mk">${h.ok ? '✓' : '✗'}</span><b>${esc(h.label)}</b><span>${esc(h.evidence || '')}</span></li>`).join('');
   return `<div class="wp-total"><b>${r.total}</b><small> / ${r.max}</small><span>${esc(r.coverage)}</span></div>${dims}
+    ${hints ? `<ul class="wp-hints">${hints}</ul>` : ''}${trend}
     ${r.notes.length ? `<p class="wp-note">${r.notes.map(esc).join(' · ')}</p>` : ''}`;
 }
 function bindWriting(body) {

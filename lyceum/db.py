@@ -53,6 +53,10 @@ CREATE TABLE IF NOT EXISTS item_attempts (
   id INTEGER PRIMARY KEY AUTOINCREMENT, item_id TEXT NOT NULL, subject TEXT, topic TEXT,
   correct INTEGER, answer TEXT, theta_before REAL, difficulty_before REAL, difficulty_after REAL, ts REAL);
 CREATE INDEX IF NOT EXISTS ix_item_attempts ON item_attempts(item_id, ts);
+CREATE TABLE IF NOT EXISTS writing_reviews (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, subject TEXT, band TEXT, task TEXT, text TEXT,
+  total INTEGER, max INTEGER, coverage TEXT, dims TEXT, notes TEXT, hints TEXT, created REAL);
+CREATE INDEX IF NOT EXISTS ix_writing ON writing_reviews(subject, created);
 """
 # 旧库缺的列：(表, 列, 定义)。只加列，不删不改，旧数据原样保留。
 ADD_COLUMNS = [
@@ -260,6 +264,24 @@ class DB:
                    "difficulty_before, difficulty_after, ts) VALUES(?,?,?,?,?,?,?,?,?)",
                    (item_id, subject, topic, 1 if correct else 0, str(answer)[:200], float(theta), before, after, now))
         return before, after, attempts + 1
+
+    # ---- 写作记录
+    def save_writing_review(self, result, task="", text="", now=None):
+        """存一次评阅结果，返回 id。只存结果，不存任何模型密钥。"""
+        import json as _json
+        now = time.time() if now is None else now
+        return self.x("INSERT INTO writing_reviews(subject, band, task, text, total, max, coverage, dims, notes, hints, created) "
+                      "VALUES(?,?,?,?,?,?,?,?,?,?,?)",
+                      (result.get("subject"), result.get("band"), str(task)[:200], str(text)[:20000],
+                       int(result.get("total", 0)), int(result.get("max", 0)), result.get("coverage"),
+                       _json.dumps(result.get("dims", []), ensure_ascii=False),
+                       _json.dumps(result.get("notes", []), ensure_ascii=False),
+                       _json.dumps(result.get("hints", []), ensure_ascii=False), now))
+
+    def writing_history(self, subject=None, limit=12):
+        rows = self.q("SELECT id, subject, band, task, total, max, coverage, created FROM writing_reviews "
+                      "WHERE (? IS NULL OR subject=?) ORDER BY created DESC LIMIT ?", (subject, subject, int(limit)))
+        return rows
 
     # ---- profile
     def get_profile(self):
