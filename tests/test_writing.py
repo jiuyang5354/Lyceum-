@@ -208,6 +208,32 @@ class SemanticTopicTest(unittest.TestCase):
         self.assertIsNone(topic)
         self.assertIn("不可识别", why)
 
+    def test_chinese_and_hyphenated_verdicts_are_normalized(self):
+        for raw, canon in (("切题", "on_topic"), ("off-topic", "off_topic"), ("部分切题", "partial")):
+            chat = self.fake({"verdict": raw, "evidence": "去年秋天", "reason": "x", "score": 12})
+            topic, why = W.semantic_topic(ZH_GOOD, "记一次比赛", "语文", "middle", chat=chat)
+            self.assertEqual(topic["verdict"], canon, raw)
+
+    def test_reply_wrapper_is_unwrapped(self):
+        inner = json.dumps({"verdict": "on_topic", "evidence": "去年秋天", "reason": "x", "score": 20},
+                           ensure_ascii=False)
+        chat = self.fake({"reply": inner})
+        topic, why = W.semantic_topic(ZH_GOOD, "记一次比赛", "语文", "middle", chat=chat)
+        self.assertEqual(why, "")
+        self.assertEqual(topic["verdict"], "on_topic")
+
+    def test_empty_reply_is_retried_once_then_degraded(self):
+        calls = {"n": 0}
+
+        def chat(*a, **k):
+            calls["n"] += 1
+            return {"reply": ""}
+
+        topic, why = W.semantic_topic(ZH_GOOD, "记一次比赛", "语文", "middle", chat=chat)
+        self.assertIsNone(topic)
+        self.assertEqual(calls["n"], 2)
+        self.assertIn("空回答", why)
+
     def test_semantic_off_makes_no_call(self):
         def boom(*a, **k):
             raise AssertionError("semantic=False 时不应调用模型")

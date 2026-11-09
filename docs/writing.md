@@ -86,6 +86,29 @@ POST /api/writing/review {text, subject, band, task, semantic: true}
 
 没有题目时不做判断（没有可对照的要求），直接记一条 note。
 
+## 校准：构造样例，不是人工标注
+
+`tools/calibrate_topic.py` 用 `tests/fixtures/topic-cases.jsonl` 的 27 条样例（切题/部分切题/偏题各 9）
+测模型是否**按设计**判定。样例是按标准构造的（`label_source: constructed`），
+只证明「模型遵守这套闸门」，**不证明教学效果**；把 `label_source` 改成 `human` 就能接老师标注，代码不用改。
+
+```bash
+python tools/calibrate_topic.py --workers 2 --out scratch/topic-cal.json
+```
+
+最近一次真实模型结果（deepseek-v4.1-flash，27 条，平均 4.9s/条）：
+
+| 指标 | 数值 |
+|---|---|
+| 准确率 | **25/27 = 92.6%** |
+| 切题召回 | 9/9 |
+| 偏题召回 | 9/9 |
+| 部分切题召回 | 7/9 |
+| 证据命中原文 | 27/27 |
+
+两条不一致都是**标签本身可争议**的边界：「一次难忘的经历」写成泛泛议论（标注 partial，模型判 off_topic）、
+「My weekend」通篇写周末复习（标注 partial，模型判 on_topic）。这类样例要人工裁定，不能当模型错误。
+
 ## 验证
 
 - `tests/test_writing.py` 28 项：形式维度 14 项 + 模型内容维度 6 项 + 语义切题 8 项（真证据保留、伪造证据拒绝、结论压分、坏 JSON 降级、无题目不判、标点差异容忍、未知结论拒绝、关闭时不调用）
