@@ -1,0 +1,59 @@
+{
+  "candidate": "restate_first",
+  "note": "先说一遍题目，再问已知和所求。",
+  "scenarios": 8,
+  "guard": "171c6787b6d26df5e91b84d914d78e4650f1f033cff96c5d4bd0f121fb6203e3",
+  "synthetic": true,
+  "accept": false,
+  "decision": "insufficient_evidence",
+  "ci_low": 0.0,
+  "ci_high": 0.0,
+  "lift": 0.0,
+  "p_value": 1.0,
+  "improved": 0,
+  "worsened": 0,
+  "detail": [
+    {
+      "scenario": "m1",
+      "baseline": 1.0,
+      "candidate": 1.0
+    },
+    {
+      "scenario": "m2",
+      "baseline": 1.0,
+      "candidate": 1.0
+    },
+    {
+      "scenario": "p1",
+      "baseline": 1.0,
+      "candidate": 1.0
+    },
+    {
+      "scenario": "e1",
+      "baseline": 1.0,
+      "candidate": 1.0
+    },
+    {
+      "scenario": "h1",
+      "baseline": 1.0,
+      "candidate": 1.0
+    },
+    {
+      "scenario": "c1",
+      "baseline": 1.0,
+      "candidate": 1.0
+    },
+    {
+      "scenario": "w1",
+      "baseline": 1.0,
+      "candidate": 1.0
+    },
+    {
+      "scenario": "b1",
+      "baseline": 1.0,
+      "candidate": 1.0
+    }
+  ],
+  "guard_locked": "171c6787b6d26df5e91b84d914d78e4650f1f033cff96c5d4bd0f121fb6203e3",
+  "limits": "离线 mock runner 只验证管线与门禁，不代表真实模型或学生的表现；真机评估需替换 runner 并把 synthetic 改为 false。"
+}
