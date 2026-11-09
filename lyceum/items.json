@@ -5959,6 +5959,3293 @@
    },
    "tags": [],
    "difficulty_prior": 0.49
+  },
+  {
+   "id": "divq-325",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "有余数的除法",
+   "stem": "计算：31 ÷ 9 的商是多少？",
+   "answer": "3",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "divq",
+    "a": 31,
+    "b": 9,
+    "q": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.22
+  },
+  {
+   "id": "divq-326",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "有余数的除法",
+   "stem": "计算：31 ÷ 5 的商是多少？",
+   "answer": "6",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "divq",
+    "a": 31,
+    "b": 5,
+    "q": 6
+   },
+   "tags": [],
+   "difficulty_prior": 0.22
+  },
+  {
+   "id": "divq-327",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "有余数的除法",
+   "stem": "计算：33 ÷ 8 的商是多少？",
+   "answer": "4",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "divq",
+    "a": 33,
+    "b": 8,
+    "q": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.22
+  },
+  {
+   "id": "divq-328",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "有余数的除法",
+   "stem": "计算：40 ÷ 7 的商是多少？",
+   "answer": "5",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "divq",
+    "a": 40,
+    "b": 7,
+    "q": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.22
+  },
+  {
+   "id": "divq-329",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "有余数的除法",
+   "stem": "计算：29 ÷ 6 的商是多少？",
+   "answer": "4",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "divq",
+    "a": 29,
+    "b": 6,
+    "q": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.22
+  },
+  {
+   "id": "divq-330",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "有余数的除法",
+   "stem": "计算：33 ÷ 9 的商是多少？",
+   "answer": "3",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "divq",
+    "a": 33,
+    "b": 9,
+    "q": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.22
+  },
+  {
+   "id": "area_rect-331",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "多边形的面积",
+   "stem": "一个长方形长 7 厘米、宽 8 厘米，面积是多少平方厘米？",
+   "answer": "56",
+   "unit": "平方厘米",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "area_rect",
+    "w": 7,
+    "h": 8
+   },
+   "tags": [],
+   "difficulty_prior": 0.27
+  },
+  {
+   "id": "area_rect-332",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "多边形的面积",
+   "stem": "一个长方形长 12 厘米、宽 7 厘米，面积是多少平方厘米？",
+   "answer": "84",
+   "unit": "平方厘米",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "area_rect",
+    "w": 12,
+    "h": 7
+   },
+   "tags": [],
+   "difficulty_prior": 0.27
+  },
+  {
+   "id": "area_rect-333",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "多边形的面积",
+   "stem": "一个长方形长 6 厘米、宽 3 厘米，面积是多少平方厘米？",
+   "answer": "18",
+   "unit": "平方厘米",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "area_rect",
+    "w": 6,
+    "h": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.27
+  },
+  {
+   "id": "area_rect-334",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "多边形的面积",
+   "stem": "一个长方形长 6 厘米、宽 4 厘米，面积是多少平方厘米？",
+   "answer": "24",
+   "unit": "平方厘米",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "area_rect",
+    "w": 6,
+    "h": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.27
+  },
+  {
+   "id": "area_rect-335",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "多边形的面积",
+   "stem": "一个长方形长 3 厘米、宽 5 厘米，面积是多少平方厘米？",
+   "answer": "15",
+   "unit": "平方厘米",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "area_rect",
+    "w": 3,
+    "h": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.27
+  },
+  {
+   "id": "area_rect-336",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "多边形的面积",
+   "stem": "一个长方形长 5 厘米、宽 3 厘米，面积是多少平方厘米？",
+   "answer": "15",
+   "unit": "平方厘米",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "area_rect",
+    "w": 5,
+    "h": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.27
+  },
+  {
+   "id": "unit_len-337",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "单位换算",
+   "stem": "9 米等于多少厘米？",
+   "answer": "900",
+   "unit": "厘米",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "unit_len",
+    "m": 9
+   },
+   "tags": [],
+   "difficulty_prior": 0.22
+  },
+  {
+   "id": "unit_len-338",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "单位换算",
+   "stem": "9 米等于多少厘米？",
+   "answer": "900",
+   "unit": "厘米",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "unit_len",
+    "m": 9
+   },
+   "tags": [],
+   "difficulty_prior": 0.22
+  },
+  {
+   "id": "unit_len-339",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "单位换算",
+   "stem": "6 米等于多少厘米？",
+   "answer": "600",
+   "unit": "厘米",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "unit_len",
+    "m": 6
+   },
+   "tags": [],
+   "difficulty_prior": 0.22
+  },
+  {
+   "id": "unit_len-340",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "单位换算",
+   "stem": "3 米等于多少厘米？",
+   "answer": "300",
+   "unit": "厘米",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "unit_len",
+    "m": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.22
+  },
+  {
+   "id": "unit_len-341",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "单位换算",
+   "stem": "5 米等于多少厘米？",
+   "answer": "500",
+   "unit": "厘米",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "unit_len",
+    "m": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.22
+  },
+  {
+   "id": "avg3-342",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "平均数",
+   "stem": "三个数 26、66、7 的平均数是多少？",
+   "answer": "33",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "avg3",
+    "vals": [
+     26,
+     66,
+     7
+    ]
+   },
+   "tags": [],
+   "difficulty_prior": 0.31
+  },
+  {
+   "id": "avg3-343",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "平均数",
+   "stem": "三个数 72、42、33 的平均数是多少？",
+   "answer": "49",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "avg3",
+    "vals": [
+     72,
+     42,
+     33
+    ]
+   },
+   "tags": [],
+   "difficulty_prior": 0.31
+  },
+  {
+   "id": "avg3-344",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "平均数",
+   "stem": "三个数 33、20、76 的平均数是多少？",
+   "answer": "43",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "avg3",
+    "vals": [
+     33,
+     20,
+     76
+    ]
+   },
+   "tags": [],
+   "difficulty_prior": 0.31
+  },
+  {
+   "id": "avg3-345",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "平均数",
+   "stem": "三个数 26、28、27 的平均数是多少？",
+   "answer": "27",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "avg3",
+    "vals": [
+     26,
+     28,
+     27
+    ]
+   },
+   "tags": [],
+   "difficulty_prior": 0.31
+  },
+  {
+   "id": "avg3-346",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "平均数",
+   "stem": "三个数 33、22、23 的平均数是多少？",
+   "answer": "26",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "avg3",
+    "vals": [
+     33,
+     22,
+     23
+    ]
+   },
+   "tags": [],
+   "difficulty_prior": 0.31
+  },
+  {
+   "id": "time_min-347",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "时间与钟表",
+   "stem": "4 小时等于多少分钟？",
+   "answer": "240",
+   "unit": "分钟",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "time_min",
+    "h": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.22
+  },
+  {
+   "id": "time_min-348",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "时间与钟表",
+   "stem": "5 小时等于多少分钟？",
+   "answer": "300",
+   "unit": "分钟",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "time_min",
+    "h": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.22
+  },
+  {
+   "id": "time_min-349",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "时间与钟表",
+   "stem": "3 小时等于多少分钟？",
+   "answer": "180",
+   "unit": "分钟",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "time_min",
+    "h": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.22
+  },
+  {
+   "id": "time_min-350",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "时间与钟表",
+   "stem": "3 小时等于多少分钟？",
+   "answer": "180",
+   "unit": "分钟",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "time_min",
+    "h": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.22
+  },
+  {
+   "id": "change-351",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "人民币",
+   "stem": "付 5 元买 7 元的文具，应找回多少元？",
+   "answer": "-2",
+   "unit": "元",
+   "steps": 2,
+   "ops": 1,
+   "params": {
+    "kind": "change",
+    "pay": 5,
+    "price": 7
+   },
+   "tags": [],
+   "difficulty_prior": 0.27
+  },
+  {
+   "id": "change-352",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "人民币",
+   "stem": "付 10 元买 4 元的文具，应找回多少元？",
+   "answer": "6",
+   "unit": "元",
+   "steps": 2,
+   "ops": 1,
+   "params": {
+    "kind": "change",
+    "pay": 10,
+    "price": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.27
+  },
+  {
+   "id": "change-353",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "人民币",
+   "stem": "付 50 元买 3 元的文具，应找回多少元？",
+   "answer": "47",
+   "unit": "元",
+   "steps": 2,
+   "ops": 1,
+   "params": {
+    "kind": "change",
+    "pay": 50,
+    "price": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.27
+  },
+  {
+   "id": "change-354",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "人民币",
+   "stem": "付 10 元买 8 元的文具，应找回多少元？",
+   "answer": "2",
+   "unit": "元",
+   "steps": 2,
+   "ops": 1,
+   "params": {
+    "kind": "change",
+    "pay": 10,
+    "price": 8
+   },
+   "tags": [],
+   "difficulty_prior": 0.27
+  },
+  {
+   "id": "change-355",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "人民币",
+   "stem": "付 50 元买 5 元的文具，应找回多少元？",
+   "answer": "45",
+   "unit": "元",
+   "steps": 2,
+   "ops": 1,
+   "params": {
+    "kind": "change",
+    "pay": 50,
+    "price": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.27
+  },
+  {
+   "id": "trip_p-356",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "行程问题",
+   "stem": "汽车每小时行 40 千米，4 小时行多少千米？",
+   "answer": "160",
+   "unit": "千米",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "trip_p",
+    "v": 40,
+    "t": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.27
+  },
+  {
+   "id": "trip_p-357",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "行程问题",
+   "stem": "汽车每小时行 50 千米，2 小时行多少千米？",
+   "answer": "100",
+   "unit": "千米",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "trip_p",
+    "v": 50,
+    "t": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.27
+  },
+  {
+   "id": "trip_p-358",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "行程问题",
+   "stem": "汽车每小时行 50 千米，5 小时行多少千米？",
+   "answer": "250",
+   "unit": "千米",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "trip_p",
+    "v": 50,
+    "t": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.27
+  },
+  {
+   "id": "trip_p-359",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "行程问题",
+   "stem": "汽车每小时行 40 千米，5 小时行多少千米？",
+   "answer": "200",
+   "unit": "千米",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "trip_p",
+    "v": 40,
+    "t": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.27
+  },
+  {
+   "id": "trip_p-360",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "行程问题",
+   "stem": "汽车每小时行 50 千米，5 小时行多少千米？",
+   "answer": "250",
+   "unit": "千米",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "trip_p",
+    "v": 50,
+    "t": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.27
+  },
+  {
+   "id": "sqdiff_const-361",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "整式的乘法",
+   "stem": "展开 (x + 4)(x − 4)，常数项是多少？",
+   "answer": "-16",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "sqdiff_const",
+    "a": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "sqdiff_const-362",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "整式的乘法",
+   "stem": "展开 (x + 5)(x − 5)，常数项是多少？",
+   "answer": "-25",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "sqdiff_const",
+    "a": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "sqdiff_const-363",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "整式的乘法",
+   "stem": "展开 (x + 8)(x − 8)，常数项是多少？",
+   "answer": "-64",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "sqdiff_const",
+    "a": 8
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "sqdiff_const-364",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "整式的乘法",
+   "stem": "展开 (x + 7)(x − 7)，常数项是多少？",
+   "answer": "-49",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "sqdiff_const",
+    "a": 7
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "sqdiff_const-365",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "整式的乘法",
+   "stem": "展开 (x + 4)(x − 4)，常数项是多少？",
+   "answer": "-16",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "sqdiff_const",
+    "a": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "sqdiff_const-366",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "整式的乘法",
+   "stem": "展开 (x + 3)(x − 3)，常数项是多少？",
+   "answer": "-9",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "sqdiff_const",
+    "a": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "perfect_linear-367",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "整式的乘法",
+   "stem": "展开 (x + 5)²，一次项系数是多少？",
+   "answer": "10",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "perfect_linear",
+    "a": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "perfect_linear-368",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "整式的乘法",
+   "stem": "展开 (x + 2)²，一次项系数是多少？",
+   "answer": "4",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "perfect_linear",
+    "a": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "perfect_linear-369",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "整式的乘法",
+   "stem": "展开 (x + 3)²，一次项系数是多少？",
+   "answer": "6",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "perfect_linear",
+    "a": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "perfect_linear-370",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "整式的乘法",
+   "stem": "展开 (x + 9)²，一次项系数是多少？",
+   "answer": "18",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "perfect_linear",
+    "a": 9
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "perfect_linear-371",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "整式的乘法",
+   "stem": "展开 (x + 4)²，一次项系数是多少？",
+   "answer": "8",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "perfect_linear",
+    "a": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "scinot-372",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "实数",
+   "stem": "2.5 × 10^5 写成整数是多少？",
+   "answer": "250000",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "scinot",
+    "c": 2.5,
+    "n": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "scinot-373",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "实数",
+   "stem": "4.8 × 10^5 写成整数是多少？",
+   "answer": "480000",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "scinot",
+    "c": 4.8,
+    "n": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "scinot-374",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "实数",
+   "stem": "2.5 × 10^5 写成整数是多少？",
+   "answer": "250000",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "scinot",
+    "c": 2.5,
+    "n": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "scinot-375",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "实数",
+   "stem": "4.8 × 10^3 写成整数是多少？",
+   "answer": "4800",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "scinot",
+    "c": 4.8,
+    "n": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "scinot-376",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "实数",
+   "stem": "1.5 × 10^5 写成整数是多少？",
+   "answer": "150000",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "scinot",
+    "c": 1.5,
+    "n": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "median5-377",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "数据的分析",
+   "stem": "五个数据 75、40、24、12、69 的中位数是多少？",
+   "answer": "40",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "median5",
+    "vals": [
+     75,
+     40,
+     24,
+     12,
+     69
+    ]
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "median5-378",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "数据的分析",
+   "stem": "五个数据 22、17、77、23、57 的中位数是多少？",
+   "answer": "23",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "median5",
+    "vals": [
+     22,
+     17,
+     77,
+     23,
+     57
+    ]
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "median5-379",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "数据的分析",
+   "stem": "五个数据 75、44、19、53、81 的中位数是多少？",
+   "answer": "53",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "median5",
+    "vals": [
+     75,
+     44,
+     19,
+     53,
+     81
+    ]
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "median5-380",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "数据的分析",
+   "stem": "五个数据 25、52、24、28、93 的中位数是多少？",
+   "answer": "28",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "median5",
+    "vals": [
+     25,
+     52,
+     24,
+     28,
+     93
+    ]
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "median5-381",
+   "subject": "数学",
+   "band": "middle",
+   "topic": "数据的分析",
+   "stem": "五个数据 33、83、46、28、43 的中位数是多少？",
+   "answer": "43",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "median5",
+    "vals": [
+     33,
+     83,
+     46,
+     28,
+     43
+    ]
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "log-382",
+   "subject": "数学",
+   "band": "high",
+   "topic": "对数函数",
+   "stem": "log_2(2^3) 的值是多少？",
+   "answer": "3",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "log",
+    "b": 2,
+    "k": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.67
+  },
+  {
+   "id": "log-383",
+   "subject": "数学",
+   "band": "high",
+   "topic": "对数函数",
+   "stem": "log_3(3^2) 的值是多少？",
+   "answer": "2",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "log",
+    "b": 3,
+    "k": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.67
+  },
+  {
+   "id": "log-384",
+   "subject": "数学",
+   "band": "high",
+   "topic": "对数函数",
+   "stem": "log_2(2^2) 的值是多少？",
+   "answer": "2",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "log",
+    "b": 2,
+    "k": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.67
+  },
+  {
+   "id": "log-385",
+   "subject": "数学",
+   "band": "high",
+   "topic": "对数函数",
+   "stem": "log_2(2^2) 的值是多少？",
+   "answer": "2",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "log",
+    "b": 2,
+    "k": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.67
+  },
+  {
+   "id": "log-386",
+   "subject": "数学",
+   "band": "high",
+   "topic": "对数函数",
+   "stem": "log_2(2^4) 的值是多少？",
+   "answer": "4",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "log",
+    "b": 2,
+    "k": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.67
+  },
+  {
+   "id": "exp_eq-387",
+   "subject": "数学",
+   "band": "high",
+   "topic": "指数函数",
+   "stem": "若 3^x = 81，x 是多少？",
+   "answer": "4",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "exp_eq",
+    "b": 3,
+    "k": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.67
+  },
+  {
+   "id": "exp_eq-388",
+   "subject": "数学",
+   "band": "high",
+   "topic": "指数函数",
+   "stem": "若 3^x = 27，x 是多少？",
+   "answer": "3",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "exp_eq",
+    "b": 3,
+    "k": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.67
+  },
+  {
+   "id": "exp_eq-389",
+   "subject": "数学",
+   "band": "high",
+   "topic": "指数函数",
+   "stem": "若 2^x = 4，x 是多少？",
+   "answer": "2",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "exp_eq",
+    "b": 2,
+    "k": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.67
+  },
+  {
+   "id": "exp_eq-390",
+   "subject": "数学",
+   "band": "high",
+   "topic": "指数函数",
+   "stem": "若 2^x = 8，x 是多少？",
+   "answer": "3",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "exp_eq",
+    "b": 2,
+    "k": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.67
+  },
+  {
+   "id": "exp_eq-391",
+   "subject": "数学",
+   "band": "high",
+   "topic": "指数函数",
+   "stem": "若 2^x = 16，x 是多少？",
+   "answer": "4",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "exp_eq",
+    "b": 2,
+    "k": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.67
+  },
+  {
+   "id": "trig_special-392",
+   "subject": "数学",
+   "band": "high",
+   "topic": "三角函数",
+   "stem": "sin 30° 的值是多少？（写成分数或整数）",
+   "answer": "1/2",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "trig_special",
+    "name": "sin 30°"
+   },
+   "tags": [],
+   "difficulty_prior": 0.62
+  },
+  {
+   "id": "trig_special-393",
+   "subject": "数学",
+   "band": "high",
+   "topic": "三角函数",
+   "stem": "cos 60° 的值是多少？（写成分数或整数）",
+   "answer": "1/2",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "trig_special",
+    "name": "cos 60°"
+   },
+   "tags": [],
+   "difficulty_prior": 0.62
+  },
+  {
+   "id": "trig_special-394",
+   "subject": "数学",
+   "band": "high",
+   "topic": "三角函数",
+   "stem": "tan 45° 的值是多少？（写成分数或整数）",
+   "answer": "1",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "trig_special",
+    "name": "tan 45°"
+   },
+   "tags": [],
+   "difficulty_prior": 0.62
+  },
+  {
+   "id": "trig_special-395",
+   "subject": "数学",
+   "band": "high",
+   "topic": "三角函数",
+   "stem": "sin 90° 的值是多少？（写成分数或整数）",
+   "answer": "1",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "trig_special",
+    "name": "sin 90°"
+   },
+   "tags": [],
+   "difficulty_prior": 0.62
+  },
+  {
+   "id": "comb-396",
+   "subject": "数学",
+   "band": "high",
+   "topic": "计数原理",
+   "stem": "C(5, 3) 的值是多少？",
+   "answer": "10",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "comb",
+    "n": 5,
+    "k": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.67
+  },
+  {
+   "id": "comb-397",
+   "subject": "数学",
+   "band": "high",
+   "topic": "计数原理",
+   "stem": "C(4, 2) 的值是多少？",
+   "answer": "6",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "comb",
+    "n": 4,
+    "k": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.67
+  },
+  {
+   "id": "comb-398",
+   "subject": "数学",
+   "band": "high",
+   "topic": "计数原理",
+   "stem": "C(6, 3) 的值是多少？",
+   "answer": "20",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "comb",
+    "n": 6,
+    "k": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.67
+  },
+  {
+   "id": "comb-399",
+   "subject": "数学",
+   "band": "high",
+   "topic": "计数原理",
+   "stem": "C(4, 2) 的值是多少？",
+   "answer": "6",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "comb",
+    "n": 4,
+    "k": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.67
+  },
+  {
+   "id": "comb-400",
+   "subject": "数学",
+   "band": "high",
+   "topic": "计数原理",
+   "stem": "C(5, 3) 的值是多少？",
+   "answer": "10",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "comb",
+    "n": 5,
+    "k": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.67
+  },
+  {
+   "id": "binom-401",
+   "subject": "数学",
+   "band": "high",
+   "topic": "计数原理",
+   "stem": "(1 + x)^5 展开式中 x^3 的系数是多少？",
+   "answer": "10",
+   "unit": "",
+   "steps": 3,
+   "ops": 3,
+   "params": {
+    "kind": "binom",
+    "n": 5,
+    "k": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.72
+  },
+  {
+   "id": "binom-402",
+   "subject": "数学",
+   "band": "high",
+   "topic": "计数原理",
+   "stem": "(1 + x)^4 展开式中 x^3 的系数是多少？",
+   "answer": "4",
+   "unit": "",
+   "steps": 3,
+   "ops": 3,
+   "params": {
+    "kind": "binom",
+    "n": 4,
+    "k": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.72
+  },
+  {
+   "id": "binom-403",
+   "subject": "数学",
+   "band": "high",
+   "topic": "计数原理",
+   "stem": "(1 + x)^4 展开式中 x^2 的系数是多少？",
+   "answer": "6",
+   "unit": "",
+   "steps": 3,
+   "ops": 3,
+   "params": {
+    "kind": "binom",
+    "n": 4,
+    "k": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.72
+  },
+  {
+   "id": "binom-404",
+   "subject": "数学",
+   "band": "high",
+   "topic": "计数原理",
+   "stem": "(1 + x)^6 展开式中 x^2 的系数是多少？",
+   "answer": "15",
+   "unit": "",
+   "steps": 3,
+   "ops": 3,
+   "params": {
+    "kind": "binom",
+    "n": 6,
+    "k": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.72
+  },
+  {
+   "id": "series_r-405",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "欧姆定律",
+   "stem": "两个电阻 5 欧和 10 欧串联，总电阻是多少欧？",
+   "answer": "15",
+   "unit": "欧",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "series_r",
+    "r1": 5,
+    "r2": 10
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "series_r-406",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "欧姆定律",
+   "stem": "两个电阻 4 欧和 6 欧串联，总电阻是多少欧？",
+   "answer": "10",
+   "unit": "欧",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "series_r",
+    "r1": 4,
+    "r2": 6
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "series_r-407",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "欧姆定律",
+   "stem": "两个电阻 2 欧和 5 欧串联，总电阻是多少欧？",
+   "answer": "7",
+   "unit": "欧",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "series_r",
+    "r1": 2,
+    "r2": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "series_r-408",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "欧姆定律",
+   "stem": "两个电阻 2 欧和 5 欧串联，总电阻是多少欧？",
+   "answer": "7",
+   "unit": "欧",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "series_r",
+    "r1": 2,
+    "r2": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "series_r-409",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "欧姆定律",
+   "stem": "两个电阻 2 欧和 5 欧串联，总电阻是多少欧？",
+   "answer": "7",
+   "unit": "欧",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "series_r",
+    "r1": 2,
+    "r2": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "parallel_r-410",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "欧姆定律",
+   "stem": "两个电阻 9 欧和 18 欧并联，总电阻是多少欧？（写成分数或整数）",
+   "answer": "6",
+   "unit": "欧",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "parallel_r",
+    "r1": 9,
+    "r2": 18
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "parallel_r-411",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "欧姆定律",
+   "stem": "两个电阻 10 欧和 15 欧并联，总电阻是多少欧？（写成分数或整数）",
+   "answer": "6",
+   "unit": "欧",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "parallel_r",
+    "r1": 10,
+    "r2": 15
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "parallel_r-412",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "欧姆定律",
+   "stem": "两个电阻 12 欧和 6 欧并联，总电阻是多少欧？（写成分数或整数）",
+   "answer": "4",
+   "unit": "欧",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "parallel_r",
+    "r1": 12,
+    "r2": 6
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "parallel_r-413",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "欧姆定律",
+   "stem": "两个电阻 4 欧和 4 欧并联，总电阻是多少欧？（写成分数或整数）",
+   "answer": "2",
+   "unit": "欧",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "parallel_r",
+    "r1": 4,
+    "r2": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "parallel_r-414",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "欧姆定律",
+   "stem": "两个电阻 4 欧和 4 欧并联，总电阻是多少欧？（写成分数或整数）",
+   "answer": "2",
+   "unit": "欧",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "parallel_r",
+    "r1": 4,
+    "r2": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "eff-415",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "功和机械能",
+   "stem": "有用功 300 焦、总功 400 焦，机械效率是多少？（百分比）",
+   "answer": "75",
+   "unit": "%",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "eff",
+    "useful": 300,
+    "total": 400
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "eff-416",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "功和机械能",
+   "stem": "有用功 450 焦、总功 600 焦，机械效率是多少？（百分比）",
+   "answer": "75",
+   "unit": "%",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "eff",
+    "useful": 450,
+    "total": 600
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "eff-417",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "功和机械能",
+   "stem": "有用功 600 焦、总功 1000 焦，机械效率是多少？（百分比）",
+   "answer": "60",
+   "unit": "%",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "eff",
+    "useful": 600,
+    "total": 1000
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "eff-418",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "功和机械能",
+   "stem": "有用功 300 焦、总功 400 焦，机械效率是多少？（百分比）",
+   "answer": "75",
+   "unit": "%",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "eff",
+    "useful": 300,
+    "total": 400
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "eff-419",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "功和机械能",
+   "stem": "有用功 800 焦、总功 1000 焦，机械效率是多少？（百分比）",
+   "answer": "80",
+   "unit": "%",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "eff",
+    "useful": 800,
+    "total": 1000
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "accel_disp-420",
+   "subject": "物理",
+   "band": "high",
+   "topic": "匀变速直线运动",
+   "stem": "物体从静止开始以 4 米每二次方秒加速，4 秒内位移是多少米？",
+   "answer": "32",
+   "unit": "米",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "accel_disp",
+    "a": 4,
+    "t": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.71
+  },
+  {
+   "id": "accel_disp-421",
+   "subject": "物理",
+   "band": "high",
+   "topic": "匀变速直线运动",
+   "stem": "物体从静止开始以 6 米每二次方秒加速，4 秒内位移是多少米？",
+   "answer": "48",
+   "unit": "米",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "accel_disp",
+    "a": 6,
+    "t": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.71
+  },
+  {
+   "id": "accel_disp-422",
+   "subject": "物理",
+   "band": "high",
+   "topic": "匀变速直线运动",
+   "stem": "物体从静止开始以 6 米每二次方秒加速，2 秒内位移是多少米？",
+   "answer": "12",
+   "unit": "米",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "accel_disp",
+    "a": 6,
+    "t": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.71
+  },
+  {
+   "id": "accel_disp-423",
+   "subject": "物理",
+   "band": "high",
+   "topic": "匀变速直线运动",
+   "stem": "物体从静止开始以 4 米每二次方秒加速，3 秒内位移是多少米？",
+   "answer": "18",
+   "unit": "米",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "accel_disp",
+    "a": 4,
+    "t": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.71
+  },
+  {
+   "id": "accel_disp-424",
+   "subject": "物理",
+   "band": "high",
+   "topic": "匀变速直线运动",
+   "stem": "物体从静止开始以 6 米每二次方秒加速，3 秒内位移是多少米？",
+   "answer": "27",
+   "unit": "米",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "accel_disp",
+    "a": 6,
+    "t": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.71
+  },
+  {
+   "id": "kinetic-425",
+   "subject": "物理",
+   "band": "high",
+   "topic": "机械能守恒",
+   "stem": "质量 5 千克的物体速度 3 米每秒，动能是多少焦？",
+   "answer": "45/2",
+   "unit": "焦",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "kinetic",
+    "m": 5,
+    "v": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.71
+  },
+  {
+   "id": "kinetic-426",
+   "subject": "物理",
+   "band": "high",
+   "topic": "机械能守恒",
+   "stem": "质量 1 千克的物体速度 6 米每秒，动能是多少焦？",
+   "answer": "18",
+   "unit": "焦",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "kinetic",
+    "m": 1,
+    "v": 6
+   },
+   "tags": [],
+   "difficulty_prior": 0.71
+  },
+  {
+   "id": "kinetic-427",
+   "subject": "物理",
+   "band": "high",
+   "topic": "机械能守恒",
+   "stem": "质量 4 千克的物体速度 5 米每秒，动能是多少焦？",
+   "answer": "50",
+   "unit": "焦",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "kinetic",
+    "m": 4,
+    "v": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.71
+  },
+  {
+   "id": "kinetic-428",
+   "subject": "物理",
+   "band": "high",
+   "topic": "机械能守恒",
+   "stem": "质量 1 千克的物体速度 6 米每秒，动能是多少焦？",
+   "answer": "18",
+   "unit": "焦",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "kinetic",
+    "m": 1,
+    "v": 6
+   },
+   "tags": [],
+   "difficulty_prior": 0.71
+  },
+  {
+   "id": "kinetic-429",
+   "subject": "物理",
+   "band": "high",
+   "topic": "机械能守恒",
+   "stem": "质量 3 千克的物体速度 5 米每秒，动能是多少焦？",
+   "answer": "75/2",
+   "unit": "焦",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "kinetic",
+    "m": 3,
+    "v": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.71
+  },
+  {
+   "id": "momentum-430",
+   "subject": "物理",
+   "band": "high",
+   "topic": "动量",
+   "stem": "质量 1 千克的物体速度 5 米每秒，动量是多少千克米每秒？",
+   "answer": "5",
+   "unit": "千克米每秒",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "momentum",
+    "m": 1,
+    "v": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.62
+  },
+  {
+   "id": "momentum-431",
+   "subject": "物理",
+   "band": "high",
+   "topic": "动量",
+   "stem": "质量 4 千克的物体速度 4 米每秒，动量是多少千克米每秒？",
+   "answer": "16",
+   "unit": "千克米每秒",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "momentum",
+    "m": 4,
+    "v": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.62
+  },
+  {
+   "id": "momentum-432",
+   "subject": "物理",
+   "band": "high",
+   "topic": "动量",
+   "stem": "质量 1 千克的物体速度 3 米每秒，动量是多少千克米每秒？",
+   "answer": "3",
+   "unit": "千克米每秒",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "momentum",
+    "m": 1,
+    "v": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.62
+  },
+  {
+   "id": "momentum-433",
+   "subject": "物理",
+   "band": "high",
+   "topic": "动量",
+   "stem": "质量 1 千克的物体速度 5 米每秒，动量是多少千克米每秒？",
+   "answer": "5",
+   "unit": "千克米每秒",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "momentum",
+    "m": 1,
+    "v": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.62
+  },
+  {
+   "id": "momentum-434",
+   "subject": "物理",
+   "band": "high",
+   "topic": "动量",
+   "stem": "质量 2 千克的物体速度 6 米每秒，动量是多少千克米每秒？",
+   "answer": "12",
+   "unit": "千克米每秒",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "momentum",
+    "m": 2,
+    "v": 6
+   },
+   "tags": [],
+   "difficulty_prior": 0.62
+  },
+  {
+   "id": "conserve-435",
+   "subject": "化学",
+   "band": "middle",
+   "topic": "质量守恒定律",
+   "stem": "A 与 B 恰好完全反应生成 C。参加反应的 A 为 4 克、B 为 23 克，生成 C 多少克？",
+   "answer": "27",
+   "unit": "克",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "conserve",
+    "ma": 4,
+    "mb": 23
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "conserve-436",
+   "subject": "化学",
+   "band": "middle",
+   "topic": "质量守恒定律",
+   "stem": "A 与 B 恰好完全反应生成 C。参加反应的 A 为 13 克、B 为 23 克，生成 C 多少克？",
+   "answer": "36",
+   "unit": "克",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "conserve",
+    "ma": 13,
+    "mb": 23
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "conserve-437",
+   "subject": "化学",
+   "band": "middle",
+   "topic": "质量守恒定律",
+   "stem": "A 与 B 恰好完全反应生成 C。参加反应的 A 为 15 克、B 为 25 克，生成 C 多少克？",
+   "answer": "40",
+   "unit": "克",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "conserve",
+    "ma": 15,
+    "mb": 25
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "conserve-438",
+   "subject": "化学",
+   "band": "middle",
+   "topic": "质量守恒定律",
+   "stem": "A 与 B 恰好完全反应生成 C。参加反应的 A 为 19 克、B 为 31 克，生成 C 多少克？",
+   "answer": "50",
+   "unit": "克",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "conserve",
+    "ma": 19,
+    "mb": 31
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "conserve-439",
+   "subject": "化学",
+   "band": "middle",
+   "topic": "质量守恒定律",
+   "stem": "A 与 B 恰好完全反应生成 C。参加反应的 A 为 5 克、B 为 8 克，生成 C 多少克？",
+   "answer": "13",
+   "unit": "克",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "conserve",
+    "ma": 5,
+    "mb": 8
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "atoms_count-440",
+   "subject": "化学",
+   "band": "middle",
+   "topic": "化学式与化合价",
+   "stem": "一个 H2O 分子共有多少个原子？",
+   "answer": "3",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "atoms_count",
+    "formula": "H2O",
+    "n": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "atoms_count-441",
+   "subject": "化学",
+   "band": "middle",
+   "topic": "化学式与化合价",
+   "stem": "一个 CO2 分子共有多少个原子？",
+   "answer": "3",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "atoms_count",
+    "formula": "CO2",
+    "n": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "atoms_count-442",
+   "subject": "化学",
+   "band": "middle",
+   "topic": "化学式与化合价",
+   "stem": "一个 H2SO4 分子共有多少个原子？",
+   "answer": "7",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "atoms_count",
+    "formula": "H2SO4",
+    "n": 7
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "atoms_count-443",
+   "subject": "化学",
+   "band": "middle",
+   "topic": "化学式与化合价",
+   "stem": "一个 Ca(OH)2 分子共有多少个原子？",
+   "answer": "5",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "atoms_count",
+    "formula": "Ca(OH)2",
+    "n": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "atoms_count-444",
+   "subject": "化学",
+   "band": "middle",
+   "topic": "化学式与化合价",
+   "stem": "一个 CH4 分子共有多少个原子？",
+   "answer": "5",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "atoms_count",
+    "formula": "CH4",
+    "n": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "atoms_count-445",
+   "subject": "化学",
+   "band": "middle",
+   "topic": "化学式与化合价",
+   "stem": "一个 C6H12O6 分子共有多少个原子？",
+   "answer": "24",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "atoms_count",
+    "formula": "C6H12O6",
+    "n": 24
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "molar_vol-446",
+   "subject": "化学",
+   "band": "high",
+   "topic": "物质的量",
+   "stem": "1 摩尔气体在标准状况下的体积是多少升？（Vm = 22.4 升每摩尔）",
+   "answer": "22.4",
+   "unit": "升",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "molar_vol",
+    "n": 1
+   },
+   "tags": [],
+   "difficulty_prior": 0.67
+  },
+  {
+   "id": "molar_vol-447",
+   "subject": "化学",
+   "band": "high",
+   "topic": "物质的量",
+   "stem": "0.5 摩尔气体在标准状况下的体积是多少升？（Vm = 22.4 升每摩尔）",
+   "answer": "11.2",
+   "unit": "升",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "molar_vol",
+    "n": 0.5
+   },
+   "tags": [],
+   "difficulty_prior": 0.67
+  },
+  {
+   "id": "molar_vol-448",
+   "subject": "化学",
+   "band": "high",
+   "topic": "物质的量",
+   "stem": "2 摩尔气体在标准状况下的体积是多少升？（Vm = 22.4 升每摩尔）",
+   "answer": "44.8",
+   "unit": "升",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "molar_vol",
+    "n": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.67
+  },
+  {
+   "id": "molar_vol-449",
+   "subject": "化学",
+   "band": "high",
+   "topic": "物质的量",
+   "stem": "0.5 摩尔气体在标准状况下的体积是多少升？（Vm = 22.4 升每摩尔）",
+   "answer": "11.2",
+   "unit": "升",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "molar_vol",
+    "n": 0.5
+   },
+   "tags": [],
+   "difficulty_prior": 0.67
+  },
+  {
+   "id": "molar_vol-450",
+   "subject": "化学",
+   "band": "high",
+   "topic": "物质的量",
+   "stem": "1 摩尔气体在标准状况下的体积是多少升？（Vm = 22.4 升每摩尔）",
+   "answer": "22.4",
+   "unit": "升",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "molar_vol",
+    "n": 1
+   },
+   "tags": [],
+   "difficulty_prior": 0.67
+  },
+  {
+   "id": "ph-451",
+   "subject": "化学",
+   "band": "high",
+   "topic": "电离平衡",
+   "stem": "某溶液中 c(H⁺) = 10^−1 摩尔每升，pH 是多少？",
+   "answer": "1",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "ph",
+    "k": 1
+   },
+   "tags": [],
+   "difficulty_prior": 0.62
+  },
+  {
+   "id": "ph-452",
+   "subject": "化学",
+   "band": "high",
+   "topic": "电离平衡",
+   "stem": "某溶液中 c(H⁺) = 10^−2 摩尔每升，pH 是多少？",
+   "answer": "2",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "ph",
+    "k": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.62
+  },
+  {
+   "id": "ph-453",
+   "subject": "化学",
+   "band": "high",
+   "topic": "电离平衡",
+   "stem": "某溶液中 c(H⁺) = 10^−3 摩尔每升，pH 是多少？",
+   "answer": "3",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "ph",
+    "k": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.62
+  },
+  {
+   "id": "ph-454",
+   "subject": "化学",
+   "band": "high",
+   "topic": "电离平衡",
+   "stem": "某溶液中 c(H⁺) = 10^−4 摩尔每升，pH 是多少？",
+   "answer": "4",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "ph",
+    "k": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.62
+  },
+  {
+   "id": "ph-455",
+   "subject": "化学",
+   "band": "high",
+   "topic": "电离平衡",
+   "stem": "某溶液中 c(H⁺) = 10^−5 摩尔每升，pH 是多少？",
+   "answer": "5",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "ph",
+    "k": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.62
+  },
+  {
+   "id": "ph-456",
+   "subject": "化学",
+   "band": "high",
+   "topic": "电离平衡",
+   "stem": "某溶液中 c(H⁺) = 10^−6 摩尔每升，pH 是多少？",
+   "answer": "6",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "ph",
+    "k": 6
+   },
+   "tags": [],
+   "difficulty_prior": 0.62
+  },
+  {
+   "id": "gene-457",
+   "subject": "生物",
+   "band": "middle",
+   "topic": "遗传与变异",
+   "stem": "基因型 Aa × Aa 的两个亲本杂交，后代出现显性性状的概率是多少？",
+   "answer": "3/4",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "gene",
+    "which": "显性性状"
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "gene-458",
+   "subject": "生物",
+   "band": "middle",
+   "topic": "遗传与变异",
+   "stem": "基因型 Aa × Aa 的两个亲本杂交，后代出现隐性性状的概率是多少？",
+   "answer": "1/4",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "gene",
+    "which": "隐性性状"
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "microscope-459",
+   "subject": "生物",
+   "band": "middle",
+   "topic": "显微镜的使用",
+   "stem": "目镜 10×、物镜 4×，显微镜的放大倍数是多少？",
+   "answer": "40",
+   "unit": "倍",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "microscope",
+    "eye": 10,
+    "obj": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "microscope-460",
+   "subject": "生物",
+   "band": "middle",
+   "topic": "显微镜的使用",
+   "stem": "目镜 10×、物镜 10×，显微镜的放大倍数是多少？",
+   "answer": "100",
+   "unit": "倍",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "microscope",
+    "eye": 10,
+    "obj": 10
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "microscope-461",
+   "subject": "生物",
+   "band": "middle",
+   "topic": "显微镜的使用",
+   "stem": "目镜 10×、物镜 40×，显微镜的放大倍数是多少？",
+   "answer": "400",
+   "unit": "倍",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "microscope",
+    "eye": 10,
+    "obj": 40
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "microscope-462",
+   "subject": "生物",
+   "band": "middle",
+   "topic": "显微镜的使用",
+   "stem": "目镜 10×、物镜 100×，显微镜的放大倍数是多少？",
+   "answer": "1000",
+   "unit": "倍",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "microscope",
+    "eye": 10,
+    "obj": 100
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "energy-463",
+   "subject": "生物",
+   "band": "middle",
+   "topic": "生态系统",
+   "stem": "第一营养级同化能量 1000 千焦，按 10% 传递效率，第二营养级获得多少千焦？",
+   "answer": "100",
+   "unit": "千焦",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "energy",
+    "base": 1000
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "energy-464",
+   "subject": "生物",
+   "band": "middle",
+   "topic": "生态系统",
+   "stem": "第一营养级同化能量 2000 千焦，按 10% 传递效率，第二营养级获得多少千焦？",
+   "answer": "200",
+   "unit": "千焦",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "energy",
+    "base": 2000
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "energy-465",
+   "subject": "生物",
+   "band": "middle",
+   "topic": "生态系统",
+   "stem": "第一营养级同化能量 5000 千焦，按 10% 传递效率，第二营养级获得多少千焦？",
+   "answer": "500",
+   "unit": "千焦",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "energy",
+    "base": 5000
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "energy-466",
+   "subject": "生物",
+   "band": "middle",
+   "topic": "生态系统",
+   "stem": "第一营养级同化能量 10000 千焦，按 10% 传递效率，第二营养级获得多少千焦？",
+   "answer": "1000",
+   "unit": "千焦",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "energy",
+    "base": 10000
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "scale-467",
+   "subject": "地理",
+   "band": "middle",
+   "topic": "地球与地图",
+   "stem": "比例尺 1:200000 的地图上量得 4 厘米，实际距离是多少千米？",
+   "answer": "8",
+   "unit": "千米",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "scale",
+    "cm": 4,
+    "den": 200000
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "scale-468",
+   "subject": "地理",
+   "band": "middle",
+   "topic": "地球与地图",
+   "stem": "比例尺 1:100000 的地图上量得 6 厘米，实际距离是多少千米？",
+   "answer": "6",
+   "unit": "千米",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "scale",
+    "cm": 6,
+    "den": 100000
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "scale-469",
+   "subject": "地理",
+   "band": "middle",
+   "topic": "地球与地图",
+   "stem": "比例尺 1:100000 的地图上量得 6 厘米，实际距离是多少千米？",
+   "answer": "6",
+   "unit": "千米",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "scale",
+    "cm": 6,
+    "den": 100000
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "scale-470",
+   "subject": "地理",
+   "band": "middle",
+   "topic": "地球与地图",
+   "stem": "比例尺 1:500000 的地图上量得 5 厘米，实际距离是多少千米？",
+   "answer": "25",
+   "unit": "千米",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "scale",
+    "cm": 5,
+    "den": 500000
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "scale-471",
+   "subject": "地理",
+   "band": "middle",
+   "topic": "地球与地图",
+   "stem": "比例尺 1:200000 的地图上量得 4 厘米，实际距离是多少千米？",
+   "answer": "8",
+   "unit": "千米",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "scale",
+    "cm": 4,
+    "den": 200000
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "density_pop-472",
+   "subject": "地理",
+   "band": "middle",
+   "topic": "居民与聚落",
+   "stem": "某地人口 500000 人、面积 4000 平方千米，人口密度是多少人每平方千米？",
+   "answer": "125",
+   "unit": "人每平方千米",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "density_pop",
+    "pop": 500000,
+    "area": 4000
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "density_pop-473",
+   "subject": "地理",
+   "band": "middle",
+   "topic": "居民与聚落",
+   "stem": "某地人口 200000 人、面积 2000 平方千米，人口密度是多少人每平方千米？",
+   "answer": "100",
+   "unit": "人每平方千米",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "density_pop",
+    "pop": 200000,
+    "area": 2000
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "density_pop-474",
+   "subject": "地理",
+   "band": "middle",
+   "topic": "居民与聚落",
+   "stem": "某地人口 500000 人、面积 4000 平方千米，人口密度是多少人每平方千米？",
+   "answer": "125",
+   "unit": "人每平方千米",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "density_pop",
+    "pop": 500000,
+    "area": 4000
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "density_pop-475",
+   "subject": "地理",
+   "band": "middle",
+   "topic": "居民与聚落",
+   "stem": "某地人口 800000 人、面积 5000 平方千米，人口密度是多少人每平方千米？",
+   "answer": "160",
+   "unit": "人每平方千米",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "density_pop",
+    "pop": 800000,
+    "area": 5000
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "density_pop-476",
+   "subject": "地理",
+   "band": "middle",
+   "topic": "居民与聚落",
+   "stem": "某地人口 500000 人、面积 4000 平方千米，人口密度是多少人每平方千米？",
+   "answer": "125",
+   "unit": "人每平方千米",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "density_pop",
+    "pop": 500000,
+    "area": 4000
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "lapse-477",
+   "subject": "地理",
+   "band": "middle",
+   "topic": "天气与气候",
+   "stem": "海拔每升高 100 米气温下降 0.6 ℃。升高 3 百米，气温下降多少 ℃？",
+   "answer": "1.8",
+   "unit": "℃",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "lapse",
+    "h": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "lapse-478",
+   "subject": "地理",
+   "band": "middle",
+   "topic": "天气与气候",
+   "stem": "海拔每升高 100 米气温下降 0.6 ℃。升高 3 百米，气温下降多少 ℃？",
+   "answer": "1.8",
+   "unit": "℃",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "lapse",
+    "h": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "lapse-479",
+   "subject": "地理",
+   "band": "middle",
+   "topic": "天气与气候",
+   "stem": "海拔每升高 100 米气温下降 0.6 ℃。升高 2 百米，气温下降多少 ℃？",
+   "answer": "1.2",
+   "unit": "℃",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "lapse",
+    "h": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "lapse-480",
+   "subject": "地理",
+   "band": "middle",
+   "topic": "天气与气候",
+   "stem": "海拔每升高 100 米气温下降 0.6 ℃。升高 3 百米，气温下降多少 ℃？",
+   "answer": "1.8",
+   "unit": "℃",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "lapse",
+    "h": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "tz-481",
+   "subject": "地理",
+   "band": "high",
+   "topic": "地球运动",
+   "stem": "东八区与东9区的时差是多少小时？",
+   "answer": "1",
+   "unit": "小时",
+   "steps": 2,
+   "ops": 1,
+   "params": {
+    "kind": "tz",
+    "diff": 1
+   },
+   "tags": [],
+   "difficulty_prior": 0.67
+  },
+  {
+   "id": "tz-482",
+   "subject": "地理",
+   "band": "high",
+   "topic": "地球运动",
+   "stem": "东八区与东10区的时差是多少小时？",
+   "answer": "2",
+   "unit": "小时",
+   "steps": 2,
+   "ops": 1,
+   "params": {
+    "kind": "tz",
+    "diff": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.67
+  },
+  {
+   "id": "tz-483",
+   "subject": "地理",
+   "band": "high",
+   "topic": "地球运动",
+   "stem": "东八区与东11区的时差是多少小时？",
+   "answer": "3",
+   "unit": "小时",
+   "steps": 2,
+   "ops": 1,
+   "params": {
+    "kind": "tz",
+    "diff": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.67
+  },
+  {
+   "id": "tz-484",
+   "subject": "地理",
+   "band": "high",
+   "topic": "地球运动",
+   "stem": "东八区与东12区的时差是多少小时？",
+   "answer": "4",
+   "unit": "小时",
+   "steps": 2,
+   "ops": 1,
+   "params": {
+    "kind": "tz",
+    "diff": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.67
+  },
+  {
+   "id": "sun_alt-485",
+   "subject": "地理",
+   "band": "high",
+   "topic": "地球运动",
+   "stem": "某地纬度 40°N，太阳直射 0°N，正午太阳高度是多少度？",
+   "answer": "50",
+   "unit": "度",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "sun_alt",
+    "lat": 40,
+    "decl": 0
+   },
+   "tags": [],
+   "difficulty_prior": 0.67
+  },
+  {
+   "id": "sun_alt-486",
+   "subject": "地理",
+   "band": "high",
+   "topic": "地球运动",
+   "stem": "某地纬度 30°N，太阳直射 10°N，正午太阳高度是多少度？",
+   "answer": "70",
+   "unit": "度",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "sun_alt",
+    "lat": 30,
+    "decl": 10
+   },
+   "tags": [],
+   "difficulty_prior": 0.67
+  },
+  {
+   "id": "sun_alt-487",
+   "subject": "地理",
+   "band": "high",
+   "topic": "地球运动",
+   "stem": "某地纬度 20°N，太阳直射 0°N，正午太阳高度是多少度？",
+   "answer": "70",
+   "unit": "度",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "sun_alt",
+    "lat": 20,
+    "decl": 0
+   },
+   "tags": [],
+   "difficulty_prior": 0.67
+  },
+  {
+   "id": "sun_alt-488",
+   "subject": "地理",
+   "band": "high",
+   "topic": "地球运动",
+   "stem": "某地纬度 45°N，太阳直射 15°N，正午太阳高度是多少度？",
+   "answer": "60",
+   "unit": "度",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "sun_alt",
+    "lat": 45,
+    "decl": 15
+   },
+   "tags": [],
+   "difficulty_prior": 0.67
+  },
+  {
+   "id": "cell_split-489",
+   "subject": "生物",
+   "band": "middle",
+   "topic": "细胞分裂与分化",
+   "stem": "一个细胞连续分裂 3 次，能得到多少个细胞？",
+   "answer": "8",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "cell_split",
+    "n": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "cell_split-490",
+   "subject": "生物",
+   "band": "middle",
+   "topic": "细胞分裂与分化",
+   "stem": "一个细胞连续分裂 4 次，能得到多少个细胞？",
+   "answer": "16",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "cell_split",
+    "n": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "cell_split-491",
+   "subject": "生物",
+   "band": "middle",
+   "topic": "细胞分裂与分化",
+   "stem": "一个细胞连续分裂 5 次，能得到多少个细胞？",
+   "answer": "32",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "cell_split",
+    "n": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "cell_split-492",
+   "subject": "生物",
+   "band": "middle",
+   "topic": "细胞分裂与分化",
+   "stem": "一个细胞连续分裂 6 次，能得到多少个细胞？",
+   "answer": "64",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "cell_split",
+    "n": 6
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "breath-493",
+   "subject": "生物",
+   "band": "middle",
+   "topic": "人体的呼吸",
+   "stem": "呼吸频率 16 次每分钟，2 分钟呼吸多少次？",
+   "answer": "32",
+   "unit": "次",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "breath",
+    "rate": 16,
+    "min": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "breath-494",
+   "subject": "生物",
+   "band": "middle",
+   "topic": "人体的呼吸",
+   "stem": "呼吸频率 18 次每分钟，3 分钟呼吸多少次？",
+   "answer": "54",
+   "unit": "次",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "breath",
+    "rate": 18,
+    "min": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "breath-495",
+   "subject": "生物",
+   "band": "middle",
+   "topic": "人体的呼吸",
+   "stem": "呼吸频率 20 次每分钟，2 分钟呼吸多少次？",
+   "answer": "40",
+   "unit": "次",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "breath",
+    "rate": 20,
+    "min": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "breath-496",
+   "subject": "生物",
+   "band": "middle",
+   "topic": "人体的呼吸",
+   "stem": "呼吸频率 15 次每分钟，4 分钟呼吸多少次？",
+   "answer": "60",
+   "unit": "次",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "breath",
+    "rate": 15,
+    "min": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "heart-497",
+   "subject": "生物",
+   "band": "middle",
+   "topic": "血液循环",
+   "stem": "心率 70 次每分钟，2 分钟心脏跳动多少次？",
+   "answer": "140",
+   "unit": "次",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "heart",
+    "hr": 70,
+    "min": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "heart-498",
+   "subject": "生物",
+   "band": "middle",
+   "topic": "血液循环",
+   "stem": "心率 75 次每分钟，4 分钟心脏跳动多少次？",
+   "answer": "300",
+   "unit": "次",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "heart",
+    "hr": 75,
+    "min": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "heart-499",
+   "subject": "生物",
+   "band": "middle",
+   "topic": "血液循环",
+   "stem": "心率 80 次每分钟，3 分钟心脏跳动多少次？",
+   "answer": "240",
+   "unit": "次",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "heart",
+    "hr": 80,
+    "min": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "heart-500",
+   "subject": "生物",
+   "band": "middle",
+   "topic": "血液循环",
+   "stem": "心率 60 次每分钟，5 分钟心脏跳动多少次？",
+   "answer": "300",
+   "unit": "次",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "heart",
+    "hr": 60,
+    "min": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "contour-501",
+   "subject": "地理",
+   "band": "middle",
+   "topic": "等高线地形图",
+   "stem": "等高距 50 米，从 100 米的山脚向上走过 3 条等高线，海拔升高多少米？",
+   "answer": "150",
+   "unit": "米",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "contour",
+    "step": 50,
+    "n": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "contour-502",
+   "subject": "地理",
+   "band": "middle",
+   "topic": "等高线地形图",
+   "stem": "等高距 100 米，从 200 米的山脚向上走过 2 条等高线，海拔升高多少米？",
+   "answer": "200",
+   "unit": "米",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "contour",
+    "step": 100,
+    "n": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "contour-503",
+   "subject": "地理",
+   "band": "middle",
+   "topic": "等高线地形图",
+   "stem": "等高距 100 米，从 500 米的山脚向上走过 4 条等高线，海拔升高多少米？",
+   "answer": "400",
+   "unit": "米",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "contour",
+    "step": 100,
+    "n": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "annual_range-504",
+   "subject": "地理",
+   "band": "middle",
+   "topic": "天气与气候",
+   "stem": "某地七月均温 28 ℃、一月均温 16 ℃，气温年较差是多少 ℃？",
+   "answer": "12",
+   "unit": "℃",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "annual_range",
+    "hi": 28,
+    "lo": 16
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "annual_range-505",
+   "subject": "地理",
+   "band": "middle",
+   "topic": "天气与气候",
+   "stem": "某地七月均温 30 ℃、一月均温 20 ℃，气温年较差是多少 ℃？",
+   "answer": "10",
+   "unit": "℃",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "annual_range",
+    "hi": 30,
+    "lo": 20
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "annual_range-506",
+   "subject": "地理",
+   "band": "middle",
+   "topic": "天气与气候",
+   "stem": "某地七月均温 25 ℃、一月均温 15 ℃，气温年较差是多少 ℃？",
+   "answer": "10",
+   "unit": "℃",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "annual_range",
+    "hi": 25,
+    "lo": 15
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "annual_range-507",
+   "subject": "地理",
+   "band": "middle",
+   "topic": "天气与气候",
+   "stem": "某地七月均温 32 ℃、一月均温 24 ℃，气温年较差是多少 ℃？",
+   "answer": "8",
+   "unit": "℃",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "annual_range",
+    "hi": 32,
+    "lo": 24
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
   }
  ]
 }
