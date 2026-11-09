@@ -107,7 +107,7 @@ function pane() {
     row('导出备份', 'Export', `<a class="ghost btnlike" id="sExport" href="/api/backup" download>[↓] ${t('导出备份')}</a><label class="chk"><input type="checkbox" id="sExpKey"> ${t('备份里包含密钥')}</label>`, '学习库 + 设置（zip）；默认不含密钥，上传的题图不进备份') +
     row('导入备份', 'Import', `<label class="ghost btnlike">[↑] ${t('导入备份')}<input type="file" id="sImport" accept=".zip" hidden></label>`, '会覆盖现在的学习记录；备份里没有密钥就保留现在的') +
     row('清空学习数据', 'Reset', `<button type="button" class="ghost danger" id="sClear">${t('清空学习数据')}</button>`, '会话、错题、掌握度、记忆、成长规则全部删除，年级与教材保留') +
-    row('版本', 'Version', `<span class="sval">Lyceum 学园 v${e(S.version || '')}</span><button type="button" class="ghost" id="sUpd">${t('检查更新')}</button><span class="sres" id="sUpdRes"></span>`, '只查 GitHub Releases 有没有新版，不会自动下载安装') +
+    row('版本', 'Version', `<span class="sval">Lyceum 学园 v${e(S.version || '')}</span><button type="button" class="ghost" id="sUpd">${t('检查更新')}</button><span class="sres" id="sUpdRes"></span>`, '查 GitHub Releases；有新版本可以在应用内下载并安装（会关闭当前窗口）') +
     row('用量统计', 'Usage', us.length ? `<table class="utab"><tr><th>模型</th><th>调用</th><th>输入</th><th>输出</th></tr>${us.map(([m, r]) => `<tr><td>${e(m)}</td><td>${r.calls}</td><td>${r.prompt_tokens}</td><td>${r.completion_tokens}${r.estimated ? '*' : ''}</td></tr>`).join('')}</table>` : '<span class="sval">还没有调用过模型</span>', 'token 数来自接口返回；带 * 的含按字数估计');
 }
 
