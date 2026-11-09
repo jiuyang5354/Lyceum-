@@ -5,7 +5,7 @@
 #define MyAppName "Lyceum 学园"
 #define MyAppExe "Lyceum.exe"
 #ifndef MyAppVersion
-  #define MyAppVersion "0.3.8"
+  #define MyAppVersion "0.3.9"
 #endif
 
 [Setup]

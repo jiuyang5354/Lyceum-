@@ -66,6 +66,57 @@ def _loopback(addr):
     return addr in ("127.0.0.1", "::1", "localhost") or addr.startswith("127.") or addr == "::ffff:127.0.0.1"
 
 
+LOOPBACK_NAMES = ("127.0.0.1", "localhost", "::1")
+
+
+def _host_ok(header, port):
+    """Host 必须是本机回环 + 本进程端口。
+
+    只查 client_address 挡不住恶意网页：浏览器发来的请求永远来自 127.0.0.1。
+    Host 校验同时挡 DNS rebinding（攻击者域名解析到 127.0.0.1 时，Host 仍是他的域名）。
+    """
+    raw = str(header or "").strip().lower()
+    if not raw:
+        return False
+    host = raw.split(",")[0].strip()
+    if host.startswith("["):                      # [::1]:PORT
+        name, _, tail = host.partition("]")
+        name, rest = name[1:], tail.lstrip(":")
+    else:
+        name, _, rest = host.partition(":")
+    if rest and rest != str(port):
+        return False
+    return name in LOOPBACK_NAMES
+
+
+def _origin_ok(origin, port):
+    """Origin 只允许本机页面；没有 Origin（curl、同源 GET）放行。
+
+    `Origin: null`（沙箱 iframe / file://）一律拒绝：正常界面就是从
+    http://127.0.0.1:PORT 加载的，不需要 null 来源。
+    """
+    raw = str(origin or "").strip().lower()
+    if not raw:
+        return True
+    if raw == "null":
+        return False
+    try:
+        u = urlparse(raw)
+    except ValueError:
+        return False
+    if u.scheme not in ("http", "https"):
+        return False
+    if u.port and u.port != int(port):
+        return False
+    return (u.hostname or "") in LOOPBACK_NAMES
+
+
+def _json_post(handler):
+    """写操作必须是 application/json：跨站 no-cors 只能发 text/plain，发不出 JSON。"""
+    ct = (handler.headers.get("Content-Type") or "").split(";")[0].strip().lower()
+    return ct == "application/json"
+
+
 class H(BaseHTTPRequestHandler):
     server_version = "Lyceum/0.1"
 
@@ -111,6 +162,8 @@ class H(BaseHTTPRequestHandler):
         u = urlparse(self.path)
         p = u.path
         try:
+            if not _host_ok(self.headers.get("Host"), self.server.server_address[1]):
+                return self.send_json({"error": "非法的 Host"}, 403)
             if p == "/api/profile":
                 return self.send_json({"profile": db.get_profile(), "llm": llm.enabled(), "model": llm.MODEL})
             if p == "/api/sessions":
@@ -197,6 +250,13 @@ class H(BaseHTTPRequestHandler):
     def do_POST(self):
         p = urlparse(self.path).path
         try:
+            port = self.server.server_address[1]
+            if not _host_ok(self.headers.get("Host"), port):
+                return self.send_json({"error": "非法的 Host"}, 403)
+            if not _origin_ok(self.headers.get("Origin"), port):
+                return self.send_json({"error": "只接受本机页面的请求"}, 403)
+            if p.startswith("/api/") and not _json_post(self):
+                return self.send_json({"error": "写操作必须是 application/json"}, 415)
             b = self.body()
             if p == "/api/profile":
                 g = int(b.get("grade") or 0)
