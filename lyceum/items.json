@@ -9246,6 +9246,636 @@
    },
    "tags": [],
    "difficulty_prior": 0.44
+  },
+  {
+   "id": "dictation-508",
+   "subject": "语文",
+   "band": "primary",
+   "topic": "古诗",
+   "stem": "补写诗句：白日依山尽，____。",
+   "answer": "黄河入海流",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "dictation",
+    "next": "黄河入海流",
+    "src": "登鹳雀楼"
+   },
+   "tags": [],
+   "difficulty_prior": 0.22
+  },
+  {
+   "id": "dictation-509",
+   "subject": "语文",
+   "band": "primary",
+   "topic": "古诗",
+   "stem": "补写诗句：欲穷千里目，____。",
+   "answer": "更上一层楼",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "dictation",
+    "next": "更上一层楼",
+    "src": "登鹳雀楼"
+   },
+   "tags": [],
+   "difficulty_prior": 0.22
+  },
+  {
+   "id": "dictation-510",
+   "subject": "语文",
+   "band": "primary",
+   "topic": "古诗",
+   "stem": "补写诗句：春眠不觉晓，____。",
+   "answer": "处处闻啼鸟",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "dictation",
+    "next": "处处闻啼鸟",
+    "src": "春晓"
+   },
+   "tags": [],
+   "difficulty_prior": 0.22
+  },
+  {
+   "id": "dictation-511",
+   "subject": "语文",
+   "band": "primary",
+   "topic": "古诗",
+   "stem": "补写诗句：举头望明月，____。",
+   "answer": "低头思故乡",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "dictation",
+    "next": "低头思故乡",
+    "src": "静夜思"
+   },
+   "tags": [],
+   "difficulty_prior": 0.22
+  },
+  {
+   "id": "dictation-512",
+   "subject": "语文",
+   "band": "primary",
+   "topic": "古诗",
+   "stem": "补写诗句：野火烧不尽，____。",
+   "answer": "春风吹又生",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "dictation",
+    "next": "春风吹又生",
+    "src": "赋得古原草送别"
+   },
+   "tags": [],
+   "difficulty_prior": 0.22
+  },
+  {
+   "id": "dictation-513",
+   "subject": "语文",
+   "band": "middle",
+   "topic": "古诗文默写",
+   "stem": "补写名句：沉舟侧畔千帆过，____。",
+   "answer": "病树前头万木春",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "dictation",
+    "next": "病树前头万木春",
+    "src": "酬乐天扬州初逢席上见赠"
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "dictation-514",
+   "subject": "语文",
+   "band": "middle",
+   "topic": "古诗文默写",
+   "stem": "补写名句：山重水复疑无路，____。",
+   "answer": "柳暗花明又一村",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "dictation",
+    "next": "柳暗花明又一村",
+    "src": "游山西村"
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "dictation-515",
+   "subject": "语文",
+   "band": "middle",
+   "topic": "古诗文默写",
+   "stem": "补写名句：落红不是无情物，____。",
+   "answer": "化作春泥更护花",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "dictation",
+    "next": "化作春泥更护花",
+    "src": "己亥杂诗"
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "dictation-516",
+   "subject": "语文",
+   "band": "middle",
+   "topic": "古诗文默写",
+   "stem": "补写名句：不畏浮云遮望眼，____。",
+   "answer": "自缘身在最高层",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "dictation",
+    "next": "自缘身在最高层",
+    "src": "登飞来峰"
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "dictation-517",
+   "subject": "语文",
+   "band": "middle",
+   "topic": "古诗文默写",
+   "stem": "补写名句：但愿人长久，____。",
+   "answer": "千里共婵娟",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "dictation",
+    "next": "千里共婵娟",
+    "src": "水调歌头"
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "idiom-518",
+   "subject": "语文",
+   "band": "primary",
+   "topic": "成语",
+   "stem": "根据意思写成语：比喻做多余的事，反而把事情弄糟。",
+   "answer": "画蛇添足",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "idiom",
+    "idiom": "画蛇添足",
+    "meaning": "比喻做多余的事，反而把事情弄糟"
+   },
+   "tags": [],
+   "difficulty_prior": 0.27
+  },
+  {
+   "id": "idiom-519",
+   "subject": "语文",
+   "band": "primary",
+   "topic": "成语",
+   "stem": "根据意思写成语：比喻力量太小，解决不了问题。",
+   "answer": "杯水车薪",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "idiom",
+    "idiom": "杯水车薪",
+    "meaning": "比喻力量太小，解决不了问题"
+   },
+   "tags": [],
+   "difficulty_prior": 0.27
+  },
+  {
+   "id": "idiom-520",
+   "subject": "语文",
+   "band": "primary",
+   "topic": "成语",
+   "stem": "根据意思写成语：形容注意力非常集中。",
+   "answer": "全神贯注",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "idiom",
+    "idiom": "全神贯注",
+    "meaning": "形容注意力非常集中"
+   },
+   "tags": [],
+   "difficulty_prior": 0.27
+  },
+  {
+   "id": "idiom-521",
+   "subject": "语文",
+   "band": "primary",
+   "topic": "成语",
+   "stem": "根据意思写成语：形容做事十分认真细致，一点也不马虎。",
+   "answer": "一丝不苟",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "idiom",
+    "idiom": "一丝不苟",
+    "meaning": "形容做事十分认真细致，一点也不马虎"
+   },
+   "tags": [],
+   "difficulty_prior": 0.27
+  },
+  {
+   "id": "idiom-522",
+   "subject": "语文",
+   "band": "primary",
+   "topic": "成语",
+   "stem": "根据意思写成语：比喻主动向人认错、请求责罚。",
+   "answer": "负荆请罪",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "idiom",
+    "idiom": "负荆请罪",
+    "meaning": "比喻主动向人认错、请求责罚"
+   },
+   "tags": [],
+   "difficulty_prior": 0.27
+  },
+  {
+   "id": "verb_past-523",
+   "subject": "英语",
+   "band": "middle",
+   "topic": "一般过去时",
+   "stem": "写出 go 的过去式。",
+   "answer": "went",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "verb_past",
+    "base": "go",
+    "past": "went"
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "verb_past-524",
+   "subject": "英语",
+   "band": "middle",
+   "topic": "一般过去时",
+   "stem": "写出 see 的过去式。",
+   "answer": "saw",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "verb_past",
+    "base": "see",
+    "past": "saw"
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "verb_past-525",
+   "subject": "英语",
+   "band": "middle",
+   "topic": "一般过去时",
+   "stem": "写出 eat 的过去式。",
+   "answer": "ate",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "verb_past",
+    "base": "eat",
+    "past": "ate"
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "verb_past-526",
+   "subject": "英语",
+   "band": "middle",
+   "topic": "一般过去时",
+   "stem": "写出 take 的过去式。",
+   "answer": "took",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "verb_past",
+    "base": "take",
+    "past": "took"
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "verb_past-527",
+   "subject": "英语",
+   "band": "middle",
+   "topic": "一般过去时",
+   "stem": "写出 buy 的过去式。",
+   "answer": "bought",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "verb_past",
+    "base": "buy",
+    "past": "bought"
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "verb_past-528",
+   "subject": "英语",
+   "band": "middle",
+   "topic": "一般过去时",
+   "stem": "写出 teach 的过去式。",
+   "answer": "taught",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "verb_past",
+    "base": "teach",
+    "past": "taught"
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "verb_past-529",
+   "subject": "英语",
+   "band": "middle",
+   "topic": "一般过去时",
+   "stem": "写出 think 的过去式。",
+   "answer": "thought",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "verb_past",
+    "base": "think",
+    "past": "thought"
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "verb_past-530",
+   "subject": "英语",
+   "band": "middle",
+   "topic": "一般过去时",
+   "stem": "写出 bring 的过去式。",
+   "answer": "brought",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "verb_past",
+    "base": "bring",
+    "past": "brought"
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "verb_past-531",
+   "subject": "英语",
+   "band": "middle",
+   "topic": "一般过去时",
+   "stem": "写出 drink 的过去式。",
+   "answer": "drank",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "verb_past",
+    "base": "drink",
+    "past": "drank"
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "verb_past-532",
+   "subject": "英语",
+   "band": "middle",
+   "topic": "一般过去时",
+   "stem": "写出 write 的过去式。",
+   "answer": "wrote",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "verb_past",
+    "base": "write",
+    "past": "wrote"
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "verb_past-533",
+   "subject": "英语",
+   "band": "middle",
+   "topic": "一般过去时",
+   "stem": "写出 run 的过去式。",
+   "answer": "ran",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "verb_past",
+    "base": "run",
+    "past": "ran"
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "verb_past-534",
+   "subject": "英语",
+   "band": "middle",
+   "topic": "一般过去时",
+   "stem": "写出 swim 的过去式。",
+   "answer": "swam",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "verb_past",
+    "base": "swim",
+    "past": "swam"
+   },
+   "tags": [],
+   "difficulty_prior": 0.44
+  },
+  {
+   "id": "plural-535",
+   "subject": "英语",
+   "band": "primary",
+   "topic": "名词单复数",
+   "stem": "写出 child 的复数形式。",
+   "answer": "children",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "plural",
+    "base": "child",
+    "plural": "children"
+   },
+   "tags": [],
+   "difficulty_prior": 0.22
+  },
+  {
+   "id": "plural-536",
+   "subject": "英语",
+   "band": "primary",
+   "topic": "名词单复数",
+   "stem": "写出 man 的复数形式。",
+   "answer": "men",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "plural",
+    "base": "man",
+    "plural": "men"
+   },
+   "tags": [],
+   "difficulty_prior": 0.22
+  },
+  {
+   "id": "plural-537",
+   "subject": "英语",
+   "band": "primary",
+   "topic": "名词单复数",
+   "stem": "写出 woman 的复数形式。",
+   "answer": "women",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "plural",
+    "base": "woman",
+    "plural": "women"
+   },
+   "tags": [],
+   "difficulty_prior": 0.22
+  },
+  {
+   "id": "plural-538",
+   "subject": "英语",
+   "band": "primary",
+   "topic": "名词单复数",
+   "stem": "写出 foot 的复数形式。",
+   "answer": "feet",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "plural",
+    "base": "foot",
+    "plural": "feet"
+   },
+   "tags": [],
+   "difficulty_prior": 0.22
+  },
+  {
+   "id": "plural-539",
+   "subject": "英语",
+   "band": "primary",
+   "topic": "名词单复数",
+   "stem": "写出 tooth 的复数形式。",
+   "answer": "teeth",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "plural",
+    "base": "tooth",
+    "plural": "teeth"
+   },
+   "tags": [],
+   "difficulty_prior": 0.22
+  },
+  {
+   "id": "plural-540",
+   "subject": "英语",
+   "band": "primary",
+   "topic": "名词单复数",
+   "stem": "写出 mouse 的复数形式。",
+   "answer": "mice",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "plural",
+    "base": "mouse",
+    "plural": "mice"
+   },
+   "tags": [],
+   "difficulty_prior": 0.22
+  },
+  {
+   "id": "plural-541",
+   "subject": "英语",
+   "band": "primary",
+   "topic": "名词单复数",
+   "stem": "写出 sheep 的复数形式。",
+   "answer": "sheep",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "plural",
+    "base": "sheep",
+    "plural": "sheep"
+   },
+   "tags": [],
+   "difficulty_prior": 0.22
+  },
+  {
+   "id": "plural-542",
+   "subject": "英语",
+   "band": "primary",
+   "topic": "名词单复数",
+   "stem": "写出 fish 的复数形式。",
+   "answer": "fish",
+   "unit": "",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "plural",
+    "base": "fish",
+    "plural": "fish"
+   },
+   "tags": [],
+   "difficulty_prior": 0.22
   }
  ]
 }

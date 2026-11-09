@@ -197,18 +197,25 @@ def recompute(it):
         return Fraction(p["step"] * p["n"])
     if kind == "annual_range":
         return Fraction(p["hi"] - p["lo"])
+    if kind in ("dictation", "idiom", "verb_past", "plural"):
+        return p.get("next") or p.get("idiom") or p.get("past") or p.get("plural")
     raise AssertionError("未知模板 " + kind)
 
 
 class BankTest(unittest.TestCase):
     def test_every_answer_recomputes_from_its_params(self):
         for it in B.ITEMS:
-            self.assertEqual(Fraction(it["answer"]), recompute(it), it["id"] + " " + it["stem"])
+            want = recompute(it)
+            if isinstance(want, str):
+                self.assertEqual(want, it["answer"], it["id"] + " " + it["stem"])
+            else:
+                self.assertEqual(Fraction(it["answer"]), want, it["id"] + " " + it["stem"])
 
     def test_bank_is_big_enough_and_covers_several_topics(self):
-        self.assertGreaterEqual(len(B.ITEMS), 480)
-        self.assertGreaterEqual(len(B.topics()), 70)
-        self.assertEqual({s for s, _ in B.topics()}, {"数学", "物理", "化学", "生物", "地理"})
+        self.assertGreaterEqual(len(B.ITEMS), 530)
+        self.assertGreaterEqual(len(B.topics()), 80)
+        self.assertEqual({s for s, _ in B.topics()},
+                         {"数学", "物理", "化学", "生物", "地理", "语文", "英语"})
 
     def test_every_topic_has_at_least_two_items_to_choose_from(self):
         from collections import Counter
@@ -285,6 +292,20 @@ class CheckTest(unittest.TestCase):
         self.assertFalse(B.check(it, "0"))
         self.assertFalse(B.check(it, "   "))
 
+
+    def test_text_answers_ignore_punctuation_and_width(self):
+        item = {"answer": "黄河入海流", "unit": "", "params": {"kind": "dictation"}}
+        self.assertTrue(B.check(item, "黄河入海流"))
+        self.assertTrue(B.check(item, "黄河入海流。"))
+        self.assertTrue(B.check(item, " 黄河入海流 "))
+        self.assertFalse(B.check(item, "黄河入海"))
+        self.assertFalse(B.check(item, ""))
+
+    def test_english_answers_are_case_insensitive_but_exact(self):
+        item = {"answer": "went", "unit": "", "params": {"kind": "verb_past"}}
+        self.assertTrue(B.check(item, "Went"))
+        self.assertTrue(B.check(item, "went."))
+        self.assertFalse(B.check(item, "goed"))
 
 class CalibrationTest(unittest.TestCase):
     def test_correct_answer_makes_the_item_easier_and_the_student_stronger(self):
