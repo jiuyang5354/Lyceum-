@@ -242,3 +242,27 @@ button:disabled { cursor: not-allowed; }
   .today-head { grid-template-columns: 1fr; gap: 12px; }
 }
 @media (prefers-reduced-motion: reduce) { .quiet-btn { transition: none; } }
+
+.writing-panel { margin-top: 36px; padding: 26px 30px; background: var(--card); border-top: 2px solid var(--blue); }
+.writing-panel .mono { color: var(--blue); font-size: 11px; }
+.writing-panel h3 { font: 500 21px/1.5 var(--serif); margin: 8px 0 6px; }
+.writing-panel p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.8; }
+.writing-panel .wp-row { display: flex; gap: 10px; margin: 16px 0 10px; flex-wrap: wrap; }
+.writing-panel select, .writing-panel input, .writing-panel textarea { font: inherit; font-size: 14px; color: var(--ink);
+  background: var(--card); border: 1px solid var(--line-2); border-radius: 2px; padding: 7px 10px; }
+.writing-panel #wpTask { flex: 1 1 220px; }
+.writing-panel textarea { width: 100%; min-height: 140px; line-height: 1.8; resize: vertical; }
+.writing-panel .wp-acts { display: flex; gap: 14px; align-items: center; margin-top: 12px; flex-wrap: wrap; }
+.writing-panel .wp-opt { font-size: 13px; color: var(--muted); display: flex; gap: 6px; align-items: center; }
+.writing-panel .wp-fb { font-size: 13px; color: var(--muted); }
+.writing-panel .wp-out { margin-top: 18px; }
+.writing-panel .wp-total { display: flex; align-items: baseline; gap: 8px; margin-bottom: 14px; }
+.writing-panel .wp-total b { font: 500 34px/1 var(--serif); color: var(--blue); }
+.writing-panel .wp-total span { font-size: 12px; color: var(--muted); margin-left: 6px; }
+.writing-panel .wp-dim { display: grid; grid-template-columns: 90px 1fr 56px; gap: 12px; align-items: center; padding: 7px 0; border-top: 1px dashed var(--line-2); }
+.writing-panel .wp-dim .nm { font-size: 14px; }
+.writing-panel .wp-dim .bar { height: 4px; background: var(--line-2); display: block; }
+.writing-panel .wp-dim .bar i { display: block; height: 100%; background: var(--blue); }
+.writing-panel .wp-dim .v { font: 500 14px var(--mono); text-align: right; }
+.writing-panel .wp-dim .ev { grid-column: 2 / 4; font-size: 12px; color: var(--muted); }
+.writing-panel .wp-note { margin-top: 10px; font-size: 12px; color: var(--muted); }

@@ -95,6 +95,30 @@ def recompute(it):
         return Fraction(str(round(p["solute"] / p["total"] * 100, 1)))
     if kind == "eqcalc":
         return Fraction(p["h2"] * 9)
+    if kind == "convert":
+        return Fraction(int(p["m"] * 100))
+    if kind == "ratio":
+        return Fraction(p["a"] + p["k"])
+    if kind == "boxvol":
+        return Fraction(p["w"] * p["h"] * p["d"])
+    if kind == "cylvol":
+        return Fraction(str(round(3.14 * p["r"] * p["r"] * p["h"], 2)))
+    if kind == "chicken":
+        return Fraction(p["rabbits"])
+    if kind == "trees":
+        return Fraction(p["length"] // p["gap"] + 1)
+    if kind == "travel":
+        return Fraction(str(round(p["s"] / (p["v1"] + p["v2"]), 2)))
+    if kind == "subset":
+        return Fraction(2 ** p["n"] - 1)
+    if kind == "complex_add":
+        return Fraction(p["a"] + p["b"])
+    if kind == "lever":
+        return Fraction(str(round(p["f2"] * p["l2"] / p["l1"], 2)))
+    if kind == "sound":
+        return Fraction(p["v"] * p["t"])
+    if kind == "kwh":
+        return Fraction(str(round(p["p"] * p["t"] / 1000, 2)))
     raise AssertionError("未知模板 " + kind)
 
 
@@ -104,8 +128,8 @@ class BankTest(unittest.TestCase):
             self.assertEqual(Fraction(it["answer"]), recompute(it), it["id"] + " " + it["stem"])
 
     def test_bank_is_big_enough_and_covers_several_topics(self):
-        self.assertGreaterEqual(len(B.ITEMS), 250)
-        self.assertGreaterEqual(len(B.topics()), 35)
+        self.assertGreaterEqual(len(B.ITEMS), 320)
+        self.assertGreaterEqual(len(B.topics()), 50)
         self.assertEqual({s for s, _ in B.topics()}, {"数学", "物理", "化学"})
 
     def test_ids_and_prior_are_consistent(self):

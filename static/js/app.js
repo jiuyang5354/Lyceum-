@@ -834,11 +834,48 @@ async function renderBook() {
         : '<p style="color:var(--muted)">做完变式题、或在答疑里自己做对一道题，这里就会出现第一个知识点。</p>'}</div>`;
     body.innerHTML = reviewBrief(rev, today) + mastery + `<div class="rec-grid"><div><h4 class="mono" style="margin:0 0 6px">最近 7 天</h4><div class="week">${days.map((d) => `<i class="${activeSet.has(d.toDateString()) ? 'on' : ''}"><span>${'日一二三四五六'[d.getDay()]}</span></i>`).join('')}</div>
       <h4 class="mono" style="margin:40px 0 6px">各科提问</h4><div class="bars">${stats.by_subject.length ? stats.by_subject.map((s) => `<div class="bar"><span class="nm">${sIco(s.subject)}${esc(s.subject)}</span><span class="tr"><i style="width:${(s.n / max * 100).toFixed(0)}%"></i></span><span class="v">${s.n}</span></div>`).join('') : '<p style="color:var(--muted)">还没有记录。</p>'}</div></div>
-      <div><h4 class="mono" style="margin:0 0 6px">最近问过的题</h4><div class="recent">${sessions.map((s) => `<a class="r" href="#/study/${s.id}"><span class="t">${esc(s.title || '未命名')}</span><span class="m">${esc(s.subject || '')} · ${ago(s.updated)}</span></a>`).join('') || '<p style="color:var(--muted)">还没有。</p>'}</div></div></div>`;
+      <div><h4 class="mono" style="margin:0 0 6px">最近问过的题</h4><div class="recent">${sessions.map((s) => `<a class="r" href="#/study/${s.id}"><span class="t">${esc(s.title || '未命名')}</span><span class="m">${esc(s.subject || '')} · ${ago(s.updated)}</span></a>`).join('') || '<p style="color:var(--muted)">还没有。</p>'}</div></div></div>${writingPanel()}`;
     bindBook(body);
+    bindWriting(body);
     $$('.mitem .mline', body).forEach((b) => b.onclick = () => toggleEvents(b.parentElement, today));
     animateBook(['.mitem', '.bars .bar', '.recent .r', '.week i']);
   }
+}
+// 写作体检：形式维度当场算，内容维度可选模型
+function writingPanel() {
+  return `<section class="writing-panel" aria-label="写作体检">
+    <div class="wp-head"><span class="mono">Γραφή · 写作体检</span><h3>先把能确定判的判清楚</h3>
+      <p>篇幅、结构、连贯、句式四项由规则计算，给出具体证据；内容与语言质量需要模型或老师，不会假装算出来。</p></div>
+    <div class="wp-row"><select id="wpSubject" aria-label="学科"><option>语文</option><option>英语</option></select>
+      <select id="wpBand" aria-label="学段"><option value="primary">小学</option><option value="middle" selected>初中</option><option value="high">高中</option></select>
+      <input id="wpTask" placeholder="题目（可留空）" aria-label="作文题目"></div>
+    <textarea id="wpText" placeholder="把作文贴进来，至少一整段" aria-label="作文正文"></textarea>
+    <div class="wp-acts"><button class="sel sm" id="wpGo">评一评</button>
+      <label class="wp-opt"><input type="checkbox" id="wpModel"> 让模型评内容（一次调用）</label>
+      <span class="wp-fb" role="status" aria-live="polite"></span></div>
+    <div class="wp-out"></div></section>`;
+}
+function writingResult(r) {
+  const dims = r.dims.map((d) => `<div class="wp-dim"><span class="nm">${esc(d.name)}${d.source === 'model' ? ' · 模型' : ''}</span>
+    <span class="bar"><i style="width:${Math.round(d.score / d.max * 100)}%"></i></span>
+    <span class="v">${d.score}<small>/${d.max}</small></span><span class="ev">${esc(d.evidence || '')}</span></div>`).join('');
+  return `<div class="wp-total"><b>${r.total}</b><small> / ${r.max}</small><span>${esc(r.coverage)}</span></div>${dims}
+    ${r.notes.length ? `<p class="wp-note">${r.notes.map(esc).join(' · ')}</p>` : ''}`;
+}
+function bindWriting(body) {
+  const go = $('#wpGo', body), out = $('.wp-out', body), fb = $('.wp-fb', body);
+  if (!go) return;
+  go.onclick = async () => {
+    const text = $('#wpText', body).value || '';
+    if (!text.trim()) { fb.textContent = '先贴一段作文'; return; }
+    go.disabled = true; fb.textContent = '评阅中…';
+    try {
+      const r = await api('/api/writing/review', { text, subject: $('#wpSubject', body).value,
+        band: $('#wpBand', body).value, task: $('#wpTask', body).value, use_model: $('#wpModel', body).checked });
+      out.innerHTML = writingResult(r); fb.textContent = '';
+    } catch (e) { fb.textContent = e.message || '评阅失败'; }
+    go.disabled = false;
+  };
 }
 // 单个知识点的事件历史（审计用）
 async function toggleEvents(item, today) {

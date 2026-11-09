@@ -4767,6 +4767,1198 @@
    },
    "tags": [],
    "difficulty_prior": 0.58
+  },
+  {
+   "id": "convert-259",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "单位换算",
+   "stem": "4.8 米等于多少厘米？",
+   "answer": "480",
+   "unit": "厘米",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "convert",
+    "m": 4.8
+   },
+   "tags": [],
+   "difficulty_prior": 0.22
+  },
+  {
+   "id": "convert-260",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "单位换算",
+   "stem": "3.2 米等于多少厘米？",
+   "answer": "320",
+   "unit": "厘米",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "convert",
+    "m": 3.2
+   },
+   "tags": [],
+   "difficulty_prior": 0.22
+  },
+  {
+   "id": "convert-261",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "单位换算",
+   "stem": "3.2 米等于多少厘米？",
+   "answer": "320",
+   "unit": "厘米",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "convert",
+    "m": 3.2
+   },
+   "tags": [],
+   "difficulty_prior": 0.22
+  },
+  {
+   "id": "convert-262",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "单位换算",
+   "stem": "4.8 米等于多少厘米？",
+   "answer": "480",
+   "unit": "厘米",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "convert",
+    "m": 4.8
+   },
+   "tags": [],
+   "difficulty_prior": 0.22
+  },
+  {
+   "id": "convert-263",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "单位换算",
+   "stem": "3.2 米等于多少厘米？",
+   "answer": "320",
+   "unit": "厘米",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "convert",
+    "m": 3.2
+   },
+   "tags": [],
+   "difficulty_prior": 0.22
+  },
+  {
+   "id": "convert-264",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "单位换算",
+   "stem": "4.8 米等于多少厘米？",
+   "answer": "480",
+   "unit": "厘米",
+   "steps": 1,
+   "ops": 1,
+   "params": {
+    "kind": "convert",
+    "m": 4.8
+   },
+   "tags": [],
+   "difficulty_prior": 0.22
+  },
+  {
+   "id": "ratio-265",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "比和比例",
+   "stem": "若 a : b = 6 : 9，且 a = 6，则 b 是多少？",
+   "answer": "9",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "ratio",
+    "a": 6,
+    "k": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.27
+  },
+  {
+   "id": "ratio-266",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "比和比例",
+   "stem": "若 a : b = 6 : 8，且 a = 6，则 b 是多少？",
+   "answer": "8",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "ratio",
+    "a": 6,
+    "k": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.27
+  },
+  {
+   "id": "ratio-267",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "比和比例",
+   "stem": "若 a : b = 2 : 4，且 a = 2，则 b 是多少？",
+   "answer": "4",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "ratio",
+    "a": 2,
+    "k": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.27
+  },
+  {
+   "id": "ratio-268",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "比和比例",
+   "stem": "若 a : b = 2 : 4，且 a = 2，则 b 是多少？",
+   "answer": "4",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "ratio",
+    "a": 2,
+    "k": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.27
+  },
+  {
+   "id": "ratio-269",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "比和比例",
+   "stem": "若 a : b = 5 : 8，且 a = 5，则 b 是多少？",
+   "answer": "8",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "ratio",
+    "a": 5,
+    "k": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.27
+  },
+  {
+   "id": "ratio-270",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "比和比例",
+   "stem": "若 a : b = 3 : 5，且 a = 3，则 b 是多少？",
+   "answer": "5",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "ratio",
+    "a": 3,
+    "k": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.27
+  },
+  {
+   "id": "boxvol-271",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "长方体和正方体",
+   "stem": "长 8、宽 5、高 2 的长方体，体积是多少？",
+   "answer": "80",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "boxvol",
+    "w": 8,
+    "h": 5,
+    "d": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.31
+  },
+  {
+   "id": "boxvol-272",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "长方体和正方体",
+   "stem": "长 5、宽 8、高 4 的长方体，体积是多少？",
+   "answer": "160",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "boxvol",
+    "w": 5,
+    "h": 8,
+    "d": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.31
+  },
+  {
+   "id": "boxvol-273",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "长方体和正方体",
+   "stem": "长 6、宽 9、高 6 的长方体，体积是多少？",
+   "answer": "324",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "boxvol",
+    "w": 6,
+    "h": 9,
+    "d": 6
+   },
+   "tags": [],
+   "difficulty_prior": 0.31
+  },
+  {
+   "id": "boxvol-274",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "长方体和正方体",
+   "stem": "长 4、宽 5、高 3 的长方体，体积是多少？",
+   "answer": "60",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "boxvol",
+    "w": 4,
+    "h": 5,
+    "d": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.31
+  },
+  {
+   "id": "boxvol-275",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "长方体和正方体",
+   "stem": "长 3、宽 4、高 6 的长方体，体积是多少？",
+   "answer": "72",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "boxvol",
+    "w": 3,
+    "h": 4,
+    "d": 6
+   },
+   "tags": [],
+   "difficulty_prior": 0.31
+  },
+  {
+   "id": "cylvol-276",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "圆柱与圆锥",
+   "stem": "底面半径 3、高 5 的圆柱，体积是多少？（π 取 3.14）",
+   "answer": "141.3",
+   "unit": "",
+   "steps": 3,
+   "ops": 4,
+   "params": {
+    "kind": "cylvol",
+    "r": 3,
+    "h": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.35
+  },
+  {
+   "id": "cylvol-277",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "圆柱与圆锥",
+   "stem": "底面半径 1、高 2 的圆柱，体积是多少？（π 取 3.14）",
+   "answer": "6.28",
+   "unit": "",
+   "steps": 3,
+   "ops": 4,
+   "params": {
+    "kind": "cylvol",
+    "r": 1,
+    "h": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.35
+  },
+  {
+   "id": "cylvol-278",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "圆柱与圆锥",
+   "stem": "底面半径 2、高 4 的圆柱，体积是多少？（π 取 3.14）",
+   "answer": "50.24",
+   "unit": "",
+   "steps": 3,
+   "ops": 4,
+   "params": {
+    "kind": "cylvol",
+    "r": 2,
+    "h": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.35
+  },
+  {
+   "id": "cylvol-279",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "圆柱与圆锥",
+   "stem": "底面半径 1、高 2 的圆柱，体积是多少？（π 取 3.14）",
+   "answer": "6.28",
+   "unit": "",
+   "steps": 3,
+   "ops": 4,
+   "params": {
+    "kind": "cylvol",
+    "r": 1,
+    "h": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.35
+  },
+  {
+   "id": "cylvol-280",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "圆柱与圆锥",
+   "stem": "底面半径 1、高 2 的圆柱，体积是多少？（π 取 3.14）",
+   "answer": "6.28",
+   "unit": "",
+   "steps": 3,
+   "ops": 4,
+   "params": {
+    "kind": "cylvol",
+    "r": 1,
+    "h": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.35
+  },
+  {
+   "id": "chicken-281",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "鸡兔同笼",
+   "stem": "笼子里鸡和兔共 12 只，腿共 26 条，兔有几只？",
+   "answer": "1",
+   "unit": "",
+   "steps": 3,
+   "ops": 4,
+   "params": {
+    "kind": "chicken",
+    "heads": 12,
+    "rabbits": 1
+   },
+   "tags": [],
+   "difficulty_prior": 0.35
+  },
+  {
+   "id": "chicken-282",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "鸡兔同笼",
+   "stem": "笼子里鸡和兔共 10 只，腿共 28 条，兔有几只？",
+   "answer": "4",
+   "unit": "",
+   "steps": 3,
+   "ops": 4,
+   "params": {
+    "kind": "chicken",
+    "heads": 10,
+    "rabbits": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.35
+  },
+  {
+   "id": "chicken-283",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "鸡兔同笼",
+   "stem": "笼子里鸡和兔共 6 只，腿共 16 条，兔有几只？",
+   "answer": "2",
+   "unit": "",
+   "steps": 3,
+   "ops": 4,
+   "params": {
+    "kind": "chicken",
+    "heads": 6,
+    "rabbits": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.35
+  },
+  {
+   "id": "chicken-284",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "鸡兔同笼",
+   "stem": "笼子里鸡和兔共 10 只，腿共 24 条，兔有几只？",
+   "answer": "2",
+   "unit": "",
+   "steps": 3,
+   "ops": 4,
+   "params": {
+    "kind": "chicken",
+    "heads": 10,
+    "rabbits": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.35
+  },
+  {
+   "id": "chicken-285",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "鸡兔同笼",
+   "stem": "笼子里鸡和兔共 8 只，腿共 18 条，兔有几只？",
+   "answer": "1",
+   "unit": "",
+   "steps": 3,
+   "ops": 4,
+   "params": {
+    "kind": "chicken",
+    "heads": 8,
+    "rabbits": 1
+   },
+   "tags": [],
+   "difficulty_prior": 0.35
+  },
+  {
+   "id": "chicken-286",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "鸡兔同笼",
+   "stem": "笼子里鸡和兔共 10 只，腿共 28 条，兔有几只？",
+   "answer": "4",
+   "unit": "",
+   "steps": 3,
+   "ops": 4,
+   "params": {
+    "kind": "chicken",
+    "heads": 10,
+    "rabbits": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.35
+  },
+  {
+   "id": "trees-287",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "植树问题",
+   "stem": "一条 20 米的路，每隔 5 米种一棵树（两端都种），共种多少棵？",
+   "answer": "5",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "trees",
+    "length": 20,
+    "gap": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.31
+  },
+  {
+   "id": "trees-288",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "植树问题",
+   "stem": "一条 50 米的路，每隔 2 米种一棵树（两端都种），共种多少棵？",
+   "answer": "26",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "trees",
+    "length": 50,
+    "gap": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.31
+  },
+  {
+   "id": "trees-289",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "植树问题",
+   "stem": "一条 20 米的路，每隔 4 米种一棵树（两端都种），共种多少棵？",
+   "answer": "6",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "trees",
+    "length": 20,
+    "gap": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.31
+  },
+  {
+   "id": "trees-290",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "植树问题",
+   "stem": "一条 30 米的路，每隔 2 米种一棵树（两端都种），共种多少棵？",
+   "answer": "16",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "trees",
+    "length": 30,
+    "gap": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.31
+  },
+  {
+   "id": "trees-291",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "植树问题",
+   "stem": "一条 30 米的路，每隔 4 米种一棵树（两端都种），共种多少棵？",
+   "answer": "8",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "trees",
+    "length": 30,
+    "gap": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.31
+  },
+  {
+   "id": "trees-292",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "植树问题",
+   "stem": "一条 20 米的路，每隔 2 米种一棵树（两端都种），共种多少棵？",
+   "answer": "11",
+   "unit": "",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "trees",
+    "length": 20,
+    "gap": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.31
+  },
+  {
+   "id": "travel-293",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "行程问题",
+   "stem": "两人相向而行，速度分别是 40 和 30，相距 240，几小时相遇？",
+   "answer": "3.43",
+   "unit": "小时",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "travel",
+    "v1": 40,
+    "v2": 30,
+    "s": 240
+   },
+   "tags": [],
+   "difficulty_prior": 0.31
+  },
+  {
+   "id": "travel-294",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "行程问题",
+   "stem": "两人相向而行，速度分别是 50 和 30，相距 180，几小时相遇？",
+   "answer": "2.25",
+   "unit": "小时",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "travel",
+    "v1": 50,
+    "v2": 30,
+    "s": 180
+   },
+   "tags": [],
+   "difficulty_prior": 0.31
+  },
+  {
+   "id": "travel-295",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "行程问题",
+   "stem": "两人相向而行，速度分别是 50 和 20，相距 180，几小时相遇？",
+   "answer": "2.57",
+   "unit": "小时",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "travel",
+    "v1": 50,
+    "v2": 20,
+    "s": 180
+   },
+   "tags": [],
+   "difficulty_prior": 0.31
+  },
+  {
+   "id": "travel-296",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "行程问题",
+   "stem": "两人相向而行，速度分别是 60 和 30，相距 120，几小时相遇？",
+   "answer": "1.33",
+   "unit": "小时",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "travel",
+    "v1": 60,
+    "v2": 30,
+    "s": 120
+   },
+   "tags": [],
+   "difficulty_prior": 0.31
+  },
+  {
+   "id": "travel-297",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "行程问题",
+   "stem": "两人相向而行，速度分别是 50 和 30，相距 240，几小时相遇？",
+   "answer": "3.0",
+   "unit": "小时",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "travel",
+    "v1": 50,
+    "v2": 30,
+    "s": 240
+   },
+   "tags": [],
+   "difficulty_prior": 0.31
+  },
+  {
+   "id": "travel-298",
+   "subject": "数学",
+   "band": "primary",
+   "topic": "行程问题",
+   "stem": "两人相向而行，速度分别是 50 和 40，相距 180，几小时相遇？",
+   "answer": "2.0",
+   "unit": "小时",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "travel",
+    "v1": 50,
+    "v2": 40,
+    "s": 180
+   },
+   "tags": [],
+   "difficulty_prior": 0.31
+  },
+  {
+   "id": "subset-299",
+   "subject": "数学",
+   "band": "high",
+   "topic": "集合",
+   "stem": "集合 A = {1, 2, 2}，A 有多少个真子集？",
+   "answer": "7",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "subset",
+    "n": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.67
+  },
+  {
+   "id": "subset-300",
+   "subject": "数学",
+   "band": "high",
+   "topic": "集合",
+   "stem": "集合 A = {1, 2, 1}，A 有多少个真子集？",
+   "answer": "7",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "subset",
+    "n": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.67
+  },
+  {
+   "id": "subset-301",
+   "subject": "数学",
+   "band": "high",
+   "topic": "集合",
+   "stem": "集合 A = {1, 2, 1}，A 有多少个真子集？",
+   "answer": "7",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "subset",
+    "n": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.67
+  },
+  {
+   "id": "subset-302",
+   "subject": "数学",
+   "band": "high",
+   "topic": "集合",
+   "stem": "集合 A = {1, 2, 1}，A 有多少个真子集？",
+   "answer": "7",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "subset",
+    "n": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.67
+  },
+  {
+   "id": "subset-303",
+   "subject": "数学",
+   "band": "high",
+   "topic": "集合",
+   "stem": "集合 A = {1, 2, 2}，A 有多少个真子集？",
+   "answer": "7",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "subset",
+    "n": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.67
+  },
+  {
+   "id": "subset-304",
+   "subject": "数学",
+   "band": "high",
+   "topic": "集合",
+   "stem": "集合 A = {1, 2, 2}，A 有多少个真子集？",
+   "answer": "7",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "subset",
+    "n": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.67
+  },
+  {
+   "id": "complex_add-305",
+   "subject": "数学",
+   "band": "high",
+   "topic": "复数",
+   "stem": "复数 (4 + 1i) + (1 − 4i) 的实部是多少？",
+   "answer": "5",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "complex_add",
+    "a": 4,
+    "b": 1
+   },
+   "tags": [],
+   "difficulty_prior": 0.67
+  },
+  {
+   "id": "complex_add-306",
+   "subject": "数学",
+   "band": "high",
+   "topic": "复数",
+   "stem": "复数 (4 + 2i) + (2 − 4i) 的实部是多少？",
+   "answer": "6",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "complex_add",
+    "a": 4,
+    "b": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.67
+  },
+  {
+   "id": "complex_add-307",
+   "subject": "数学",
+   "band": "high",
+   "topic": "复数",
+   "stem": "复数 (3 + 3i) + (3 − 3i) 的实部是多少？",
+   "answer": "6",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "complex_add",
+    "a": 3,
+    "b": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.67
+  },
+  {
+   "id": "complex_add-308",
+   "subject": "数学",
+   "band": "high",
+   "topic": "复数",
+   "stem": "复数 (5 + 2i) + (2 − 5i) 的实部是多少？",
+   "answer": "7",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "complex_add",
+    "a": 5,
+    "b": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.67
+  },
+  {
+   "id": "complex_add-309",
+   "subject": "数学",
+   "band": "high",
+   "topic": "复数",
+   "stem": "复数 (3 + 3i) + (3 − 3i) 的实部是多少？",
+   "answer": "6",
+   "unit": "",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "complex_add",
+    "a": 3,
+    "b": 3
+   },
+   "tags": [],
+   "difficulty_prior": 0.67
+  },
+  {
+   "id": "lever-310",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "简单机械",
+   "stem": "杠杆平衡时，动力臂 30、阻力 50、阻力臂 10，动力是多少牛？",
+   "answer": "16.67",
+   "unit": "牛",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "lever",
+    "l1": 30,
+    "f2": 50,
+    "l2": 10
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "lever-311",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "简单机械",
+   "stem": "杠杆平衡时，动力臂 40、阻力 50、阻力臂 10，动力是多少牛？",
+   "answer": "12.5",
+   "unit": "牛",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "lever",
+    "l1": 40,
+    "f2": 50,
+    "l2": 10
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "lever-312",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "简单机械",
+   "stem": "杠杆平衡时，动力臂 40、阻力 50、阻力臂 10，动力是多少牛？",
+   "answer": "12.5",
+   "unit": "牛",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "lever",
+    "l1": 40,
+    "f2": 50,
+    "l2": 10
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "lever-313",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "简单机械",
+   "stem": "杠杆平衡时，动力臂 30、阻力 10、阻力臂 10，动力是多少牛？",
+   "answer": "3.33",
+   "unit": "牛",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "lever",
+    "l1": 30,
+    "f2": 10,
+    "l2": 10
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "lever-314",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "简单机械",
+   "stem": "杠杆平衡时，动力臂 20、阻力 10、阻力臂 10，动力是多少牛？",
+   "answer": "5.0",
+   "unit": "牛",
+   "steps": 2,
+   "ops": 3,
+   "params": {
+    "kind": "lever",
+    "l1": 20,
+    "f2": 10,
+    "l2": 10
+   },
+   "tags": [],
+   "difficulty_prior": 0.53
+  },
+  {
+   "id": "sound-315",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "声现象",
+   "stem": "声音在空气中速度 680 米每秒，4 秒内传播多远？",
+   "answer": "2720",
+   "unit": "米",
+   "steps": 1,
+   "ops": 2,
+   "params": {
+    "kind": "sound",
+    "v": 680,
+    "t": 4
+   },
+   "tags": [],
+   "difficulty_prior": 0.47
+  },
+  {
+   "id": "sound-316",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "声现象",
+   "stem": "声音在空气中速度 680 米每秒，2 秒内传播多远？",
+   "answer": "1360",
+   "unit": "米",
+   "steps": 1,
+   "ops": 2,
+   "params": {
+    "kind": "sound",
+    "v": 680,
+    "t": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.47
+  },
+  {
+   "id": "sound-317",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "声现象",
+   "stem": "声音在空气中速度 170 米每秒，5 秒内传播多远？",
+   "answer": "850",
+   "unit": "米",
+   "steps": 1,
+   "ops": 2,
+   "params": {
+    "kind": "sound",
+    "v": 170,
+    "t": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.47
+  },
+  {
+   "id": "sound-318",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "声现象",
+   "stem": "声音在空气中速度 680 米每秒，5 秒内传播多远？",
+   "answer": "3400",
+   "unit": "米",
+   "steps": 1,
+   "ops": 2,
+   "params": {
+    "kind": "sound",
+    "v": 680,
+    "t": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.47
+  },
+  {
+   "id": "sound-319",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "声现象",
+   "stem": "声音在空气中速度 170 米每秒，2 秒内传播多远？",
+   "answer": "340",
+   "unit": "米",
+   "steps": 1,
+   "ops": 2,
+   "params": {
+    "kind": "sound",
+    "v": 170,
+    "t": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.47
+  },
+  {
+   "id": "kwh-320",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "生活用电",
+   "stem": "功率 2000 瓦的用电器工作 2 小时，消耗多少千瓦时电能？",
+   "answer": "4.0",
+   "unit": "千瓦时",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "kwh",
+    "p": 2000,
+    "t": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "kwh-321",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "生活用电",
+   "stem": "功率 500 瓦的用电器工作 2 小时，消耗多少千瓦时电能？",
+   "answer": "1.0",
+   "unit": "千瓦时",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "kwh",
+    "p": 500,
+    "t": 2
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "kwh-322",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "生活用电",
+   "stem": "功率 500 瓦的用电器工作 10 小时，消耗多少千瓦时电能？",
+   "answer": "5.0",
+   "unit": "千瓦时",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "kwh",
+    "p": 500,
+    "t": 10
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "kwh-323",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "生活用电",
+   "stem": "功率 2000 瓦的用电器工作 5 小时，消耗多少千瓦时电能？",
+   "answer": "10.0",
+   "unit": "千瓦时",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "kwh",
+    "p": 2000,
+    "t": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
+  },
+  {
+   "id": "kwh-324",
+   "subject": "物理",
+   "band": "middle",
+   "topic": "生活用电",
+   "stem": "功率 1000 瓦的用电器工作 5 小时，消耗多少千瓦时电能？",
+   "answer": "5.0",
+   "unit": "千瓦时",
+   "steps": 2,
+   "ops": 2,
+   "params": {
+    "kind": "kwh",
+    "p": 1000,
+    "t": 5
+   },
+   "tags": [],
+   "difficulty_prior": 0.49
   }
  ]
 }

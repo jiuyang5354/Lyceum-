@@ -73,6 +73,15 @@ class ItemApiTest(unittest.TestCase):
         self.assertFalse(wrong["correct"])
         self.assertEqual(wrong["attempts"], 2)
 
+    def test_writing_review_returns_labelled_dimensions(self):
+        text = "去年秋天，我第一次参加朗读比赛。\n\n起初我不敢上台，后来老师鼓励我报名，我每天中午练十分钟。\n\n虽然只拿三等奖，但我发现自己不再害怕开口。因此，这次比赛成了转折点。"
+        r = self.call("/api/writing/review", {"subject": "语文", "band": "middle", "text": text})
+        self.assertEqual(r["coverage"], "仅形式维度")
+        self.assertEqual(len(r["dims"]), 4)
+        self.assertEqual({d["source"] for d in r["dims"]}, {"rule"})
+        self.assertEqual(r["total"], sum(d["score"] for d in r["dims"]))
+        self.assertTrue(all(d["evidence"] for d in r["dims"]))
+
     def test_unknown_topic_is_a_clean_404(self):
         r = self.call("/api/practice/next?subject=%E6%95%B0%E5%AD%A6&topic=%E6%B2%A1%E6%9C%89%E8%BF%99%E4%B8%AA", expect=404)
         self.assertIn("error", r)
