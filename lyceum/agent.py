@@ -52,7 +52,7 @@ def build_prompt(profile, st, allow_full, route=None, text="", extras=None):
         grade=GRADES.get(g, "初二"), textbook=tb, band=band(g), strat=strat,
         taxonomy_block=taxonomy.prompt_block(band(g), route["subject"], focused=True),
         extra_blocks=extra_blocks, state_lines=state_lines, allow_full=allow_full,
-        subjects="|".join(SUBJECTS),
+        subjects="|".join(SUBJECTS), tail_note=prompts.FOLLOWUP_RULE,
     )
 
 

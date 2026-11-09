@@ -35,6 +35,22 @@ class PromptGoldenTest(unittest.TestCase):
         self.assertEqual(built.text, agent.system_prompt(*args))
         self.assertEqual(list(built.sizes), list(prompts.ORDER))
 
+    def test_followup_rule_sits_immediately_before_the_state_block(self):
+        text = agent.system_prompt(*CASES["middle_math"])
+        self.assertEqual(text.count(prompts.FOLLOWUP_RULE), 1)
+        head, _, tail = text.partition(prompts.FOLLOWUP_RULE)
+        self.assertTrue(tail.lstrip("\n").startswith("# 当前状态"), "追问块必须紧贴「当前状态」之前")
+        self.assertEqual(prompts.guard_fingerprint(), prompts.guard_fingerprint(), "读取指纹不应有副作用")
+
+    def test_followup_rule_is_not_part_of_the_guard(self):
+        base = prompts.guard_fingerprint()
+        original = prompts.FOLLOWUP_RULE
+        try:
+            prompts.FOLLOWUP_RULE = original + "（测试）"
+            self.assertEqual(base, prompts.guard_fingerprint())
+        finally:
+            prompts.FOLLOWUP_RULE = original
+
     def test_protected_sections_are_declared_and_bounded(self):
         sections = prompts.SECTIONS
         self.assertEqual(set(prompts.PROTECTED), {"principles", "output", "state"})

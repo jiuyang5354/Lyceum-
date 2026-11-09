@@ -54,6 +54,11 @@ OUTPUT_CONTRACT = """只输出一个 JSON 对象，不要输出其它文字：
 
 TOPIC_RULE = """topic 字段必须从下面「规范知识点」里原样选一个（选该学科、最具体的那一个，不要自己改写、不要加「·」拼层级，例如解一元二次方程时用因式分解，就填「因式分解」）。实在没有合适的，才写一个 10 字以内的简短名称。"""
 
+# 在 54 条场景上验证过的追问节奏（36 好 / 10 差，lift +0.0444，符号检验 p=7.8e-5）。
+# 位置敏感：它紧贴「当前状态」之前插入，是这个效应的一部分，不要随手挪到别的节。
+FOLLOWUP_RULE = ("# 本轮追问方式\n这一轮只问一个问题，问完就停，等学生回答。"
+                 "不要在一轮里连问两个问题，也不要自问自答。")
+
 STATE_RULE = """当前题目：{problem}
 已给出的提示层级：{hint_level}（0=还没给，1=方向，2=方法，3=差最后一步）
 学生在这道题上卡住的次数：{stuck}
@@ -114,7 +119,8 @@ def _wrap(name, body):
     return spec.heading + "\n" + body + "\n\n"
 
 
-def build(*, grade, textbook, band, strat, taxonomy_block, extra_blocks, state_lines, allow_full, subjects):
+def build(*, grade, textbook, band, strat, taxonomy_block, extra_blocks, state_lines, allow_full, subjects,
+          tail_note=""):
     """按固定顺序装配；参数全部由调用方算好，这里只负责文本与顺序。"""
     values = {
         "subjects": subjects,
@@ -130,7 +136,13 @@ def build(*, grade, textbook, band, strat, taxonomy_block, extra_blocks, state_l
         "allow_full": "是" if allow_full else "否",
         "allow_note": state_lines["allow_note"],
     }
-    return Build([_wrap(name, SECTIONS[name].text.format(**values)) for name in ORDER])
+    parts = []
+    for name in ORDER:
+        body = _wrap(name, SECTIONS[name].text.format(**values))
+        if name == "state" and tail_note:
+            body = tail_note + "\n\n" + body   # 紧贴「当前状态」之前，位置本身就是效应的一部分
+        parts.append(body)
+    return Build(parts)
 
 
 def guard_fingerprint(tactic=None, pace=None, lessons=()):

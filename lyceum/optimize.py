@@ -83,8 +83,8 @@ def _state(sc):
     return {"problem": sc["problem"], "subject": sc["subject"], "hint_level": 0, "stuck": 1}
 
 
-# 扩展场景：live 评估用 16 个，跨 4 个学段、6 个学科；单元测试仍只跑前 8 个，
-# 避免测试依赖模型或场景数量。
+# 功效实验用：50 条场景（4 学段、10 学科）。单元测试仍只跑前 8 条，
+# 避免测试依赖场景数量或模型。
 SCENARIOS_EXT = SCENARIOS + [
     {"id": "m3", "grade": 8, "band": "middle", "subject": "数学", "problem": "化简 (x+2)^2 - (x-2)^2", "turn": "不知道怎么展开"},
     {"id": "m4", "grade": 9, "band": "middle", "subject": "数学", "problem": "二次函数 y=x^2-4x+3 的顶点坐标", "turn": "不会配方法"},
@@ -94,7 +94,57 @@ SCENARIOS_EXT = SCENARIOS + [
     {"id": "c2", "grade": 11, "band": "high", "subject": "化学", "problem": "计算 0.1 mol/L 醋酸的 pH（Ka=1.8e-5）", "turn": "不知道从哪开始"},
     {"id": "w2", "grade": 10, "band": "high", "subject": "语文", "problem": "分析《静夜思》中「疑是地上霜」的表达效果", "turn": "不知道怎么写"},
     {"id": "b2", "grade": 5, "band": "primary", "subject": "科学", "problem": "为什么月亮有时圆有时弯？", "turn": "想不明白"},
+
+    {"id": "p3", "grade": 1, "band": "primary", "subject": "数学", "problem": "7 + 8 等于多少？", "turn": "不会算"},
+    {"id": "p4", "grade": 2, "band": "primary", "subject": "语文", "problem": "用「春天」写一句话", "turn": "不知道写什么"},
+    {"id": "p5", "grade": 4, "band": "primary", "subject": "英语", "problem": "把「这是一本书」翻译成英语", "turn": "不会"},
+    {"id": "p6", "grade": 6, "band": "primary", "subject": "数学", "problem": "一个长方形长 8 厘米、宽 5 厘米，面积是多少？", "turn": "忘了公式"},
+    {"id": "p7", "grade": 5, "band": "primary", "subject": "科学", "problem": "植物为什么要晒太阳？", "turn": "说不清楚"},
+    {"id": "p8", "grade": 3, "band": "primary", "subject": "语文", "problem": "给「小猫」加一个形容词，再说说为什么", "turn": "想不出来"},
+
+    {"id": "m5", "grade": 7, "band": "middle", "subject": "数学", "problem": "解不等式 2x - 3 > 5", "turn": "不会移项"},
+    {"id": "m6", "grade": 8, "band": "middle", "subject": "数学", "problem": "已知一次函数过 (0,2) 和 (3,8)，求解析式", "turn": "不知道先求什么"},
+    {"id": "m7", "grade": 9, "band": "middle", "subject": "数学", "problem": "在直角三角形中，两直角边为 3 和 4，求斜边", "turn": "忘了定理"},
+    {"id": "m8", "grade": 7, "band": "middle", "subject": "数学", "problem": "计算 (-3)^2 - 2×(-4)", "turn": "符号搞不清"},
+    {"id": "m9", "grade": 8, "band": "middle", "subject": "物理", "problem": "一个物体质量 2 kg，受到 10 N 的力，求加速度", "turn": "不知道用哪个公式"},
+    {"id": "m10", "grade": 9, "band": "middle", "subject": "化学", "problem": "写出水的化学式并说明它由哪些元素组成", "turn": "记不住"},
+    {"id": "m11", "grade": 7, "band": "middle", "subject": "语文", "problem": "概括《从百草园到三味书屋》第一段的主要内容", "turn": "不会概括"},
+    {"id": "m12", "grade": 8, "band": "middle", "subject": "英语", "problem": "把「他昨天去了图书馆」改成一般疑问句", "turn": "不会变"},
+    {"id": "m13", "grade": 9, "band": "middle", "subject": "历史", "problem": "简述商鞅变法的主要内容", "turn": "记不全"},
+    {"id": "m14", "grade": 8, "band": "middle", "subject": "地理", "problem": "为什么我国东部降水比西部多？", "turn": "不知道从哪答"},
+
+    {"id": "h3", "grade": 10, "band": "high", "subject": "数学", "problem": "求函数 y=sin x 在 [0, π] 上的最大值", "turn": "不会"},
+    {"id": "h4", "grade": 11, "band": "high", "subject": "数学", "problem": "求数列 a_n = 2n+1 的前 n 项和", "turn": "不会求和"},
+    {"id": "h5", "grade": 12, "band": "high", "subject": "数学", "problem": "求曲线 y=x^2 在 x=1 处的切线斜率", "turn": "不知道用导数"},
+    {"id": "h6", "grade": 10, "band": "high", "subject": "物理", "problem": "小球从 5 m 高处自由落下，求落地时间（g=10）", "turn": "不会选公式"},
+    {"id": "h7", "grade": 11, "band": "high", "subject": "物理", "problem": "两个电阻并联，R1=2Ω、R2=3Ω，求总电阻", "turn": "算错"},
+    {"id": "h8", "grade": 12, "band": "high", "subject": "化学", "problem": "写出乙醇燃烧的化学方程式并配平", "turn": "配不平"},
+    {"id": "h9", "grade": 11, "band": "high", "subject": "生物", "problem": "说明光合作用的光反应和暗反应的区别", "turn": "分不清"},
+    {"id": "h10", "grade": 10, "band": "high", "subject": "语文", "problem": "分析《荷塘月色》中通感手法的表达效果", "turn": "不会分析"},
+    {"id": "h11", "grade": 12, "band": "high", "subject": "英语", "problem": "用非谓语动词改写：Because he was tired, he went to bed early.", "turn": "不会改写"},
+    {"id": "h12", "grade": 11, "band": "high", "subject": "历史", "problem": "分析工业革命对英国社会结构的影响", "turn": "答不全面"},
+    {"id": "h13", "grade": 10, "band": "high", "subject": "地理", "problem": "说明季风气候对我国农业的影响", "turn": "没有思路"},
+    {"id": "h14", "grade": 12, "band": "high", "subject": "物理", "problem": "用楞次定律判断线圈中感应电流的方向", "turn": "判断不出来"},
+
+    {"id": "x1", "grade": 7, "band": "middle", "subject": "道德与法治", "problem": "为什么说法律面前人人平等？", "turn": "不知道怎么写"},
+    {"id": "x2", "grade": 5, "band": "primary", "subject": "信息技术", "problem": "在表格软件里怎样求和？", "turn": "不会操作"},
+    {"id": "x3", "grade": 9, "band": "middle", "subject": "生物", "problem": "说明人体消化系统中胃的作用", "turn": "记不清"},
+    {"id": "x4", "grade": 4, "band": "primary", "subject": "数学", "problem": "把 3/4 化成小数", "turn": "不会化"},
+    {"id": "x5", "grade": 6, "band": "primary", "subject": "数学", "problem": "一个数的 3 倍是 27，这个数是多少？", "turn": "不会列式"},
+    {"id": "x6", "grade": 8, "band": "middle", "subject": "数学", "problem": "解方程组 x+y=5, x-y=1", "turn": "不会消元"},
+    {"id": "x7", "grade": 9, "band": "middle", "subject": "数学", "problem": "求半径为 3 的圆的面积（π 取 3.14）", "turn": "忘了公式"},
+    {"id": "x8", "grade": 11, "band": "high", "subject": "数学", "problem": "求 (1+x)^5 展开式中 x^2 的系数", "turn": "不会用二项式定理"},
+    {"id": "x9", "grade": 10, "band": "high", "subject": "化学", "problem": "说明为什么钠要保存在煤油里", "turn": "不知道原因"},
+    {"id": "x10", "grade": 12, "band": "high", "subject": "语文", "problem": "给「人工智能会不会取代教师」写一个议论文开头", "turn": "不知道从哪下笔"},
 ]
+
+# 场景覆盖检查：live 评估要求 50 条、去重、覆盖 4 个学段与 10 个学科。
+assert len(SCENARIOS_EXT) >= 50, len(SCENARIOS_EXT)
+assert len({s["id"] for s in SCENARIOS_EXT}) == len(SCENARIOS_EXT)
+assert len({(s["band"], s["subject"], s["problem"]) for s in SCENARIOS_EXT}) == len(SCENARIOS_EXT)
+assert len({s["band"] for s in SCENARIOS_EXT}) == 3
+assert len({s["subject"] for s in SCENARIOS_EXT}) >= 10
+
 
 # 分档评分：三项二元检查在真实模型上会顶到 1.0，量不出改进，所以 live 评估改用
 # 六个维度，其中「是否贴着这道题」是基线经常丢分的一项。
