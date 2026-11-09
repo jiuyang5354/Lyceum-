@@ -1029,5 +1029,16 @@ async function boot() {
   addEventListener('hashchange', route);
   await route();
   if (state.profile) paintProfile(); else { setOrder('doric'); openOnboarding(); }
+  // 静默查一次更新：有新版本只在当天提示一次，不打断使用
+  (async () => {
+    try {
+      const u = await api('/api/update');
+      if (!u.ok || !u.newer) return;
+      const key = 'lyceum.upd.' + u.latest;
+      if (localStorage.getItem(key)) return;
+      localStorage.setItem(key, '1');
+      toast(`有新版 v${u.latest}，设置 → 版本 里可下载安装`, true);
+    } catch (e) { /* 离线或查不到就算了 */ }
+  })();
 }
 boot();

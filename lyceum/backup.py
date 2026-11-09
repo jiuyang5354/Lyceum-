@@ -139,3 +139,55 @@ def check_update(current, fetch=None):
     return {"ok": True, "current": current, "latest": tag, "newer": bool(tag) and newer(tag, current),
             "url": rel.get("html_url") or f"https://github.com/{REPO}/releases/latest", "exe": exe, "dmg": dmg,
             "notes": str(rel.get("body") or "")[:600]}
+
+
+# ---------------- 下载安装包 ----------------
+# 只允许从 GitHub 的发布域名下载：URL 来自 Releases API，但仍然校验，
+# 避免「把任意 URL 交给服务器去取」变成 SSRF 或落地可执行文件的通道。
+ALLOWED_HOSTS = ("github.com", "objects.githubusercontent.com", "release-assets.githubusercontent.com")
+MAX_INSTALLER = 400 * 1024 * 1024
+
+
+def safe_installer_url(url):
+    """校验下载地址；不合法就抛 ValueError。"""
+    from urllib.parse import urlparse
+    p = urlparse(str(url or ""))
+    if p.scheme != "https":
+        raise ValueError("安装包地址必须是 https")
+    if (p.hostname or "").lower() not in ALLOWED_HOSTS:
+        raise ValueError("安装包不在 GitHub 发布域名上：%s" % (p.hostname or "?"))
+    if not p.path.lower().endswith(".exe"):
+        raise ValueError("不是 Windows 安装包")
+    return url
+
+
+def download_installer(url, dest_dir, opener=None, on_progress=None, timeout=60):
+    """把安装包流式写到 dest_dir，返回 {path, name, bytes}。
+
+    边下边写，超过 MAX_INSTALLER 立即中止；on_progress(got, total) 供界面显示进度。
+    """
+    safe_installer_url(url)
+    os.makedirs(dest_dir, exist_ok=True)
+    name = os.path.basename(url.split("?")[0]) or "Lyceum-Setup.exe"
+    dest = os.path.join(dest_dir, name)
+    op = opener or urllib.request.build_opener()
+    req = urllib.request.Request(url, headers={"User-Agent": "Lyceum-updater"})
+    got = 0
+    with op.open(req, timeout=timeout) as r, open(dest, "wb") as f:
+        total = int(r.headers.get("Content-Length") or 0)
+        while True:
+            chunk = r.read(256 * 1024)
+            if not chunk:
+                break
+            got += len(chunk)
+            if got > MAX_INSTALLER:
+                f.close()
+                try:
+                    os.remove(dest)
+                except OSError:
+                    pass
+                raise ValueError("安装包超过 %d MB，已中止" % (MAX_INSTALLER // 1024 // 1024))
+            f.write(chunk)
+            if on_progress:
+                on_progress(got, total)
+    return {"path": dest, "name": name, "bytes": got}
