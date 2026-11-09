@@ -855,6 +855,7 @@ function writingPanel() {
     <textarea id="wpText" placeholder="把作文贴进来，至少一整段" aria-label="作文正文"></textarea>
     <div class="wp-acts"><button class="sel sm" id="wpGo">评一评</button>
       <label class="wp-opt"><input type="checkbox" id="wpModel"> 让模型评内容（一次调用）</label>
+      <label class="wp-opt"><input type="checkbox" id="wpTopic"> 让模型判切题（要原文证据）</label>
       <span class="wp-fb" role="status" aria-live="polite"></span></div>
     <div class="wp-out"></div></section>`;
 }
@@ -865,8 +866,11 @@ function writingResult(r) {
   const hist = r.history || [];
   const trend = hist.length > 1
     ? `<div class="wp-trend"><span class="mono">最近 ${hist.length} 次</span>${hist.map((h) => `<i style="height:${Math.max(8, Math.round(h.total / Math.max(1, h.max) * 100))}%" title="${h.total}/${h.max}"><b>${h.total}</b></i>`).join('')}</div>` : '';
+  const topic = r.dims.find((d) => d.key === 'topic');
+  const topicBox = topic ? `<div class="wp-topic ${esc(topic.verdict || '')}"><b>${esc(topic.label || '切题')}</b>
+    <span>“${esc(topic.evidence || '')}”</span><small>${esc(topic.reason || '')}</small></div>` : '';
   const hints = (r.hints || []).map((h) => `<li class="wp-hint ${h.ok ? 'ok' : 'no'}"><span class="mk">${h.ok ? '✓' : '✗'}</span><b>${esc(h.label)}</b><span>${esc(h.evidence || '')}</span></li>`).join('');
-  return `<div class="wp-total"><b>${r.total}</b><small> / ${r.max}</small><span>${esc(r.coverage)}</span></div>${dims}
+  return `<div class="wp-total"><b>${r.total}</b><small> / ${r.max}</small><span>${esc(r.coverage)}</span></div>${dims}${topicBox}
     ${hints ? `<ul class="wp-hints">${hints}</ul>` : ''}${trend}
     ${r.notes.length ? `<p class="wp-note">${r.notes.map(esc).join(' · ')}</p>` : ''}`;
 }
@@ -879,7 +883,8 @@ function bindWriting(body) {
     go.disabled = true; fb.textContent = '评阅中…';
     try {
       const r = await api('/api/writing/review', { text, subject: $('#wpSubject', body).value,
-        band: $('#wpBand', body).value, task: $('#wpTask', body).value, use_model: $('#wpModel', body).checked });
+        band: $('#wpBand', body).value, task: $('#wpTask', body).value, use_model: $('#wpModel', body).checked,
+        semantic: $('#wpTopic', body).checked });
       out.innerHTML = writingResult(r); fb.textContent = '';
     } catch (e) { fb.textContent = e.message || '评阅失败'; }
     go.disabled = false;

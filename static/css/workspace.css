@@ -265,6 +265,15 @@ button:disabled { cursor: not-allowed; }
 .writing-panel .wp-dim .bar i { display: block; height: 100%; background: var(--blue); }
 .writing-panel .wp-dim .v { font: 500 14px var(--mono); text-align: right; }
 .writing-panel .wp-dim .ev { grid-column: 2 / 4; font-size: 12px; color: var(--muted); }
+
+.writing-panel .wp-topic { display: grid; grid-template-columns: auto 1fr; gap: 4px 10px; align-items: baseline;
+  margin: 12px 0 0; padding: 10px 12px; border-left: 3px solid var(--line-2); background: var(--paper); }
+.writing-panel .wp-topic b { font-size: 13px; }
+.writing-panel .wp-topic span { font-size: 13px; color: var(--ink); }
+.writing-panel .wp-topic small { grid-column: 2; font-size: 12px; color: var(--muted); }
+.writing-panel .wp-topic.on_topic { border-left-color: #2f7d63; }
+.writing-panel .wp-topic.partial { border-left-color: #b8860b; }
+.writing-panel .wp-topic.off_topic { border-left-color: #b3453d; }
 .writing-panel .wp-note { margin-top: 10px; font-size: 12px; color: var(--muted); }
 .writing-panel .wp-hints { list-style: none; padding: 0; margin: 14px 0 0; }
 .writing-panel .wp-hint { display: flex; gap: 10px; align-items: baseline; padding: 5px 0; font-size: 13px; color: var(--muted); }

@@ -149,5 +149,71 @@ class ModelPathTest(unittest.TestCase):
         self.assertTrue(any("未启用模型" in n for n in r["notes"]))
 
 
+class SemanticTopicTest(unittest.TestCase):
+    """切题是语义判断：允许模型判，但证据必须来自原文，分数必须服从结论。"""
+
+    def fake(self, payload):
+        def chat(*a, **k):
+            return json.dumps(payload, ensure_ascii=False) if isinstance(payload, dict) else payload
+        return chat
+
+    def test_on_topic_with_a_real_quote_is_kept(self):
+        chat = self.fake({"verdict": "on_topic", "evidence": "我第一次参加了学校的朗读比赛",
+                          "reason": "首段直接回应题目", "score": 22})
+        r = W.review(ZH_GOOD, "语文", "middle", task="记一次比赛", chat=chat, semantic=True)
+        topic = next(d for d in r["dims"] if d["key"] == "topic")
+        self.assertEqual(topic["label"], "切题")
+        self.assertEqual(topic["source"], "model")
+        self.assertTrue(18 <= topic["score"] <= 25)
+        self.assertIn(topic["evidence"], ZH_GOOD)
+        self.assertEqual(r["coverage"], "形式 + 语义切题")
+
+    def test_fabricated_evidence_is_rejected(self):
+        chat = self.fake({"verdict": "on_topic", "evidence": "这段作文写了我对宇宙的思考",
+                          "reason": "x", "score": 20})
+        r = W.review(ZH_GOOD, "语文", "middle", task="记一次比赛", chat=chat, semantic=True)
+        self.assertEqual(len(r["dims"]), 4)
+        self.assertTrue(any("证据不是原文" in n for n in r["notes"]))
+        self.assertEqual(r["coverage"], "仅形式维度")
+
+    def test_verdict_caps_the_score(self):
+        chat = self.fake({"verdict": "off_topic", "evidence": "去年秋天", "reason": "写的是别的事", "score": 25})
+        r = W.review(ZH_GOOD, "语文", "middle", task="记一次比赛", chat=chat, semantic=True)
+        topic = next(d for d in r["dims"] if d["key"] == "topic")
+        self.assertLessEqual(topic["score"], 8)
+        self.assertEqual(topic["label"], "偏题")
+
+    def test_bad_json_degrades_to_form_only(self):
+        r = W.review(ZH_GOOD, "语文", "middle", task="记一次比赛", chat=self.fake("不是 JSON"), semantic=True)
+        self.assertEqual(len(r["dims"]), 4)
+        self.assertTrue(any("切题判断失败" in n for n in r["notes"]))
+        self.assertEqual(r["coverage"], "仅形式维度")
+
+    def test_no_task_means_no_judgement(self):
+        chat = self.fake({"verdict": "on_topic", "evidence": "去年秋天", "reason": "x", "score": 20})
+        r = W.review(ZH_GOOD, "语文", "middle", task="", chat=chat, semantic=True)
+        self.assertTrue(any("没有题目" in n for n in r["notes"]))
+        self.assertEqual(len(r["dims"]), 4)
+
+    def test_punctuation_difference_in_the_quote_is_tolerated(self):
+        text = "去年秋天，我第一次参加比赛。后来我发现自己在进步。"
+        chat = self.fake({"verdict": "on_topic", "evidence": "去年秋天 我第一次参加比赛", "reason": "x", "score": 20})
+        topic, why = W.semantic_topic(text, "记一次比赛", "语文", "middle", chat=chat)
+        self.assertEqual(why, "")
+        self.assertEqual(topic["verdict"], "on_topic")
+
+    def test_unknown_verdict_is_rejected(self):
+        chat = self.fake({"verdict": "good", "evidence": "去年秋天", "reason": "x", "score": 20})
+        topic, why = W.semantic_topic(ZH_GOOD, "记一次比赛", "语文", "middle", chat=chat)
+        self.assertIsNone(topic)
+        self.assertIn("不可识别", why)
+
+    def test_semantic_off_makes_no_call(self):
+        def boom(*a, **k):
+            raise AssertionError("semantic=False 时不应调用模型")
+        r = W.review(ZH_GOOD, "语文", "middle", task="记一次比赛", chat=boom)
+        self.assertEqual(len(r["dims"]), 4)
+
+
 if __name__ == "__main__":
     unittest.main()

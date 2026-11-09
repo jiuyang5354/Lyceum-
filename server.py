@@ -213,7 +213,8 @@ class H(BaseHTTPRequestHandler):
                 return self.update_install(b)
             if p == "/api/writing/review":
                 res = writing.review(b.get("text") or "", b.get("subject") or "语文", b.get("band") or "middle",
-                                     b.get("task") or "", use_model=bool(b.get("use_model")))
+                                     b.get("task") or "", use_model=bool(b.get("use_model")),
+                                     semantic=bool(b.get("semantic")))
                 res["id"] = db.save_writing_review(res, b.get("task") or "", b.get("text") or "")
                 res["history"] = list(reversed(db.writing_history(res["subject"], 8)))
                 return self.send_json(res)
