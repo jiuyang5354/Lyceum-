@@ -464,8 +464,13 @@ class DB:
         upcoming = self.q("SELECT MIN(next_review) AS nx FROM skills WHERE merged_into IS NULL AND next_review>?", (d,), one=True)["nx"]
         # 统一口径：「今日复习」按知识点计 = 到期的知识点 ∪ 有到期错题的知识点；错题另报道数
         topics = {(k["subject"], k["topic"]) for k in skills} | {self.skill_key(m["subject"], m["topic"]) for m in mistakes}
+        # 「下一步练什么」：前置没稳时先补前置。只读，不改任何状态。
+        from . import curriculum
+        mastery = {(r["subject"], r["topic"]): r["p_l"] for r in self.q(
+            "SELECT subject, topic, p_l FROM skills WHERE merged_into IS NULL")}
+        nxt = curriculum.recommend(mastery, [(k["subject"], k["topic"]) for k in skills])
         return {"date": d, "skills": skills, "mistakes": mistakes, "next_date": upcoming,
-                "topics_due": len(topics), "mistakes_due": len(mistakes)}
+                "topics_due": len(topics), "mistakes_due": len(mistakes), "next": nxt}
 
     # ---- 误区（tutor-mcp：按（知识点, 类型）分组；之后该知识点连续 3 条证据都对 → 已解决）
     MISC_WINDOW = 3
