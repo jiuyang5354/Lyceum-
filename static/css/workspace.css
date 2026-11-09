@@ -266,3 +266,13 @@ button:disabled { cursor: not-allowed; }
 .writing-panel .wp-dim .v { font: 500 14px var(--mono); text-align: right; }
 .writing-panel .wp-dim .ev { grid-column: 2 / 4; font-size: 12px; color: var(--muted); }
 .writing-panel .wp-note { margin-top: 10px; font-size: 12px; color: var(--muted); }
+.writing-panel .wp-hints { list-style: none; padding: 0; margin: 14px 0 0; }
+.writing-panel .wp-hint { display: flex; gap: 10px; align-items: baseline; padding: 5px 0; font-size: 13px; color: var(--muted); }
+.writing-panel .wp-hint .mk { font-weight: 600; }
+.writing-panel .wp-hint.ok .mk { color: var(--green, #2f7a4e); }
+.writing-panel .wp-hint.no .mk { color: #b4452f; }
+.writing-panel .wp-hint b { color: var(--ink); font-weight: 500; }
+.writing-panel .wp-trend { display: flex; align-items: flex-end; gap: 8px; height: 64px; margin-top: 16px; }
+.writing-panel .wp-trend .mono { align-self: center; font-size: 11px; color: var(--muted); margin-right: 4px; }
+.writing-panel .wp-trend i { display: block; width: 22px; min-height: 8px; background: var(--blue); opacity: .75; position: relative; }
+.writing-panel .wp-trend i b { position: absolute; top: -18px; left: 50%; transform: translateX(-50%); font-size: 11px; font-weight: 500; color: var(--muted); }

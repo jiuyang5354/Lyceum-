@@ -80,6 +80,33 @@ class RuleScoreTest(unittest.TestCase):
         self.assertEqual(a, b)
 
 
+class HintTest(unittest.TestCase):
+    def test_topic_echo_is_detected_in_first_or_last_paragraph(self):
+        task = "记一次难忘的经历"
+        good = "去年我参加朗读比赛，那是一次难忘的经历。\n\n后来我明白了，勇敢一点。\n\n这段经历让我不再害怕开口。"
+        hs = {h["key"]: h for h in W.hints(good, task)}
+        self.assertTrue(hs["topic"]["ok"])
+        self.assertIn("经历", hs["topic"]["evidence"])
+
+    def test_missing_topic_words_is_reported(self):
+        hs = {h["key"]: h for h in W.hints("我喜欢读书。\n\n书里有很多故事。", "记一次难忘的经历")}
+        self.assertFalse(hs["topic"]["ok"])
+
+    def test_concrete_detail_and_feeling(self):
+        hs = {h["key"]: h for h in W.hints("去年夏天，我参加了比赛。\n\n我发现自己在进步。", "一次比赛")}
+        self.assertTrue(hs["detail"]["ok"])
+        self.assertTrue(hs["feeling"]["ok"])
+
+    def test_empty_text_has_hints_but_no_crash(self):
+        hs = W.hints("", "题目")
+        self.assertEqual(len(hs), 3)
+        self.assertFalse(hs[-1]["ok"])
+
+    def test_review_carries_hints(self):
+        r = W.review(EN_GOOD, "英语", "middle")
+        self.assertEqual(len(r["hints"]), 3)
+
+
 class ModelPathTest(unittest.TestCase):
     def fake_chat(self, payload):
         def chat(*a, **k):

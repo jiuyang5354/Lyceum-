@@ -37,7 +37,7 @@ class ItemApiTest(unittest.TestCase):
     def tearDownClass(cls):
         cls.srv.shutdown()
         cls.server_mod.db.conn.close()
-        shutil.rmtree(cls.dir)
+        shutil.rmtree(cls.dir, ignore_errors=True)
 
     def call(self, path, body=None, expect=None):
         req = urllib.request.Request(
@@ -81,6 +81,17 @@ class ItemApiTest(unittest.TestCase):
         self.assertEqual({d["source"] for d in r["dims"]}, {"rule"})
         self.assertEqual(r["total"], sum(d["score"] for d in r["dims"]))
         self.assertTrue(all(d["evidence"] for d in r["dims"]))
+
+    def test_writing_reviews_are_stored_and_listed(self):
+        text = "去年秋天，我第一次参加朗读比赛。\n\n起初我不敢上台，后来老师鼓励我报名。\n\n因此，我不再害怕开口。"
+        r1 = self.call("/api/writing/review", {"subject": "语文", "band": "middle", "text": text, "task": "一次比赛"})
+        self.assertIn("id", r1)
+        self.assertIsInstance(r1["hints"], list)
+        r2 = self.call("/api/writing/review", {"subject": "语文", "band": "middle", "text": text + "我发现自己在进步。", "task": "一次比赛"})
+        self.assertGreaterEqual(len(r2["history"]), 2)
+        hist = self.call("/api/writing/history?subject=%E8%AF%AD%E6%96%87")["history"]
+        self.assertGreaterEqual(len(hist), 2)
+        self.assertGreaterEqual(hist[0]["id"], hist[1]["id"], "最新的排在最前")
 
     def test_unknown_topic_is_a_clean_404(self):
         r = self.call("/api/practice/next?subject=%E6%95%B0%E5%AD%A6&topic=%E6%B2%A1%E6%9C%89%E8%BF%99%E4%B8%AA", expect=404)
