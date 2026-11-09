@@ -1,0 +1,116 @@
+{
+  "model": "deepseek/deepseek-v4.1-flash",
+  "metric": "rubric",
+  "samples": 2,
+  "scenarios": 16,
+  "lift": 0.0047,
+  "improved": 5,
+  "worsened": 6,
+  "p_value": 0.725586,
+  "rows": [
+    {
+      "scenario": "m1",
+      "old": 0.925,
+      "new": 0.875,
+      "diff": -0.05
+    },
+    {
+      "scenario": "m2",
+      "old": 0.9,
+      "new": 0.925,
+      "diff": 0.025
+    },
+    {
+      "scenario": "p1",
+      "old": 0.9,
+      "new": 1.0,
+      "diff": 0.1
+    },
+    {
+      "scenario": "e1",
+      "old": 0.9,
+      "new": 0.875,
+      "diff": -0.025
+    },
+    {
+      "scenario": "h1",
+      "old": 0.95,
+      "new": 0.95,
+      "diff": 0.0
+    },
+    {
+      "scenario": "c1",
+      "old": 0.95,
+      "new": 1.0,
+      "diff": 0.05
+    },
+    {
+      "scenario": "w1",
+      "old": 0.9,
+      "new": 0.9,
+      "diff": 0.0
+    },
+    {
+      "scenario": "b1",
+      "old": 0.9,
+      "new": 0.9,
+      "diff": 0.0
+    },
+    {
+      "scenario": "m3",
+      "old": 0.75,
+      "new": 1.0,
+      "diff": 0.25
+    },
+    {
+      "scenario": "m4",
+      "old": 0.8,
+      "new": 0.8,
+      "diff": 0.0
+    },
+    {
+      "scenario": "p2",
+      "old": 0.875,
+      "new": 0.875,
+      "diff": 0.0
+    },
+    {
+      "scenario": "e2",
+      "old": 0.95,
+      "new": 0.9,
+      "diff": -0.05
+    },
+    {
+      "scenario": "h2",
+      "old": 0.9,
+      "new": 0.775,
+      "diff": -0.125
+    },
+    {
+      "scenario": "c2",
+      "old": 0.85,
+      "new": 0.9,
+      "diff": 0.05
+    },
+    {
+      "scenario": "w2",
+      "old": 0.95,
+      "new": 0.9,
+      "diff": -0.05
+    },
+    {
+      "scenario": "b2",
+      "old": 1.0,
+      "new": 0.9,
+      "diff": -0.1
+    }
+  ],
+  "usage": {
+    "calls": 64,
+    "prompt_tokens": 111797,
+    "completion_tokens": 19810,
+    "cached_tokens": 83584,
+    "estimated_calls": 0,
+    "interrupted_calls": 0
+  }
+}

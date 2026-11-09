@@ -83,6 +83,51 @@ def _state(sc):
     return {"problem": sc["problem"], "subject": sc["subject"], "hint_level": 0, "stuck": 1}
 
 
+# 扩展场景：live 评估用 16 个，跨 4 个学段、6 个学科；单元测试仍只跑前 8 个，
+# 避免测试依赖模型或场景数量。
+SCENARIOS_EXT = SCENARIOS + [
+    {"id": "m3", "grade": 8, "band": "middle", "subject": "数学", "problem": "化简 (x+2)^2 - (x-2)^2", "turn": "不知道怎么展开"},
+    {"id": "m4", "grade": 9, "band": "middle", "subject": "数学", "problem": "二次函数 y=x^2-4x+3 的顶点坐标", "turn": "不会配方法"},
+    {"id": "p2", "grade": 3, "band": "primary", "subject": "数学", "problem": "小明有 5 个苹果，吃了 2 个，还剩几个？", "turn": "不会"},
+    {"id": "e2", "grade": 9, "band": "middle", "subject": "英语", "problem": "用 because 造句，说明你为什么喜欢夏天", "turn": "不会用 because"},
+    {"id": "h2", "grade": 12, "band": "high", "subject": "物理", "problem": "求带电粒子在匀强磁场中的回旋半径", "turn": "没有思路"},
+    {"id": "c2", "grade": 11, "band": "high", "subject": "化学", "problem": "计算 0.1 mol/L 醋酸的 pH（Ka=1.8e-5）", "turn": "不知道从哪开始"},
+    {"id": "w2", "grade": 10, "band": "high", "subject": "语文", "problem": "分析《静夜思》中「疑是地上霜」的表达效果", "turn": "不知道怎么写"},
+    {"id": "b2", "grade": 5, "band": "primary", "subject": "科学", "problem": "为什么月亮有时圆有时弯？", "turn": "想不明白"},
+]
+
+# 分档评分：三项二元检查在真实模型上会顶到 1.0，量不出改进，所以 live 评估改用
+# 六个维度，其中「是否贴着这道题」是基线经常丢分的一项。
+_RUBRIC_VERBS = ("先", "再", "试着", "想想", "写出", "画", "第一步", "下一步", "回忆", "观察")
+
+
+def _content_chars(text):
+    return {c for c in re.findall(r"[\u4e00-\u9fffA-Za-z0-9]", text) if c not in "的了是在和与就都也很"} 
+
+
+def rubric_score(reply, scenario=None):
+    """0..1 的分档分，用于真实模型评估；buckets 见 docs/prompt-and-rsi.md。"""
+    text = str(reply or "").strip()
+    if len(text) < MIN_REPLY_CHARS or not _substantive(text):
+        return 0.0
+    if _LEAK.search(text):
+        return 0.0                              # 直接抛最终答案是硬失败，不给部分分
+    q = text.count("？") + text.count("?")
+    leaked = False
+    band = (scenario or {}).get("band", "middle")
+    limit = {"primary": 90, "middle": 150, "high": 210}.get(band, 150)
+    problem = _content_chars((scenario or {}).get("problem", ""))
+    grounded = len(problem & _content_chars(text)) >= 2
+    score = 0.0
+    score += 0.20 if q >= 1 else 0.0            # 有没有把球踢回给学生
+    score += 0.10 if q == 1 else 0.0            # 一轮只问一个
+    score += 0.25                           # 已通过上面的硬失败检查
+    score += 0.15 if len(text) <= limit else 0.0  # 篇幅匹配学段
+    score += 0.15 if any(v in text for v in _RUBRIC_VERBS) else 0.0  # 给出可执行动作
+    score += 0.15 if grounded else 0.0          # 贴着这道题，不是通用套话
+    return round(score, 4)
+
+
 def prompt_for(sc, note=None):
     """场景提示词。附加要求插在「当前状态」之前，并明确标成非权威指令。"""
     text = agent.build_prompt(_profile(sc), _state(sc), False, None, sc["turn"]).text
@@ -125,6 +170,23 @@ def _score(reply, scenario=None):
     return round((float(asked) + float(not leaked) + float(short)) / 3, 4)
 
 
+def _paired_z_p(diffs):
+    """配对均值检验（正态近似）：比符号检验更有力，能用上差值的幅度。
+
+    n<12 或方差为 0 时返回 1.0（不声称显著）。只作为 sign 检验的补充，
+    默认门禁仍是更保守的符号检验。
+    """
+    n = len(diffs)
+    if n < 12:
+        return 1.0
+    mean = sum(diffs) / n
+    var = sum((d - mean) ** 2 for d in diffs) / (n - 1)
+    if var <= 0:
+        return 1.0
+    z = mean / math.sqrt(var / n)
+    return round(math.erfc(abs(z) / math.sqrt(2)), 6)
+
+
 def _sign_test_p(pos, neg):
     """精确单侧符号检验：只数「变好」与「变差」，打平的不计入。"""
     n = pos + neg
@@ -162,8 +224,14 @@ def _vet(candidate):
     return True
 
 
-def evaluate(candidate, runner=None, scenarios=None, locked_guard=None):
-    """评估一个候选；返回可审计的决策，不产生任何副作用。"""
+def evaluate(candidate, runner=None, scenarios=None, locked_guard=None,
+             metric="binary", samples=1):
+    """评估一个候选；返回可审计的决策，不产生任何副作用。
+
+    metric="binary" 是默认（三项二元检查，单元测试用）；live 评估用 "rubric"
+    换成分档分，因为二元项在真实模型上会顶到 1.0，量不出改进。
+    samples>1 时每个臂取多次采样的均值，压低单次生成的随机波动。
+    """
     runner = runner or mock_runner
     try:
         scenarios = list(SCENARIOS if scenarios is None else scenarios)
@@ -178,7 +246,7 @@ def evaluate(candidate, runner=None, scenarios=None, locked_guard=None):
         "guard": guard, "synthetic": getattr(runner, "synthetic", True),
         "accept": False, "decision": "insufficient_evidence",
         "ci_low": 0.0, "ci_high": 0.0, "lift": 0.0, "p_value": 1.0,
-        "improved": 0, "worsened": 0, "detail": [],
+        "improved": 0, "worsened": 0, "detail": [], "metric": metric, "samples": max(1, int(samples)),
     }
     if guard != lock:
         result["decision"] = "protected_surface_changed"
@@ -198,20 +266,28 @@ def evaluate(candidate, runner=None, scenarios=None, locked_guard=None):
         result["decision"] = "duplicate_scenarios"
         return result
 
+    score = rubric_score if metric == "rubric" else _score
+    k = max(1, int(samples))
+
+    def arm(prompt, sc):
+        vals = [score((runner(prompt, sc) or {}).get("reply"), sc) for _ in range(k)]
+        return round(sum(vals) / len(vals), 4)
+
     diffs = []
     for i, sc in enumerate(scenarios):
         base_p, cand_p = prompt_for(sc), prompt_for(sc, note)
         if i % 2:                      # 交替先后，抵消顺序效应
-            cand = _score((runner(cand_p, sc) or {}).get("reply"), sc)
-            base = _score((runner(base_p, sc) or {}).get("reply"), sc)
+            cand = arm(cand_p, sc)
+            base = arm(base_p, sc)
         else:
-            base = _score((runner(base_p, sc) or {}).get("reply"), sc)
-            cand = _score((runner(cand_p, sc) or {}).get("reply"), sc)
+            base = arm(base_p, sc)
+            cand = arm(cand_p, sc)
         diffs.append(cand - base)
         result["detail"].append({"scenario": sc["id"], "baseline": base, "candidate": cand})
 
     pos, neg = sum(1 for d in diffs if d > 0), sum(1 for d in diffs if d < 0)
     low, high = _bootstrap_ci(diffs)
+    result["z_p_value"] = _paired_z_p(diffs)
     lift = sum(diffs) / len(diffs)
     p = _sign_test_p(pos, neg)
     result.update({"ci_low": round(low, 4), "ci_high": round(high, 4), "lift": round(lift, 4),
