@@ -24,6 +24,33 @@ ROUTE = None        # 由 config.apply 填：自动选模型的配置（见 mode
 USAGE_FILE = None   # 各模型调用次数与 token 的本地累计（数据目录 usage.json）
 _tl = threading.local()
 _ulock = threading.Lock()
+_unsupported_options = set()  # (endpoint, model, field), process-local
+
+
+def _compatible_request(payload, send):
+    key = (BASE_URL, payload["model"])
+    for field in ("response_format", "stream_options"):
+        if key + (field,) in _unsupported_options:
+            payload.pop(field, None)
+    while True:
+        try:
+            return send(payload)
+        except urllib.error.HTTPError as e:
+            body = e.read().decode("utf-8", "ignore")
+            e.close()
+            lower = body.lower()
+            rejected = any(word in lower for word in (
+                "unsupported", "not supported", "does not support", "unknown", "unrecognized", "not allowed"))
+            field = next((f for f in ("response_format", "stream_options")
+                          if f in payload and f in lower), None)
+            if e.code == 400 and rejected and field:
+                payload.pop(field)
+                _unsupported_options.add(key + (field,))
+                continue
+            # Preserve the body for the caller's existing retry/error handling.
+            import io
+            raise urllib.error.HTTPError(e.url, e.code, e.reason, e.headers,
+                                         io.BytesIO(body.encode("utf-8"))) from e
 
 
 def pick(task=None, vision=False):
@@ -62,7 +89,7 @@ def _estimate(messages):
     return max(1, n // 2)
 
 
-def record_usage(model, prompt, completion, estimated=False, path=None):
+def record_usage(model, prompt, completion, estimated=False, path=None, cached=0, interrupted=False):
     """按模型累计调用次数和 token（拿不到 usage 时用字数估计），写进 usage.json。"""
     path = path or USAGE_FILE
     with _ulock:
@@ -72,6 +99,9 @@ def record_usage(model, prompt, completion, estimated=False, path=None):
         r["prompt_tokens"] += int(prompt or 0)
         r["completion_tokens"] += int(completion or 0)
         r["estimated"] = r["estimated"] or bool(estimated)
+        r["estimated_calls"] = r.get("estimated_calls", 0) + int(bool(estimated))
+        r["interrupted_calls"] = r.get("interrupted_calls", 0) + int(interrupted)
+        r["cached_tokens"] = r.get("cached_tokens", 0) + int(cached or 0)
         if not path:
             return
         try:
@@ -86,6 +116,9 @@ def record_usage(model, prompt, completion, estimated=False, path=None):
         d["prompt_tokens"] += int(prompt or 0)
         d["completion_tokens"] += int(completion or 0)
         d["estimated"] = d.get("estimated") or bool(estimated)
+        d["estimated_calls"] = d.get("estimated_calls", 0) + int(bool(estimated))
+        d["interrupted_calls"] = d.get("interrupted_calls", 0) + int(interrupted)
+        d["cached_tokens"] = d.get("cached_tokens", 0) + int(cached or 0)
         try:
             tmp = path + ".tmp"
             with open(tmp, "w", encoding="utf-8") as f:
@@ -93,6 +126,23 @@ def record_usage(model, prompt, completion, estimated=False, path=None):
             os.replace(tmp, path)
         except OSError:
             pass
+
+
+def _account_usage(model, usage, messages, chars, interrupted=False):
+    prompt, completion = usage.get("prompt_tokens"), usage.get("completion_tokens")
+    estimated = prompt is None or completion is None
+    cached = (usage.get("prompt_tokens_details") or {}).get("cached_tokens", 0) or 0
+    # Global token totals retain their historical measured-only semantics.
+    with _ulock:
+        USAGE["calls"] += 1
+        USAGE["prompt_tokens"] += prompt or 0
+        USAGE["completion_tokens"] += completion or 0
+        USAGE["cached_tokens"] += cached
+        USAGE["estimated_calls"] = USAGE.get("estimated_calls", 0) + int(estimated)
+        USAGE["interrupted_calls"] = USAGE.get("interrupted_calls", 0) + int(interrupted)
+    record_usage(model, prompt if prompt is not None else _estimate(messages),
+                 completion if completion is not None else max(1, chars // 2),
+                 estimated=estimated, cached=cached, interrupted=interrupted)
 
 
 def usage_totals(path=None):
@@ -155,14 +205,12 @@ def _chat_one(model, messages, json_mode, temperature, max_tokens, retries):
     last = None
     for attempt in range(retries + 1):
         try:
-            data = _post(payload)
+            data = _compatible_request(payload, _post)
             break
         except urllib.error.HTTPError as e:
             body = e.read().decode("utf-8", "ignore")[:400]
             last = LLMError(f"HTTP {e.code}: {body}")
-            if e.code == 400 and "response_format" in payload:
-                payload.pop("response_format")  # 有些中转不支持 json_object
-                continue
+
             if e.code in (429, 500, 502, 503, 504) and attempt < retries:
                 time.sleep(2 + attempt * 3)
                 continue
@@ -176,14 +224,9 @@ def _chat_one(model, messages, json_mode, temperature, max_tokens, retries):
     else:
         raise last
     u = data.get("usage") or {}
-    USAGE["calls"] += 1
-    USAGE["prompt_tokens"] += u.get("prompt_tokens", 0) or 0
-    USAGE["completion_tokens"] += u.get("completion_tokens", 0) or 0
-    USAGE["cached_tokens"] += ((u.get("prompt_tokens_details") or {}).get("cached_tokens", 0) or 0)
     text = data["choices"][0]["message"].get("content") or ""
     _tl.model = model
-    record_usage(model, u.get("prompt_tokens") or _estimate(messages), u.get("completion_tokens") or max(1, len(text) // 2),
-                 estimated=not u)
+    _account_usage(model, u, messages, len(text))
     return parse_json(text) if json_mode else text
 
 
@@ -220,7 +263,8 @@ def chat_stream(messages, *, json_mode=True, vision=False, temperature=0.4, max_
     连接还没建立就失败时依次换备用模型；已经开始出字后断流不再换（前端可重试）。"""
     models_ = candidates(task, vision)
     for i, m in enumerate(models_):
-        payload = {"model": m, "messages": messages, "temperature": temperature, "max_tokens": max_tokens, "stream": True}
+        payload = {"model": m, "messages": messages, "temperature": temperature, "max_tokens": max_tokens,
+                   "stream": True, "stream_options": {"include_usage": True}}
         if json_mode:
             payload["response_format"] = {"type": "json_object"}
         try:
@@ -235,14 +279,7 @@ def chat_stream(messages, *, json_mode=True, vision=False, temperature=0.4, max_
 
 def _open_with_fallback_format(payload):
     try:
-        try:
-            r = _open_stream(payload)
-        except urllib.error.HTTPError as e:
-            if e.code == 400 and "response_format" in payload:
-                payload.pop("response_format")
-                r = _open_stream(payload)
-            else:
-                raise
+        r = _compatible_request(payload, _open_stream)
     except urllib.error.HTTPError as e:
         raise LLMError(f"HTTP {e.code}: {e.read().decode('utf-8', 'ignore')[:400]}")
     except Exception as e:
@@ -251,9 +288,8 @@ def _open_with_fallback_format(payload):
 
 
 def _read_stream(r, payload, messages):
-    done = False
-    USAGE["calls"] += 1
-    got = {"p": 0, "c": 0, "chars": 0}
+    done = completed = False
+    usage, chars = {}, 0
     try:
         with r:
             for raw in r:
@@ -271,21 +307,23 @@ def _read_stream(r, payload, messages):
                 if obj.get("error"):
                     raise LLMError(str(obj["error"])[:300])
                 u = obj.get("usage") or {}
-                USAGE["prompt_tokens"] += u.get("prompt_tokens", 0) or 0
-                USAGE["completion_tokens"] += u.get("completion_tokens", 0) or 0
-                got["p"] = u.get("prompt_tokens") or got["p"]
-                got["c"] = u.get("completion_tokens") or got["c"]
+                # Providers send cumulative snapshots, not per-chunk deltas.
+                for key in ("prompt_tokens", "completion_tokens", "prompt_tokens_details"):
+                    if u.get(key) is not None:
+                        usage[key] = u[key]
                 for ch in obj.get("choices") or []:
                     piece = (ch.get("delta") or {}).get("content")
                     if piece:
-                        got["chars"] += len(piece)
+                        chars += len(piece)
                         yield piece
                     if ch.get("finish_reason"):
                         done = True
+        if not done:
+            raise LLMError("流式连接中断：上游没有发结束标记")
+        completed = True
     except LLMError:
         raise
     except Exception as e:
         raise LLMError("流式连接中断：" + str(e)[:200])
-    if not done:
-        raise LLMError("流式连接中断：上游没有发结束标记")
-    record_usage(payload["model"], got["p"] or _estimate(messages), got["c"] or max(1, got["chars"] // 2), estimated=not got["c"])
+    finally:
+        _account_usage(payload["model"], usage, messages, chars, interrupted=not completed)
