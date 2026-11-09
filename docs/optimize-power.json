@@ -1,0 +1,27 @@
+{
+  "model": "deepseek/deepseek-v4.1-flash",
+  "metric": "rubric",
+  "samples": 2,
+  "scenarios": 54,
+  "candidate_position": {
+    "n": 54,
+    "improved": 36,
+    "worsened": 10,
+    "lift": 0.0444,
+    "sign_p": 7.820860426477338e-05,
+    "z_p": 0.003005,
+    "note": "rule injected as a standalone block right before # 当前状态"
+  },
+  "deployed_position": {
+    "n": 54,
+    "improved": 34,
+    "worsened": 8,
+    "lift": 0.0449,
+    "sign_p": 3.438555745560734e-05,
+    "z_p": 4e-06,
+    "note": "A/B of prompts.build(tail_note=FOLLOWUP_RULE) vs the same prompt with the block removed",
+    "mean_old": 0.8972,
+    "mean_new": 0.9421
+  },
+  "boundary": "hand-written scenarios, single model, temperature 0.4; not student data"
+}
