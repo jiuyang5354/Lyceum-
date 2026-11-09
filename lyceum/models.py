@@ -121,16 +121,24 @@ def pick_model(role, cfg):
         return roles[role]
     if role == "vision" and vis:
         return vis
-    det = [d for d in (cfg.get("detected") or []) if isinstance(d, str)]
-    if role == "vision" and main in det and "vision" in tags(main):
+    if role == "vision":
+        # 识图优先主模型：现在的多模态主模型自己就能看图。
+        # 万一它不支持，chat() 会按 chain 里的备份依次重试（见 vision_backups）。
         return main
+    det = [d for d in (cfg.get("detected") or []) if isinstance(d, str)]
     return _from_detected(role, det) or main
 
 
-def chain(primary, fallbacks, main=""):
-    """主模型出错时依次换：本次选中的 → 备用模型（按顺序）→ 主模型。去重、去空。"""
+def vision_backups(cfg, exclude=()):
+    """识图失败时的候选：已检测模型里按名称带 vision 标签的那些（可能为空）。"""
+    det = [d for d in (cfg.get("detected") or []) if isinstance(d, str)]
+    return [d for d in det if "vision" in tags(d) and d not in set(exclude)]
+
+
+def chain(primary, fallbacks, main="", extras=()):
+    """主模型出错时依次换：本次选中的 → 备用模型 → 备份模型 → 主模型。去重、去空。"""
     out = []
-    for m in [primary, *(fallbacks or []), main]:
+    for m in [primary, *(fallbacks or []), *(extras or []), main]:
         m = (m or "").strip()
         if m and m not in out:
             out.append(m)

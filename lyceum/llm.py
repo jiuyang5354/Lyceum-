@@ -67,7 +67,9 @@ def pick(task=None, vision=False):
 
 def candidates(task=None, vision=False):
     from . import models
-    return models.chain(pick(task, vision), (ROUTE or {}).get("fallbacks"), VISION_MODEL if vision else MODEL)
+    primary = pick(task, vision)
+    extras = models.vision_backups(ROUTE or {}, exclude=(primary,)) if vision else ()
+    return models.chain(primary, (ROUTE or {}).get("fallbacks"), VISION_MODEL if vision else MODEL, extras)
 
 
 def reset_last():

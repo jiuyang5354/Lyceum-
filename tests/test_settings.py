@@ -98,7 +98,9 @@ class RouteTest(unittest.TestCase):
 
     def test_auto_from_detected(self):
         cfg = {"model": "main", "route_mode": "auto", "detected": self.DET}
-        self.assertEqual(M.pick_model("vision", cfg), "gpt-4o")
+        # 识图也用主模型；只有主模型失败才退到「名字像视觉」的已检测模型
+        self.assertEqual(M.pick_model("vision", cfg), "main")
+        self.assertEqual(M.vision_backups(cfg), ["gpt-4o", "gpt-4o-mini"])
         self.assertEqual(M.pick_model("strong", cfg), "o3")
         self.assertIn(M.pick_model("fast", cfg), ("gpt-4o-mini", "deepseek-chat"))
         self.assertEqual(M.pick_model("main", cfg), "main")
@@ -203,7 +205,12 @@ class LLMRouteTest(unittest.TestCase):
         self.assertEqual(self.calls[-1], "o3")
         self.assertEqual(llm.last_model(), "o3")
         llm.chat_routed([{"role": "user", "content": "x"}], vision=True, task="vision")
-        self.assertEqual(self.calls[-1], "gpt-4o")
+        self.assertEqual(self.calls[-1], llm.MODEL)  # 多模态主模型先自己看
+
+        # 主模型不认图片时，退到已检测的视觉模型
+        self.fake(fail=(llm.MODEL,))
+        llm.chat_routed([{"role": "user", "content": "x"}], vision=True, task="vision")
+        self.assertEqual(self.calls[-2:], [llm.MODEL, "gpt-4o"])
         llm.chat_routed([{"role": "user", "content": "x"}], task="fast")
         self.assertEqual(self.calls[-1], "gpt-4o-mini")
         tot = llm.usage_totals()
