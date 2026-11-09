@@ -57,6 +57,15 @@ class CandidateGateTest(unittest.TestCase):
         self.assertAlmostEqual(optimize._sign_test_p(6, 2), 0.1445, places=4)
         self.assertEqual(optimize._sign_test_p(0, 0), 1.0, "打平不计入，n=0 时不能算显著")
 
+    def test_paired_z_is_reported_as_a_secondary_test(self):
+        self.assertEqual(optimize._paired_z_p([0.1] * 16), 1.0, "方差为 0 时不能声称显著")
+        self.assertEqual(optimize._paired_z_p([0.1] * 11), 1.0, "n<12 不做正态近似")
+        tight = optimize._paired_z_p([0.10 + (0.001 if i % 2 else -0.001) for i in range(16)])
+        loose = optimize._paired_z_p([0.10, -0.20, 0.30, -0.25, 0.05, -0.15, 0.22, -0.18,
+                                       0.12, -0.09, 0.31, -0.27, 0.07, -0.11, 0.19, -0.05])
+        self.assertLess(tight, 0.05)
+        self.assertGreater(loose, 0.05)
+
     def test_six_of_eight_is_not_significant(self):
         worse = {"m2", "c1"}                     # 这 2 个场景候选反而更差
         good = "先说一遍题目，再想一想：题目里的已知条件是什么？"
@@ -96,6 +105,38 @@ class CandidateGateTest(unittest.TestCase):
 
         result = optimize.evaluate(optimize.CANDIDATES[0], runner=runner, scenarios=optimize.SCENARIOS)
         self.assertFalse(result["accept"], result)
+
+    def test_rubric_leaves_headroom_for_generic_replies(self):
+        sc = optimize.SCENARIOS[0]
+        grounded = "先想一想：x^2-5x+6=0 里，哪两个数相乘得 6、相加得 -5？"
+        generic = "先想想这道题考查的是什么概念，再试着写出你的第一步。"
+        self.assertGreater(optimize.rubric_score(grounded, sc), optimize.rubric_score(generic, sc))
+        self.assertLess(optimize.rubric_score(generic, sc), 1.0, "通用套话必须拿不到满分，否则量不出改进")
+
+    def test_rubric_rejects_leaks_and_empty_replies(self):
+        sc = optimize.SCENARIOS[0]
+        self.assertEqual(optimize.rubric_score("答案是 x=2 或 x=3。", sc), 0.0)
+        self.assertEqual(optimize.rubric_score("😀" * 12, sc), 0.0)
+
+    def test_samples_average_out_generation_noise(self):
+        calls = {"n": 0}
+
+        def runner(prompt, scenario):
+            calls["n"] += 1
+            good = calls["n"] % 2 == 1
+            return {"reply": "先想一想：这道题的已知条件是什么？" if good else "答案是 3。"}
+
+        result = optimize.evaluate(optimize.CANDIDATES[0], runner=runner,
+                                   scenarios=optimize.SCENARIOS, metric="rubric", samples=2)
+        self.assertEqual(result["samples"], 2)
+        one = optimize.rubric_score("先想一想：这道题的已知条件是什么？", optimize.SCENARIOS[0])
+        self.assertAlmostEqual(one, 0.85, places=4)
+        self.assertEqual(calls["n"], 2 * 2 * len(optimize.SCENARIOS), "每臂每场景采样 2 次")
+        for row in result["detail"]:
+            self.assertEqual(row["baseline"], row["candidate"], "两个臂拿到同样的采样序列时均值应当相同")
+            for v in (row["baseline"], row["candidate"]):
+                self.assertIn(round(v, 4), {round(one / 2, 4), 0.5}, "均值应等于两次采样的平均")
+        self.assertEqual(result["lift"], 0.0)
 
     def test_order_effects_do_not_become_lift(self):
         calls = {"n": 0}
@@ -207,6 +248,16 @@ class GuardCoverageTest(unittest.TestCase):
             self.assertNotEqual(base, prompts.guard_fingerprint())
         finally:
             prompts.SECTIONS["state"].text = original
+
+    def test_strategy_text_is_not_part_of_the_guard(self):
+        """追问节奏属于可迭代面：改它不应该被当成「护栏被改」。"""
+        base = prompts.guard_fingerprint()
+        original = prompts.SECTIONS["strategy"].text
+        try:
+            prompts.SECTIONS["strategy"].text = original + "\n试一条新的追问节奏。"
+            self.assertEqual(base, prompts.guard_fingerprint())
+        finally:
+            prompts.SECTIONS["strategy"].text = original
 
     def test_fingerprint_covers_headings_and_section_order(self):
         base = prompts.guard_fingerprint()
