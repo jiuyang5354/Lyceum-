@@ -162,13 +162,13 @@ button:disabled { cursor: not-allowed; }
 .rules-disclosure .ms-rule { margin-bottom: 20px; }
 .rec-grid > * { min-width: 0; }
 /* Returning learners get real shortcuts, not made-up activity metrics. */
-.home-return { position: absolute; z-index: 6; /* 内容压在装饰贴纸之上：贴纸是背景，不能盖住可读文字 */ right: clamp(40px, 6.5vw, 104px); top: 28px; width: min(500px, 40vw); background: var(--paper-hi); border-top: 1px solid var(--line-2); border-bottom: 1px solid var(--line-2); padding: 14px 0; }
+.home-return { position: absolute; z-index: 6; /* 内容压在装饰贴纸之上：贴纸是背景，不能盖住可读文字 */ right: clamp(40px, 6.5vw, 104px); top: 28px; width: min(500px, 40vw); background: var(--paper-hi); border-top: 1px solid var(--line-2); border-bottom: 1px solid var(--line-2); padding: 14px 18px; }
 .home-return .return-head { display: flex; justify-content: space-between; color: var(--muted); font-size: 11px; margin-bottom: 10px; }
 .home-return .return-links { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 24px; }
 .home-return a { text-decoration: none; min-width: 0; }
 .home-return a + a { border-left: 1px solid var(--line); padding-left: 24px; }
 .home-return b { display: flex; align-items: center; justify-content: space-between; font-size: 14px; font-weight: 500; color: var(--ink); }
-.home-return small { display: block; color: var(--muted); font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-top: 4px; }
+.home-return small { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; color: var(--muted); font-size: 12px; line-height: 1.45; margin-top: 4px; }
 .home-return a:hover b { color: var(--blue); }
 @media (min-width: 1600px) { .study { grid-template-columns: 232px minmax(0, 1fr) 320px; } .study[data-history="closed"] { grid-template-columns: minmax(0, 1fr) 320px; } .study[data-focus="on"] { grid-template-columns: minmax(0, 1fr); } }
 @media (max-width: 1200px) and (min-width: 1051px) { .study { grid-template-columns: 190px minmax(0, 1fr) 276px; } .study[data-history="closed"] { grid-template-columns: minmax(0, 1fr) 276px; } .study[data-focus="on"] { grid-template-columns: minmax(0, 1fr); } .study-title { display: none; } .inspector .panel { padding: 20px; } .chat-scroll, .composer { padding-left: 24px; padding-right: 24px; } }
