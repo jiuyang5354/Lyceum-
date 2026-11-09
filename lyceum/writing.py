@@ -200,6 +200,45 @@ SEMANTIC_PROMPT = """你是{subject}教研员。判断下面这篇{band}学生�
 VERDICT_SCORE = {"off_topic": (0, 8), "partial": (9, 17), "on_topic": (18, 25)}
 VERDICT_LABEL = {"on_topic": "切题", "partial": "部分切题", "off_topic": "偏题"}
 
+VERDICT_ALIASES = {
+    "on_topic": ("on_topic", "on-topic", "on topic", "ontopic", "切题", "相关", "符合题意"),
+    "partial": ("partial", "partially", "partly", "部分切题", "部分", "沾边"),
+    "off_topic": ("off_topic", "off-topic", "off topic", "offtopic", "偏题", "跑题", "不切题", "无关"),
+}
+
+
+def _verdict(value):
+    """模型常把枚举写成中文或加连字符；能归一就归一，归一不了才算没答。"""
+    s = str(value or "").strip().lower().replace(" ", "_")
+    for canon, names in VERDICT_ALIASES.items():
+        if s in {n.lower().replace(" ", "_") for n in names}:
+            return canon
+    for canon, names in VERDICT_ALIASES.items():
+        if s and any(s == n.lower().replace(" ", "_") for n in names):
+            return canon
+    return ""
+
+
+def _as_object(data):
+    """llm.chat 在 json_mode 下返回 dict；解析失败时会给 {"reply": 原文}，这里解开。"""
+    import json
+    if isinstance(data, str):
+        try:
+            data = json.loads(data)
+        except Exception:
+            return None
+    if not isinstance(data, dict):
+        return None
+    if "reply" in data and len(data) == 1:
+        inner = str(data.get("reply") or "").strip()
+        if not inner:
+            return None
+        try:
+            return json.loads(re.sub(r"^```(?:json)?\s*|\s*```$", "", inner))
+        except Exception:
+            return None
+    return data
+
 
 def _same_text(quote, text):
     """证据必须是原文。模型常改标点或空格，所以先严格比，再忽略空白和标点比一次。"""
@@ -233,17 +272,27 @@ def semantic_topic(text, task="", subject="语文", band="middle", chat=None):
         from . import llm
         chat = llm.chat
     prompt = SEMANTIC_PROMPT.format(subject=subject, band=band, task=task, text=text)
-    try:
-        raw = chat([{"role": "user", "content": prompt}], task="strong", json_mode=True,
-                   temperature=0.0, max_tokens=320)
-        data = json.loads(raw) if isinstance(raw, str) else raw
-    except Exception as exc:
-        return None, "切题判断失败：%s" % str(exc)[:80]
-    if not isinstance(data, dict):
-        return None, "切题判断返回的不是对象"
-    verdict = str(data.get("verdict", "")).strip()
-    if verdict not in VERDICT_SCORE:
-        return None, "切题判断的结论不可识别"
+    data, err = None, ""
+    for _attempt in range(2):  # 空回答/坏 JSON 再问一次；判定本身不重试，避免为凑结论反复采样
+        try:
+            raw = chat([{"role": "user", "content": prompt}], task="strong", json_mode=True,
+                       temperature=0.0, max_tokens=320)
+        except Exception as exc:
+            return None, "切题判断失败：%s" % str(exc)[:80]
+        plain = raw.get("reply") if isinstance(raw, dict) and set(raw) == {"reply"} else raw
+        data = _as_object(raw)
+        verdict = _verdict((data or {}).get("verdict"))
+        if verdict:
+            break
+        if data:
+            err = "切题判断的结论不可识别"
+        else:
+            err = "切题判断返回空回答" if not str(plain or "").strip() else "切题判断失败：返回的不是 JSON"
+    if not data:
+        return None, err
+    verdict = _verdict(data.get("verdict"))
+    if not verdict:
+        return None, err
     evidence = str(data.get("evidence", "")).strip()
     if not _same_text(evidence, text):
         return None, "切题判断的证据不是原文摘录"
