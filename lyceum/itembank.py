@@ -19,6 +19,7 @@
 import json
 import math
 import os
+import re
 from fractions import Fraction
 
 from . import mathcheck
@@ -134,11 +135,36 @@ def _as_number(text):
         return None
 
 
+TEXT_KINDS = {"dictation", "idiom", "verb_past", "plural"}
+
+
+def _norm_text(s):
+    """文本答案归一：全角转半角、去掉空白与常见标点、英文小写。
+
+    只用于「答案唯一」的文本题（默写、成语、动词过去式、名词复数）；
+    不做同义词判断——那需要语义模型，不能假装规则能判。
+    """
+    t = str(s or "").strip()
+    out = []
+    for ch in t:
+        code = ord(ch)
+        if code == 0x3000:
+            out.append(" ")
+        elif 0xFF01 <= code <= 0xFF5E:
+            out.append(chr(code - 0xFEE0))
+        else:
+            out.append(ch)
+    t = "".join(out).lower()
+    return re.sub(r"[\s，。、；：！？,.;:!?'\"“”‘’()（）]", "", t)
+
+
 def check(item, answer):
     """判分：True/False，判不了返回 None。"""
     user = str(answer or "").strip()
     if not user:
         return False
+    if (item.get("params") or {}).get("kind") in TEXT_KINDS:
+        return bool(_norm_text(user)) and _norm_text(user) == _norm_text(item["answer"])
     unit = item.get("unit") or ""
     if unit and user.endswith(unit):
         user = user[: -len(unit)].strip()

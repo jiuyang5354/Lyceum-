@@ -468,6 +468,36 @@ def build(seed=20261109):
         make(it, "地理", "middle", "天气与气候", "某地七月均温 %d ℃、一月均温 %d ℃，气温年较差是多少 ℃？" % (hi, lo), hi - lo,
              {"kind": "annual_range", "hi": hi, "lo": lo}, steps=1, ops=1, unit="℃")
 
+    # —— 第四批：文本类客观题（答案唯一，归一后精确比对）——
+    for prev, nxt, src in (("白日依山尽", "黄河入海流", "登鹳雀楼"), ("欲穷千里目", "更上一层楼", "登鹳雀楼"),
+                           ("春眠不觉晓", "处处闻啼鸟", "春晓"), ("举头望明月", "低头思故乡", "静夜思"),
+                           ("野火烧不尽", "春风吹又生", "赋得古原草送别")):
+        make(it, "语文", "primary", "古诗", "补写诗句：%s，____。" % prev, nxt,
+             {"kind": "dictation", "next": nxt, "src": src}, steps=1, ops=1)
+    for prev, nxt, src in (("沉舟侧畔千帆过", "病树前头万木春", "酬乐天扬州初逢席上见赠"),
+                           ("山重水复疑无路", "柳暗花明又一村", "游山西村"),
+                           ("落红不是无情物", "化作春泥更护花", "己亥杂诗"),
+                           ("不畏浮云遮望眼", "自缘身在最高层", "登飞来峰"),
+                           ("但愿人长久", "千里共婵娟", "水调歌头")):
+        make(it, "语文", "middle", "古诗文默写", "补写名句：%s，____。" % prev, nxt,
+             {"kind": "dictation", "next": nxt, "src": src}, steps=1, ops=1)
+    for meaning, idiom in (("比喻做多余的事，反而把事情弄糟", "画蛇添足"),
+                           ("比喻力量太小，解决不了问题", "杯水车薪"),
+                           ("形容注意力非常集中", "全神贯注"),
+                           ("形容做事十分认真细致，一点也不马虎", "一丝不苟"),
+                           ("比喻主动向人认错、请求责罚", "负荆请罪")):
+        make(it, "语文", "primary", "成语", "根据意思写成语：%s。" % meaning, idiom,
+             {"kind": "idiom", "idiom": idiom, "meaning": meaning}, steps=2, ops=2)
+    for base, past in (("go", "went"), ("see", "saw"), ("eat", "ate"), ("take", "took"),
+                       ("buy", "bought"), ("teach", "taught"), ("think", "thought"), ("bring", "brought"),
+                       ("drink", "drank"), ("write", "wrote"), ("run", "ran"), ("swim", "swam")):
+        make(it, "英语", "middle", "一般过去时", "写出 %s 的过去式。" % base, past,
+             {"kind": "verb_past", "base": base, "past": past}, steps=1, ops=1)
+    for base, plural in (("child", "children"), ("man", "men"), ("woman", "women"), ("foot", "feet"),
+                         ("tooth", "teeth"), ("mouse", "mice"), ("sheep", "sheep"), ("fish", "fish")):
+        make(it, "英语", "primary", "名词单复数", "写出 %s 的复数形式。" % base, plural,
+             {"kind": "plural", "base": base, "plural": plural}, steps=1, ops=1)
+
     for item in it:
         item["difficulty_prior"] = prior(item["band"], item["steps"], item["ops"])
     return it
