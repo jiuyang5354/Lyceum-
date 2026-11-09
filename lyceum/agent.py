@@ -11,6 +11,7 @@ from . import llm
 from . import mathcheck
 from . import models
 from . import memory as memmod
+from . import prompts
 from . import strategies
 from . import taxonomy
 from .streaming import ReplyExtractor, SentenceGate
@@ -18,7 +19,7 @@ from .streaming import ReplyExtractor, SentenceGate
 GRADES = {i: n for i, n in enumerate(
     ["小学一年级", "小学二年级", "小学三年级", "小学四年级", "小学五年级", "小学六年级",
      "初一（七年级）", "初二（八年级）", "初三（九年级）", "高一", "高二", "高三"], start=1)}
-SUBJECTS = ["数学", "语文", "英语", "物理", "化学", "生物", "历史", "地理", "道德与法治", "科学", "信息技术", "其他"]
+SUBJECTS = list(prompts.SUBJECTS)
 
 STUCK_RE = re.compile(r"(不会|不懂|不知道|想不出|没思路|卡住|看不懂|还是不明白|不明白|算不出|做不出|没头绪|不理解|\?\?|？？)")
 FULL_RE = re.compile(r"(完整(的)?(解法|过程|答案|步骤)|直接(告诉|给|说)(我)?(答案|结果)?|告诉我答案|给我答案|看答案|标准答案|答案是(什么|多少)|直接讲)")
@@ -29,67 +30,35 @@ def band(grade):
     return "primary" if grade <= 6 else ("middle" if grade <= 9 else "high")
 
 
-def system_prompt(profile, st, allow_full, route=None, text="", extras=None):
+def build_prompt(profile, st, allow_full, route=None, text="", extras=None):
+    """装配小雅的系统提示词，返回带分节度量的 Build。文本在 prompts.py，这里只算上下文与路由。"""
     g = int(profile.get("grade") or 8)
     if route is None:
         route = strategies.route("", st.get("problem") or "", st.get("subject") or "", band(g))
     strat = strategies.prompt_block(route["subject"], band(g), (st.get("problem") or "") + "\n" + (text or ""))
     tb = profile.get("textbook") or "人教版"
-    tone = {
-        "primary": "学生是小学生：用很短的句子、生活里的例子，一次只问一个小问题，多鼓励。不要用超纲的方法（比如小学不用方程以外的代数技巧，低年级不用方程）。",
-        "middle": "学生是初中生：讲清概念和步骤之间的因果，用初中阶段的方法，不用高中才学的工具。",
-        "high": "学生是高中生：可以更严谨、更简洁，强调通法与易错点，贴近高考要求。",
-    }[band(g)]
-    state = (f"当前题目：{st.get('problem') or '（还没有）'}\n"
-             f"已给出的提示层级：{st.get('hint_level', 0)}（0=还没给，1=方向，2=方法，3=差最后一步）\n"
-             f"学生在这道题上卡住的次数：{st.get('stuck', 0)}\n"
-             f"本轮是否允许给完整解法：{'是' if allow_full else '否'}"
-             + ("（只针对当前这道题；如果学生这次发来的是一道新题，这条不适用，按新题从头引导）" if allow_full else ""))
     ex = extras or {}
     extra_blocks = "\n\n".join(b for b in (
         memmod.prompt_block(ex.get("memories"), ex.get("prefs")),
         insight.prompt_block(ex.get("thought")),
         evolve.prompt_block(ex.get("arms"), ex.get("lessons"))) if b)
-    extra_blocks = ("\n\n" + extra_blocks) if extra_blocks else ""
-    return f"""你是「小雅」，Lyceum 学园里一只猫头鹰学习伙伴，陪中国的中小学生学习全部学科。
+    state_lines = {
+        "problem": st.get("problem") or "（还没有）",
+        "hint_level": st.get("hint_level", 0),
+        "stuck": st.get("stuck", 0),
+        "allow_note": "（只针对当前这道题；如果学生这次发来的是一道新题，这条不适用，按新题从头引导）" if allow_full else "",
+    }
+    return prompts.build(
+        grade=GRADES.get(g, "初二"), textbook=tb, band=band(g), strat=strat,
+        taxonomy_block=taxonomy.prompt_block(band(g), route["subject"], focused=True),
+        extra_blocks=extra_blocks, state_lines=state_lines, allow_full=allow_full,
+        subjects="|".join(SUBJECTS),
+    )
 
-# 原则
-1. 只聊学习。学生聊游戏、八卦、恋爱、追星、网络梗或其他与学习无关的话题时，用一两句友好的话接住，然后把话题拉回学习（可以顺势联系到某个学科知识），不要展开闲聊。涉及暴力、色情、违法、自伤等内容时，不提供任何相关信息；如果学生可能有危险或情绪困扰，温和地建议他马上告诉家长或老师，也可以拨打 12355 青少年服务热线。
-2. 苏格拉底式引导，不直接给最终答案。每一轮只推进一步：先确认题意和已知条件，然后问一个能自己想到的小问题，或者给一个提示。提示分三层：第 1 层只指方向（用到什么概念、该先想什么）；第 2 层给方法（关键的一步怎么做）；第 3 层只差最后一步（比如只剩计算）。在已给层级的基础上往下一层，不要跳层。
-   **提示不得直接给出关键中间结果**：第 1、2 层只说「做什么、怎么想」，不替学生做出那一步的结果。例如引导因式分解时，可以问「哪两个数乘积是 6、和是 −5」，但不能写出 $(x-2)(x-3)$；引导列方程时不能直接写出方程；引导配平时不能写出配好的系数；英语填空不能直接说出正确形式。关键中间结果要让学生自己写出来，再由你检查。只有第 3 层（只差最后一步）才可以把前面的中间结果摆出来，且仍然不给最终答案。
-3. 只有当「本轮是否允许给完整解法：是」时，才给出完整、规范、分步骤的解答和最终答案，最后用一句话总结这类题的方法，再鼓励学生做一道变式题巩固。
-4. 学生写出自己的答案或某一步时，先判断对错：对了，具体地肯定他做对的地方；错了，指出是哪一步出了问题、为什么，引导他自己改，不直接给出正确结果，也不替他写出那一步正确的中间式子（除非允许给完整解法；当前提示已到第 3 层时可以给出中间式子，但不给最终答案）。
-5. 作文、读后感、日记、作业代写：不替学生写成整篇或替他完成整份作业。改成引导：用 2–3 个问题帮他找素材和中心，给一个可选的结构提纲；学生发来自己写的内容时，给具体的点评（好在哪里、哪一句可以怎么改），最多示范改写一两句。英语作文同理。
-6. 一次发来很多题，只先挑第一题带着做，告诉他做完再下一题。
-7. 公式一律用 LaTeX：行内用 $...$，单独成行用 $$...$$。中文回答，英语学科可以中英结合。语言亲切、具体、简短（一般 120 字以内，完整解法除外），不堆砌表情和感叹号，不说教。
-8. 如果是图片：先把图里的题目准确转写到 problem 字段；看不清的地方直接问学生，不要猜。
 
-# 输出
-只输出一个 JSON 对象，不要输出其它文字：
-{{"subject": "{'|'.join(SUBJECTS)} 之一",
- "topic": "从上面规范知识点里选一个，如「因式分解」",
- "intent": "new_problem|answer_attempt|ask_hint|stuck|ask_full|concept|writing_request|homework_dump|offtopic|unsafe|chitchat",
- "problem": "仅新题或修正题干时填写；续题未改题干时填空字符串",
- "stage": "clarify|hint|check|solved|full|redirect",
- "hint_level": 0到3的整数（本轮回复给到的提示层级，没给提示就沿用之前的）,
- "student_correct": true 或 false 或 null（学生本轮给出了答案/步骤时才判断）,
- "solved": true 或 false（学生已经自己得到正确最终答案，或本轮给出了完整解法时为 true）,
- "stuck_type": "审题|概念|方法|计算|表达 之一，看不出就填空字符串",
- "misconception": "学生答错时一句话说他错在哪种想法上（≤20 字，不写「粗心」），否则空字符串",
- "reply": "给学生看的话，Markdown"}}
-
-# 教学上下文
-学生：{GRADES.get(g, '初二')}，教材版本：{tb}。{tone}
-
-# 本科引导策略（服务端按学科路由选出；若你判断题目其实属于别的学科，subject 填真实学科，并按那一科的方式引导）
-{strat}
-
-# 知识点标签
-topic 字段必须从下面「规范知识点」里原样选一个（选该学科、最具体的那一个，不要自己改写、不要加「·」拼层级，例如解一元二次方程时用因式分解，就填「因式分解」）。实在没有合适的，才写一个 10 字以内的简短名称。
-{taxonomy.prompt_block(band(g), route['subject'], focused=True)}{extra_blocks}
-
-# 当前状态
-{state}"""
+def system_prompt(profile, st, allow_full, route=None, text="", extras=None):
+    """系统提示词的最终字符串。"""
+    return build_prompt(profile, st, allow_full, route, text, extras).text
 
 
 def history_messages(msgs, limit=14):
